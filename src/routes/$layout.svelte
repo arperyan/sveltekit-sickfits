@@ -1,11 +1,12 @@
 <script>
   import Header from "$lib/components/Header.svelte";
   import "../global.scss";
+  import { endpoint, prodEndpoint } from "../../config";
 
   import { createClient, setClient } from "@urql/svelte";
 
   const client = createClient({
-    url: "http://localhost:3000/api/graphql",
+    url: prodEndpoint,
   });
 
   setClient(client);
