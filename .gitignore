@@ -4,3 +4,4 @@ node_modules
 /functions
 /.vscode
 package-lock.json
+./build
