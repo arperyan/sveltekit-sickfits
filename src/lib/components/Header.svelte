@@ -1,17 +1,19 @@
 <script>
   import Nav from "$lib/components/Nav.svelte";
+  import Search from "./Search.svelte";
 </script>
 
-<header class="bar">
-  <h1 class="logo">
-    <div href="/">Sick fits</div>
-  </h1>
-  <Nav />
-
-  <!-- <Search /> -->
-  <!-- <Cart /> -->
+<header>
+  <div class="bar">
+    <h1 class="logo">
+      <div href="/">Sick fits</div>
+    </h1>
+    <Nav />
+  </div>
+  <Search />
 </header>
 
+<!-- <Cart /> -->
 <style lang="scss">
   .bar {
     border-bottom: 10px solid var(--black, black);

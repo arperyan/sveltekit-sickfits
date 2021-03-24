@@ -1,28 +1,27 @@
 <script>
+  import formatMoney from "$lib/formatMoney";
+
   export let product;
 </script>
 
 <div class="itemstyles">
-  <!-- <img
-        src={product?.photo?.image?.publicUrlTransformed}
-        alt={product.name}
-      /> -->
+  <img src={product?.photo?.image?.publicUrlTransformed} alt={product.name} />
   <h3>
-    <!-- <a href={`/product/${product.id}`}>{product.name}</a> -->
+    <a href={`/product/${product.id}`}>{product.name}</a>
   </h3>
-  <!-- <span class="pricetag">{formatMoney(product.price)}</span> -->
-  <!-- <p>{product.description}</p> -->
+  <span class="pricetag">{formatMoney(product.price)}</span>
+  <p>{product.description}</p>
   <div class="buttonList">
-    <!-- <a
+    <a
       href={{
         pathname: "/update",
         query: {
           id: product.id,
         },
       }}
-    > -->
-    Edit Product
-    <!-- </a> -->
+    >
+      Edit Product
+    </a>
     <!-- <AddToCart id={product.id} />
     <DeleteProduct id={product.id}>Delete</DeleteProduct> -->
   </div>
