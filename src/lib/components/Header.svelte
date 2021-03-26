@@ -1,38 +1,39 @@
 <script>
-  import Nav from "$lib/components/Nav.svelte";
-  import Search from "./Search.svelte";
+    import Nav from "$lib/components/Nav.svelte";
+    import { css } from "../../../stitches.config";
+    import Search from "./Search.svelte";
+
+    const headers = css({
+        ".bar": {
+            borderBottom: "10px solid $colors$black",
+            display: "grid",
+            gridTemplateColumns: "auto 1fr",
+            justifyContent: "space-between",
+            alignItems: "stretch",
+        },
+        ".logo": {
+            fontSize: "$fontSizes$7",
+            marginLeft: "2rem",
+            position: "relative",
+            zIndex: "2",
+            transform: "skew(-7deg)",
+            background: "$colors$red",
+            color: "$colors$white",
+            textDecoration: "none",
+            textTransform: "uppercase",
+            padding: "0.5rem 1rem",
+        },
+    });
 </script>
 
-<header>
-  <div class="bar">
-    <h1 class="logo">
-      <div href="/">Sick fits</div>
-    </h1>
-    <Nav />
-  </div>
-  <Search />
+<header class={headers()}>
+    <div class="bar">
+        <h1 class="logo">
+            <div href="/">Sick fits</div>
+        </h1>
+        <Nav />
+    </div>
+    <Search />
 </header>
 
 <!-- <Cart /> -->
-<style lang="scss">
-  .bar {
-    border-bottom: 10px solid var(--black, black);
-    display: grid;
-    grid-template-columns: auto 1fr;
-    justify-content: space-between;
-    align-items: stretch;
-  }
-
-  .logo {
-    font-size: 4rem;
-    margin-left: 2rem;
-    position: relative;
-    z-index: 2;
-    transform: skew(-7deg);
-    background: red;
-    color: white;
-    text-decoration: none;
-    text-transform: uppercase;
-    padding: 0.5rem 1rem;
-  }
-</style>

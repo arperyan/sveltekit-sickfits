@@ -126,12 +126,6 @@ export const {
             marginTop: value,
             marginBottom: value,
         }),
-        size: (config) => (
-            value: keyof typeof config.theme["sizes"] | number | (string & {})
-        ) => ({
-            width: value,
-            height: value,
-        }),
         bc: (config) => (
             value: keyof typeof config.theme["colors"] | (string & {})
         ) => ({
