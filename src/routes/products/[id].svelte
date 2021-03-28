@@ -11,9 +11,9 @@
 <script>
     import Pagination from "$lib/components/Pagination.svelte";
     import Products from "$lib/components/Products.svelte";
-    import { page, navigating } from "$app/stores";
+    // import { page, navigating } from "$app/stores";
 
-    $: console.log({ page, navigating });
+    // $: console.log({ page, navigating });
     export let id;
 </script>
 

@@ -17,7 +17,6 @@
 
     query(PAGINATION_QUERY);
 
-    $: console.log({ $PAGINATION_QUERY, count });
     $: count = $PAGINATION_QUERY.data?._allProductsMeta.count;
 
     $: PageCount = Math.ceil(count / perPage);
