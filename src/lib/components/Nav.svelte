@@ -6,13 +6,29 @@ import NavStyles from './styles/NavStyles';
 import { useUser } from './User'; -->
 <script lang="ts">
     import { navStyles } from "$lib/styles/NavStyles";
+
+    export let section: string;
+
+    $: console.log("Path", section);
 </script>
 
 <ul class={navStyles()}>
-    <a href="/products">Products</a>
-    <a href="/sell">Sell</a>
-    <a href="/order">Orders</a>
-    <a href="/account">Account</a>
+    <a
+        sveltekit:prefetch
+        class:active={section === "products"}
+        href="/products/1"
+    >
+        Products
+    </a>
+    <a sveltekit:prefetch class:active={section === "sell"} href="/sell">
+        Sell
+    </a>
+    <!--<a sveltekit:prefetch class:active={path === "/order"} href="/order">
+        Orders
+    </a>
+    <a sveltekit:prefetch class:active={path === "/account"} href="/account">
+        Account
+    </a> -->
 
     <!-- <SignOut /> -->
     <!-- <button type="button" onClick={openCart}>

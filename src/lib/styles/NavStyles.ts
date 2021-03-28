@@ -54,6 +54,9 @@ export const navStyles = css({
                 width: "calc(100% - 10px)",
             },
         },
+        "&.active:after": {
+            width: "calc(100% - 60px)",
+        },
     },
     "@b3": {
         borderTop: "1px solid $colors$lightGray",

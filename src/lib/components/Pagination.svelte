@@ -9,6 +9,7 @@
     const PAGINATION_QUERY = operationStore(`
     query PAGINATION_QUERY {
       _allProductsMeta {
+        
         count
       }
     }

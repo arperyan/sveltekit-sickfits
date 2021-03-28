@@ -1,36 +1,35 @@
 <script lang="ts">
     import Product from "./Product.svelte";
     import { operationStore, query } from "@urql/svelte";
-    import { perPage } from "../../../config";
 
-    export let page: number;
-
-    const graphql = String.raw;
+    export let page = 1;
+    let perPage = 4;
 
     const ALL_PRODUCTS_QUERY = operationStore(
-        graphql`
-            query ALL_PRODUCTS_QUERY($skip: Int = 0, $first: Int) {
-                allProducts(first: $first, skip: $skip) {
+        `
+        query ALL_PRODUCTS_QUERY($skip: Int = 0, $first: Int) {
+            allProducts(first: $first, skip: $skip) {
+                id
+                name
+                description
+                photo {
                     id
-                    name
-                    description
-                    photo {
+                    image {
                         id
-                        image {
-                            publicUrlTransformed
+                        publicUrlTransformed
                         }
                     }
                     price
                 }
             }
-        `,
-        { skip: page * perPage - perPage, first: perPage },
+            `,
+        { first: perPage, skip: page * perPage - perPage },
         { requestPolicy: "cache-and-network" }
     );
 
-    query($ALL_PRODUCTS_QUERY);
+    query(ALL_PRODUCTS_QUERY);
 
-    $: console.log($ALL_PRODUCTS_QUERY);
+    $: $ALL_PRODUCTS_QUERY.variables.skip = page * perPage - perPage;
 </script>
 
 <svelte:head>
@@ -49,7 +48,7 @@
     </div>
 {/if}
 
-<style lang="scss">
+<style>
     .product-list {
         display: grid;
         grid-template-columns: 1fr 1fr;
