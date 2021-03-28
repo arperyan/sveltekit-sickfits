@@ -8,8 +8,6 @@ import { useUser } from './User'; -->
     import { navStyles } from "$lib/styles/NavStyles";
 
     export let section: string;
-
-    $: console.log("Path", section);
 </script>
 
 <ul class={navStyles()}>
