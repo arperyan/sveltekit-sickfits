@@ -1,5 +1,5 @@
 const sveltePreprocess = require("svelte-preprocess");
-const adapter = require(process.env.ADAPTER || "@sveltejs/adapter-node");
+const adapter = require(process.env.ADAPTER || "@sveltejs/adapter-vercel");
 const options = JSON.stringify(process.env.OPTIONS || "{}");
 const pkg = require("./package.json");
 
