@@ -10,7 +10,7 @@ module.exports = {
     preprocess: [
         sveltePreprocess({
             defaults: {
-                style: "stitches",
+                style: "@stitches",
                 script: "typescript",
             },
             replace: [
