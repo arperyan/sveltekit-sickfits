@@ -1281,8 +1281,8 @@ function normalize(loaded) {
   }
   return loaded;
 }
+const s$1 = JSON.stringify;
 async function get_response({request, options, $session, route, status = 200, error: error2}) {
-  const host = options.host || request.headers[options.host_header];
   const dependencies = {};
   const serialized_session = try_serialize($session, (error3) => {
     throw new Error(`Failed to serialize session data: ${error3.message}`);
@@ -1291,13 +1291,31 @@ async function get_response({request, options, $session, route, status = 200, er
   const match = route && route.pattern.exec(request.path);
   const params = route && route.params(match);
   const page2 = {
-    host,
+    host: request.host,
     path: request.path,
     query: request.query,
     params
   };
   let uses_credentials = false;
-  const fetcher = async (url, opts = {}) => {
+  const fetcher = async (resource, opts = {}) => {
+    let url;
+    if (typeof resource === "string") {
+      url = resource;
+    } else {
+      url = resource.url;
+      opts = {
+        method: resource.method,
+        headers: resource.headers,
+        body: resource.body,
+        mode: resource.mode,
+        credentials: resource.credentials,
+        cache: resource.cache,
+        redirect: resource.redirect,
+        referrer: resource.referrer,
+        integrity: resource.integrity,
+        ...opts
+      };
+    }
     if (options.local && url.startsWith(options.paths.assets)) {
       url = url.replace(options.paths.assets, "");
     }
@@ -1347,20 +1365,42 @@ async function get_response({request, options, $session, route, status = 200, er
       }
     }
     if (response) {
-      const clone2 = response.clone();
       const headers2 = {};
-      clone2.headers.forEach((value, key) => {
+      response.headers.forEach((value, key) => {
         if (key !== "etag")
           headers2[key] = value;
       });
-      const payload = JSON.stringify({
-        status: clone2.status,
-        statusText: clone2.statusText,
-        headers: headers2,
-        body: await clone2.text()
+      const inline = {
+        url,
+        payload: {
+          status: response.status,
+          statusText: response.statusText,
+          headers: headers2,
+          body: null
+        }
+      };
+      const proxy = new Proxy(response, {
+        get(response2, key, receiver) {
+          if (key === "text") {
+            return async () => {
+              const text = await response2.text();
+              inline.payload.body = text;
+              serialized_data.push(inline);
+              return text;
+            };
+          }
+          if (key === "json") {
+            return async () => {
+              const json = await response2.json();
+              inline.payload.body = s$1(json);
+              serialized_data.push(inline);
+              return json;
+            };
+          }
+          return Reflect.get(response2, key, receiver);
+        }
       });
-      serialized_data.push({url, payload});
-      return response;
+      return proxy;
     }
     return new Response("Not found", {
       status: 404
@@ -1484,7 +1524,6 @@ async function get_response({request, options, $session, route, status = 200, er
   const js_deps = route ? route.js : [];
   const css_deps = route ? route.css : [];
   const style = route ? route.style : "";
-  const s2 = JSON.stringify;
   const prefix = `${options.paths.assets}/${options.app_dir}`;
   const links = options.amp ? `<style amp-custom>${style || (await Promise.all(css_deps.map((dep) => options.get_amp_css(dep)))).join("\n")}</style>` : [
     ...js_deps.map((dep) => `<link rel="modulepreload" href="${prefix}/${dep}">`),
@@ -1495,21 +1534,21 @@ async function get_response({request, options, $session, route, status = 200, er
 		<noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
 		<script async src="https://cdn.ampproject.org/v0.js"></script>` : `
 		<script type="module">
-			import { start } from ${s2(options.entry)};
+			import { start } from ${s$1(options.entry)};
 			start({
-				target: ${options.target ? `document.querySelector(${s2(options.target)})` : "document.body"},
-				paths: ${s2(options.paths)},
+				target: ${options.target ? `document.querySelector(${s$1(options.target)})` : "document.body"},
+				paths: ${s$1(options.paths)},
 				status: ${status},
 				error: ${serialize_error(error2)},
 				session: ${serialized_session},
 				nodes: [
-					${(route ? route.parts : []).map((part) => `import(${s2(options.get_component_path(part.id))})`).join(",\n					")}
+					${(route ? route.parts : []).map((part) => `import(${s$1(options.get_component_path(part.id))})`).join(",\n					")}
 				],
 				page: {
-					host: ${host ? s2(host) : "location.host"},
-					path: ${s2(request.path)},
-					query: new URLSearchParams(${s2(request.query.toString())}),
-					params: ${s2(params)}
+					host: ${s$1(request.host || "location.host")},
+					path: ${s$1(request.path)},
+					query: new URLSearchParams(${s$1(request.query.toString())}),
+					params: ${s$1(params)}
 				}
 			});
 		</script>`;
@@ -1521,7 +1560,7 @@ async function get_response({request, options, $session, route, status = 200, er
   ].join("\n\n");
   const body = options.amp ? rendered.html : `${rendered.html}
 
-			${serialized_data.map(({url, payload}) => `<script type="svelte-data" url="${url}">${payload}</script>`).join("\n\n			")}
+			${serialized_data.map(({url, payload}) => `<script type="svelte-data" url="${url}">${s$1(payload)}</script>`).join("\n\n			")}
 		`.replace(/^\t{2}/gm, "");
   const headers = {
     "content-type": "text/html"
@@ -1536,8 +1575,15 @@ async function get_response({request, options, $session, route, status = 200, er
     dependencies
   };
 }
-async function render_page(request, route, context, options) {
-  const $session = await (options.setup.getSession && options.setup.getSession({context}));
+async function render_page(request, route, options) {
+  if (options.initiator === route) {
+    return {
+      status: 404,
+      headers: {},
+      body: `Not found: ${request.path}`
+    };
+  }
+  const $session = await options.hooks.getSession({context: request.context});
   const response = await get_response({
     request,
     options,
@@ -1579,20 +1625,13 @@ function serialize_error(error2) {
   }
   return serialized;
 }
-async function render_route(request, route, context, options) {
+async function render_route(request, route) {
   const mod = await route.load();
   const handler = mod[request.method.toLowerCase().replace("delete", "del")];
   if (handler) {
     const match = route.pattern.exec(request.path);
     const params = route.params(match);
-    const response = await handler({
-      host: options.host || request.headers[options.host_header || "host"],
-      path: request.path,
-      headers: request.headers,
-      query: request.query,
-      body: request.body,
-      params
-    }, context);
+    const response = await handler({...request, params});
     if (response) {
       if (typeof response !== "object" || response.body == null) {
         return {
@@ -1621,28 +1660,27 @@ function lowercase_keys(obj) {
 function md5(body) {
   return createHash("md5").update(body).digest("hex");
 }
-async function ssr(request, options) {
-  if (request.path.endsWith("/") && request.path !== "/") {
-    const q2 = request.query.toString();
+async function ssr(incoming, options) {
+  if (incoming.path.endsWith("/") && incoming.path !== "/") {
+    const q2 = incoming.query.toString();
     return {
       status: 301,
       headers: {
-        location: request.path.slice(0, -1) + (q2 ? `?${q2}` : "")
+        location: incoming.path.slice(0, -1) + (q2 ? `?${q2}` : "")
       }
     };
   }
-  const {context, headers = {}} = await (options.setup.prepare && options.setup.prepare({headers: request.headers})) || {};
+  const context = await options.hooks.getContext(incoming) || {};
   try {
-    for (const route of options.manifest.routes) {
-      if (options.initiator === route) {
-        return {
-          status: 404,
-          headers: {},
-          body: `Not found: ${request.path}`
-        };
-      }
-      if (route.pattern.test(request.path)) {
-        const response = route.type === "endpoint" ? await render_route(request, route, context, options) : await render_page(request, route, context, options);
+    return await options.hooks.handle({
+      ...incoming,
+      params: null,
+      context
+    }, async (request) => {
+      for (const route of options.manifest.routes) {
+        if (!route.pattern.test(request.path))
+          continue;
+        const response = route.type === "endpoint" ? await render_route(request, route) : await render_page(request, route, options);
         if (response) {
           if (response.status === 200) {
             if (!/(no-store|immutable)/.test(response.headers["cache-control"])) {
@@ -1657,16 +1695,11 @@ async function ssr(request, options) {
               response.headers["etag"] = etag;
             }
           }
-          return {
-            status: response.status,
-            headers: {...headers, ...response.headers},
-            body: response.body,
-            dependencies: response.dependencies
-          };
+          return response;
         }
       }
-    }
-    return await render_page(request, null, context, options);
+      return await render_page(request, null, options);
+    });
   } catch (e2) {
     if (e2 && e2.stack) {
       e2.stack = await options.get_stack(e2);
@@ -1674,7 +1707,7 @@ async function ssr(request, options) {
     console.error(e2 && e2.stack || e2);
     return {
       status: 500,
-      headers,
+      headers: {},
       body: options.dev ? e2.stack : e2.message
     };
   }
@@ -1877,7 +1910,7 @@ ${validate_component(Layout, "Layout").$$render($$result, Object.assign(props_0 
 
 ${mounted ? `<div id="${"svelte-announcer"}" aria-live="${"assertive"}" aria-atomic="${"true"}" class="${"svelte-1j55zn5"}">${navigated ? `Navigated to ${escape(title)}` : ``}</div>` : ``}`;
 });
-var setup = /* @__PURE__ */ Object.freeze({
+var user_hooks = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   [Symbol.toStringTag]: "Module"
 });
@@ -1897,7 +1930,7 @@ const components = [
     return sell;
   })
 ];
-const client_component_lookup = {".svelte/build/runtime/internal/start.js": "start-72a906c9.js", "src/routes/index.svelte": "pages/index.svelte-5fe87a8b.js", "src/routes/products/[id].svelte": "pages/products/[id].svelte-114c3b84.js", "src/routes/sell.svelte": "pages/sell.svelte-9c3c921a.js"};
+const client_component_lookup = {".svelte/build/runtime/internal/start.js": "start-4beaef89.js", "src/routes/index.svelte": "pages/index.svelte-5fe87a8b.js", "src/routes/products/[id].svelte": "pages/products/[id].svelte-114c3b84.js", "src/routes/sell.svelte": "pages/sell.svelte-9c3c921a.js"};
 const manifest = {
   assets: [{file: "favicon.ico", size: 1150, type: "image/vnd.microsoft.icon"}, {file: "radnikanext-medium-webfont.woff2", size: 20012, type: "font/woff2"}, {file: "radnikanext-medium-webfont.woff2:Zone.Identifier", size: 94, type: null}, {file: "robots.txt", size: 67, type: "text/plain"}],
   layout: () => Promise.resolve().then(function() {
@@ -1913,7 +1946,7 @@ const manifest = {
       params: empty,
       parts: [{id: "src/routes/index.svelte", load: components[0]}],
       css: ["assets/start-1508e355.css"],
-      js: ["start-72a906c9.js", "chunks/index-f8cae157.js", "chunks/urql-svelte-300a3fd3.js", "pages/index.svelte-5fe87a8b.js"]
+      js: ["start-4beaef89.js", "chunks/index-f8cae157.js", "chunks/urql-svelte-300a3fd3.js", "pages/index.svelte-5fe87a8b.js"]
     },
     {
       type: "page",
@@ -1921,7 +1954,7 @@ const manifest = {
       params: (m2) => ({id: d$1(m2[1])}),
       parts: [{id: "src/routes/products/[id].svelte", load: components[1]}],
       css: ["assets/start-1508e355.css", "assets/pages/products/[id].svelte-9b797c0d.css"],
-      js: ["start-72a906c9.js", "chunks/index-f8cae157.js", "chunks/urql-svelte-300a3fd3.js", "pages/products/[id].svelte-114c3b84.js"]
+      js: ["start-4beaef89.js", "chunks/index-f8cae157.js", "chunks/urql-svelte-300a3fd3.js", "pages/products/[id].svelte-114c3b84.js"]
     },
     {
       type: "page",
@@ -1929,31 +1962,38 @@ const manifest = {
       params: empty,
       parts: [{id: "src/routes/sell.svelte", load: components[2]}],
       css: ["assets/start-1508e355.css"],
-      js: ["start-72a906c9.js", "chunks/index-f8cae157.js", "chunks/urql-svelte-300a3fd3.js", "pages/sell.svelte-9c3c921a.js"]
+      js: ["start-4beaef89.js", "chunks/index-f8cae157.js", "chunks/urql-svelte-300a3fd3.js", "pages/sell.svelte-9c3c921a.js"]
     }
   ]
 };
+const get_hooks = (hooks2) => ({
+  getContext: hooks2.getContext || (() => ({})),
+  getSession: hooks2.getSession || (() => ({})),
+  handle: hooks2.handle || ((request, render2) => render2(request))
+});
+const hooks = get_hooks(user_hooks);
 function render(request, {
   paths = {base: "", assets: "/."},
   local = false,
   only_render_prerenderable_pages = false,
   get_static_file
 } = {}) {
-  return ssr(request, {
+  return ssr({
+    ...request,
+    host: request.headers["host"]
+  }, {
     paths,
     local,
     template,
     manifest,
     target: "#svelte",
-    entry: "/./_app/start-72a906c9.js",
+    entry: "/./_app/start-4beaef89.js",
     root: Root,
-    setup,
+    hooks,
     dev: false,
     amp: false,
     only_render_prerenderable_pages,
     app_dir: "_app",
-    host: null,
-    host_header: null,
     get_component_path: (id) => "/./_app/" + client_component_lookup[id],
     get_stack: (error2) => error2.stack,
     get_static_file,
