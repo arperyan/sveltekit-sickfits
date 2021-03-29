@@ -10,15 +10,9 @@ module.exports = {
     preprocess: [
         sveltePreprocess({
             defaults: {
-                style: "@stitches",
+                style: "@stitches/core",
                 script: "typescript",
             },
-            replace: [
-                [
-                    "import.meta.env.VERCEL_ANALYTICS_ID",
-                    JSON.stringify(process.env.VERCEL_ANALYTICS_ID),
-                ],
-            ],
         }),
         //	{
         // defaults: {
