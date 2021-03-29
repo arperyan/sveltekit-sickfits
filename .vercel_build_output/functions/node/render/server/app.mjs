@@ -68,10 +68,10 @@ function devalue(value) {
   var names = new Map();
   Array.from(counts).filter(function(entry) {
     return entry[1] > 1;
-  }).sort(function(a, b) {
-    return b[1] - a[1];
-  }).forEach(function(entry, i) {
-    names.set(entry[0], getName(i));
+  }).sort(function(a2, b2) {
+    return b2[1] - a2[1];
+  }).forEach(function(entry, i2) {
+    names.set(entry[0], getName(i2));
   });
   function stringify(thing) {
     if (names.has(thing)) {
@@ -91,8 +91,8 @@ function devalue(value) {
       case "Date":
         return "new Date(" + thing.getTime() + ")";
       case "Array":
-        var members = thing.map(function(v2, i) {
-          return i in thing ? stringify(v2) : "";
+        var members = thing.map(function(v2, i2) {
+          return i2 in thing ? stringify(v2) : "";
         });
         var tail = thing.length === 0 || thing.length - 1 in thing ? "" : ",";
         return "[" + members.join(",") + tail + "]";
@@ -136,8 +136,8 @@ function devalue(value) {
           break;
         case "Array":
           values_1.push("Array(" + thing.length + ")");
-          thing.forEach(function(v2, i) {
-            statements_1.push(name + "[" + i + "]=" + stringify(v2));
+          thing.forEach(function(v2, i2) {
+            statements_1.push(name + "[" + i2 + "]=" + stringify(v2));
           });
           break;
         case "Set":
@@ -192,8 +192,8 @@ function stringifyPrimitive(thing) {
 function getType(thing) {
   return Object.prototype.toString.call(thing).slice(8, -1);
 }
-function escapeUnsafeChar(c) {
-  return escaped$1[c] || c;
+function escapeUnsafeChar(c2) {
+  return escaped$1[c2] || c2;
 }
 function escapeUnsafeChars(str) {
   return str.replace(unsafeChars, escapeUnsafeChar);
@@ -206,17 +206,17 @@ function safeProp(key) {
 }
 function stringifyString(str) {
   var result = '"';
-  for (var i = 0; i < str.length; i += 1) {
-    var char = str.charAt(i);
+  for (var i2 = 0; i2 < str.length; i2 += 1) {
+    var char = str.charAt(i2);
     var code = char.charCodeAt(0);
     if (char === '"') {
       result += '\\"';
     } else if (char in escaped$1) {
       result += escaped$1[char];
     } else if (code >= 55296 && code <= 57343) {
-      var next = str.charCodeAt(i + 1);
+      var next = str.charCodeAt(i2 + 1);
       if (code <= 56319 && (next >= 56320 && next <= 57343)) {
-        result += char + str[++i];
+        result += char + str[++i2];
       } else {
         result += "\\u" + code.toString(16).toUpperCase();
       }
@@ -241,13 +241,13 @@ function dataUriToBuffer(uri) {
   let base64 = false;
   const type = meta[0] || "text/plain";
   let typeFull = type;
-  for (let i = 1; i < meta.length; i++) {
-    if (meta[i] === "base64") {
+  for (let i2 = 1; i2 < meta.length; i2++) {
+    if (meta[i2] === "base64") {
       base64 = true;
     } else {
-      typeFull += `;${meta[i]}`;
-      if (meta[i].indexOf("charset=") === 0) {
-        charset = meta[i].substring(8);
+      typeFull += `;${meta[i2]}`;
+      if (meta[i2].indexOf("charset=") === 0) {
+        charset = meta[i2].substring(8);
       }
     }
   }
@@ -557,7 +557,7 @@ async function consumeBody(data) {
   }
   if (body.readableEnded === true || body._readableState.ended === true) {
     try {
-      if (accum.every((c) => typeof c === "string")) {
+      if (accum.every((c2) => typeof c2 === "string")) {
         return Buffer.from(accum.join(""));
       }
       return Buffer.concat(accum, accumBytes);
@@ -792,7 +792,7 @@ function fromRawHeaders(headers = []) {
       validateHeaderName(name);
       validateHeaderValue(name, String(value));
       return true;
-    } catch (e) {
+    } catch (e2) {
       return false;
     }
   }));
@@ -1200,8 +1200,8 @@ async function fetch$1(url, options_) {
 }
 function noop$1() {
 }
-function safe_not_equal$1(a, b) {
-  return a != a ? b == b : a !== b || (a && typeof a === "object" || typeof a === "function");
+function safe_not_equal$1(a2, b2) {
+  return a2 != a2 ? b2 == b2 : a2 !== b2 || (a2 && typeof a2 === "object" || typeof a2 === "function");
 }
 const subscriber_queue$1 = [];
 function writable$1(value, start = noop$1) {
@@ -1212,14 +1212,14 @@ function writable$1(value, start = noop$1) {
       value = new_value;
       if (stop) {
         const run_queue = !subscriber_queue$1.length;
-        for (let i = 0; i < subscribers.length; i += 1) {
-          const s = subscribers[i];
-          s[1]();
-          subscriber_queue$1.push(s, value);
+        for (let i2 = 0; i2 < subscribers.length; i2 += 1) {
+          const s2 = subscribers[i2];
+          s2[1]();
+          subscriber_queue$1.push(s2, value);
         }
         if (run_queue) {
-          for (let i = 0; i < subscriber_queue$1.length; i += 2) {
-            subscriber_queue$1[i][0](subscriber_queue$1[i + 1]);
+          for (let i2 = 0; i2 < subscriber_queue$1.length; i2 += 2) {
+            subscriber_queue$1[i2][0](subscriber_queue$1[i2 + 1]);
           }
           subscriber_queue$1.length = 0;
         }
@@ -1290,7 +1290,7 @@ async function get_response({request, options, $session, route, status = 200, er
   const serialized_data = [];
   const match = route && route.pattern.exec(request.path);
   const params = route && route.params(match);
-  const page = {
+  const page2 = {
     host,
     path: request.path,
     query: request.query,
@@ -1312,7 +1312,7 @@ async function get_response({request, options, $session, route, status = 200, er
       const resolved = resolve(request.path, parsed.pathname);
       const filename = resolved.slice(1);
       const filename_html = `${filename}/index.html`;
-      const asset = options.manifest.assets.find((d) => d.file === filename || d.file === filename_html);
+      const asset = options.manifest.assets.find((d2) => d2.file === filename || d2.file === filename_html);
       if (asset) {
         if (options.get_static_file) {
           response = new Response(options.get_static_file(asset.file), {
@@ -1321,7 +1321,7 @@ async function get_response({request, options, $session, route, status = 200, er
             }
           });
         } else {
-          response = await fetch$1(`http://${page.host}/${asset.file}`, opts);
+          response = await fetch$1(`http://${page2.host}/${asset.file}`, opts);
         }
       }
       if (!response) {
@@ -1378,17 +1378,17 @@ async function get_response({request, options, $session, route, status = 200, er
     if (!mod.prerender)
       return;
   }
-  for (let i = 0; i < component_promises.length; i += 1) {
+  for (let i2 = 0; i2 < component_promises.length; i2 += 1) {
     let loaded;
     try {
-      const mod = await component_promises[i];
-      components2[i] = mod.default;
+      const mod = await component_promises[i2];
+      components2[i2] = mod.default;
       if (mod.preload) {
         throw new Error("preload has been deprecated in favour of load. Please consult the documentation: https://kit.svelte.dev/docs#load");
       }
       if (mod.load) {
         loaded = await mod.load.call(null, {
-          page,
+          page: page2,
           get session() {
             uses_credentials = true;
             return $session;
@@ -1399,11 +1399,11 @@ async function get_response({request, options, $session, route, status = 200, er
         if (!loaded)
           return;
       }
-    } catch (e) {
+    } catch (e2) {
       if (error2)
-        throw e instanceof Error ? e : new Error(e);
+        throw e2 instanceof Error ? e2 : new Error(e2);
       loaded = {
-        error: e instanceof Error ? e : {name: "Error", message: e.toString()},
+        error: e2 instanceof Error ? e2 : {name: "Error", message: e2.toString()},
         status: 500
       };
     }
@@ -1434,7 +1434,7 @@ async function get_response({request, options, $session, route, status = 200, er
         };
       }
       maxage = loaded.maxage || 0;
-      props_promises[i] = loaded.props;
+      props_promises[i2] = loaded.props;
     }
   }
   const session = writable$1($session);
@@ -1459,32 +1459,32 @@ async function get_response({request, options, $session, route, status = 200, er
       navigating: writable$1(null),
       session
     },
-    page,
+    page: page2,
     components: components2
   };
-  for (let i = 0; i < props_promises.length; i += 1) {
-    props[`props_${i}`] = await props_promises[i];
+  for (let i2 = 0; i2 < props_promises.length; i2 += 1) {
+    props[`props_${i2}`] = await props_promises[i2];
   }
   let rendered;
   try {
     rendered = options.root.render(props);
-  } catch (e) {
+  } catch (e2) {
     if (error2)
-      throw e instanceof Error ? e : new Error(e);
+      throw e2 instanceof Error ? e2 : new Error(e2);
     return await get_response({
       request,
       options,
       $session,
       route,
       status: 500,
-      error: e instanceof Error ? e : {name: "Error", message: e.toString()}
+      error: e2 instanceof Error ? e2 : {name: "Error", message: e2.toString()}
     });
   }
   unsubscribe();
   const js_deps = route ? route.js : [];
   const css_deps = route ? route.css : [];
   const style = route ? route.style : "";
-  const s = JSON.stringify;
+  const s2 = JSON.stringify;
   const prefix = `${options.paths.assets}/${options.app_dir}`;
   const links = options.amp ? `<style amp-custom>${style || (await Promise.all(css_deps.map((dep) => options.get_amp_css(dep)))).join("\n")}</style>` : [
     ...js_deps.map((dep) => `<link rel="modulepreload" href="${prefix}/${dep}">`),
@@ -1495,21 +1495,21 @@ async function get_response({request, options, $session, route, status = 200, er
 		<noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
 		<script async src="https://cdn.ampproject.org/v0.js"></script>` : `
 		<script type="module">
-			import { start } from ${s(options.entry)};
+			import { start } from ${s2(options.entry)};
 			start({
-				target: ${options.target ? `document.querySelector(${s(options.target)})` : "document.body"},
-				paths: ${s(options.paths)},
+				target: ${options.target ? `document.querySelector(${s2(options.target)})` : "document.body"},
+				paths: ${s2(options.paths)},
 				status: ${status},
 				error: ${serialize_error(error2)},
 				session: ${serialized_session},
 				nodes: [
-					${(route ? route.parts : []).map((part) => `import(${s(options.get_component_path(part.id))})`).join(",\n					")}
+					${(route ? route.parts : []).map((part) => `import(${s2(options.get_component_path(part.id))})`).join(",\n					")}
 				],
 				page: {
-					host: ${host ? s(host) : "location.host"},
-					path: ${s(request.path)},
-					query: new URLSearchParams(${s(request.query.toString())}),
-					params: ${s(params)}
+					host: ${host ? s2(host) : "location.host"},
+					path: ${s2(request.path)},
+					query: new URLSearchParams(${s2(request.query.toString())}),
+					params: ${s2(params)}
 				}
 			});
 		</script>`;
@@ -1667,15 +1667,15 @@ async function ssr(request, options) {
       }
     }
     return await render_page(request, null, context, options);
-  } catch (e) {
-    if (e && e.stack) {
-      e.stack = await options.get_stack(e);
+  } catch (e2) {
+    if (e2 && e2.stack) {
+      e2.stack = await options.get_stack(e2);
     }
-    console.error(e && e.stack || e);
+    console.error(e2 && e2.stack || e2);
     return {
       status: 500,
       headers,
-      body: options.dev ? e.stack : e.message
+      body: options.dev ? e2.stack : e2.message
     };
   }
 }
@@ -1690,8 +1690,8 @@ function blank_object() {
 function run_all(fns) {
   fns.forEach(run);
 }
-function safe_not_equal(a, b) {
-  return a != a ? b == b : a !== b || (a && typeof a === "object" || typeof a === "function");
+function safe_not_equal(a2, b2) {
+  return a2 != a2 ? b2 == b2 : a2 !== b2 || (a2 && typeof a2 === "object" || typeof a2 === "function");
 }
 function subscribe(store, ...callbacks) {
   if (store == null) {
@@ -1699,6 +1699,13 @@ function subscribe(store, ...callbacks) {
   }
   const unsub = store.subscribe(...callbacks);
   return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+}
+function null_to_empty(value) {
+  return value == null ? "" : value;
+}
+function set_store_value(store, ret, value = ret) {
+  store.set(value);
+  return ret;
 }
 let current_component;
 function set_current_component(component) {
@@ -1736,8 +1743,8 @@ function escape(html) {
 }
 function each(items, fn) {
   let str = "";
-  for (let i = 0; i < items.length; i += 1) {
-    str += fn(items[i], i);
+  for (let i2 = 0; i2 < items.length; i2 += 1) {
+    str += fn(items[i2], i2);
   }
   return str;
 }
@@ -1792,6 +1799,9 @@ function add_attribute(name, value, boolean) {
     return "";
   return ` ${name}${value === true ? "" : `=${typeof value === "string" ? JSON.stringify(escape(value)) : `"${value}"`}`}`;
 }
+function add_classes(classes) {
+  return classes ? ` class="${classes}"` : "";
+}
 const Error$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let {status} = $$props;
   let {error: error2} = $$props;
@@ -1811,16 +1821,16 @@ var error = /* @__PURE__ */ Object.freeze({
   [Symbol.toStringTag]: "Module",
   default: Error$1
 });
-var root_svelte = "#svelte-announcer.svelte-1y31lbn{position:absolute;left:0;top:0;clip:rect(0 0 0 0);-webkit-clip-path:inset(50%);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}";
+var root_svelte = "#svelte-announcer.svelte-1j55zn5{position:absolute;left:0;top:0;clip:rect(0 0 0 0);-webkit-clip-path:inset(50%);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}";
 const css$5 = {
-  code: "#svelte-announcer.svelte-1y31lbn{position:absolute;left:0;top:0;clip:rect(0 0 0 0);-webkit-clip-path:inset(50%);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}",
-  map: `{"version":3,"file":"root.svelte","sources":["root.svelte"],"sourcesContent":["<!-- This file is generated by @sveltejs/kit \u2014 do not edit it! -->\\n<script>\\n\\timport { setContext, afterUpdate, onMount } from 'svelte';\\n\\timport ErrorComponent from \\"../components/error.svelte\\";\\n\\n\\t// error handling\\n\\texport let status = undefined;\\n\\texport let error = undefined;\\n\\n\\t// stores\\n\\texport let stores;\\n\\texport let page;\\n\\n\\texport let components;\\n\\texport let props_0 = null;\\n\\texport let props_1 = null;\\n\\n\\tconst Layout = components[0];\\n\\n\\tsetContext('__svelte__', stores);\\n\\n\\t$: stores.page.set(page);\\n\\tafterUpdate(stores.page.notify);\\n\\n\\tlet mounted = false;\\n\\tlet navigated = false;\\n\\tlet title = null;\\n\\n\\tonMount(() => {\\n\\t\\tconst unsubscribe = stores.page.subscribe(() => {\\n\\t\\t\\tif (mounted) {\\n\\t\\t\\t\\tnavigated = true;\\n\\t\\t\\t\\ttitle = document.title;\\n\\t\\t\\t}\\n\\t\\t});\\n\\n\\t\\tmounted = true;\\n\\t\\treturn unsubscribe;\\n\\t});\\n</script>\\n\\n<Layout {...(props_0 || {})}>\\n\\t{#if error}\\n\\t\\t<ErrorComponent {status} {error}/>\\n\\t{:else}\\n\\t\\t<svelte:component this={components[1]} {...(props_1 || {})}/>\\n\\t{/if}\\n</Layout>\\n\\n{#if mounted}\\n\\t<div id=\\"svelte-announcer\\" aria-live=\\"assertive\\" aria-atomic=\\"true\\">\\n\\t\\t{#if navigated}\\n\\t\\t\\tNavigated to {title}\\n\\t\\t{/if}\\n\\t</div>\\n{/if}\\n\\n<style>#svelte-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);-webkit-clip-path:inset(50%);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}</style>"],"names":[],"mappings":"AAyDO,gCAAiB,CAAC,SAAS,QAAQ,CAAC,KAAK,CAAC,CAAC,IAAI,CAAC,CAAC,KAAK,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,kBAAkB,MAAM,GAAG,CAAC,CAAC,UAAU,MAAM,GAAG,CAAC,CAAC,SAAS,MAAM,CAAC,YAAY,MAAM,CAAC,MAAM,GAAG,CAAC,OAAO,GAAG,CAAC"}`
+  code: "#svelte-announcer.svelte-1j55zn5{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}",
+  map: `{"version":3,"file":"root.svelte","sources":["root.svelte"],"sourcesContent":["<!-- This file is generated by @sveltejs/kit \u2014 do not edit it! -->\\n<script>\\n\\timport { setContext, afterUpdate, onMount } from 'svelte';\\n\\timport ErrorComponent from \\"../components/error.svelte\\";\\n\\n\\t// error handling\\n\\texport let status = undefined;\\n\\texport let error = undefined;\\n\\n\\t// stores\\n\\texport let stores;\\n\\texport let page;\\n\\n\\texport let components;\\n\\texport let props_0 = null;\\n\\texport let props_1 = null;\\n\\n\\tconst Layout = components[0];\\n\\n\\tsetContext('__svelte__', stores);\\n\\n\\t$: stores.page.set(page);\\n\\tafterUpdate(stores.page.notify);\\n\\n\\tlet mounted = false;\\n\\tlet navigated = false;\\n\\tlet title = null;\\n\\n\\tonMount(() => {\\n\\t\\tconst unsubscribe = stores.page.subscribe(() => {\\n\\t\\t\\tif (mounted) {\\n\\t\\t\\t\\tnavigated = true;\\n\\t\\t\\t\\ttitle = document.title;\\n\\t\\t\\t}\\n\\t\\t});\\n\\n\\t\\tmounted = true;\\n\\t\\treturn unsubscribe;\\n\\t});\\n</script>\\n\\n<Layout {...(props_0 || {})}>\\n\\t{#if error}\\n\\t\\t<ErrorComponent {status} {error}/>\\n\\t{:else}\\n\\t\\t<svelte:component this={components[1]} {...(props_1 || {})}/>\\n\\t{/if}\\n</Layout>\\n\\n{#if mounted}\\n\\t<div id=\\"svelte-announcer\\" aria-live=\\"assertive\\" aria-atomic=\\"true\\">\\n\\t\\t{#if navigated}\\n\\t\\t\\tNavigated to {title}\\n\\t\\t{/if}\\n\\t</div>\\n{/if}\\n\\n<style>\\n\\t#svelte-announcer {\\n\\t\\tposition: absolute;\\n\\t\\tleft: 0;\\n\\t\\ttop: 0;\\n\\t\\tclip: rect(0 0 0 0);\\n\\t\\tclip-path: inset(50%);\\n\\t\\toverflow: hidden;\\n\\t\\twhite-space: nowrap;\\n\\t\\twidth: 1px;\\n\\t\\theight: 1px;\\n\\t}\\n</style>"],"names":[],"mappings":"AA0DC,iBAAiB,eAAC,CAAC,AAClB,QAAQ,CAAE,QAAQ,CAClB,IAAI,CAAE,CAAC,CACP,GAAG,CAAE,CAAC,CACN,IAAI,CAAE,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CACnB,SAAS,CAAE,MAAM,GAAG,CAAC,CACrB,QAAQ,CAAE,MAAM,CAChB,WAAW,CAAE,MAAM,CACnB,KAAK,CAAE,GAAG,CACV,MAAM,CAAE,GAAG,AACZ,CAAC"}`
 };
 const Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let {status = void 0} = $$props;
   let {error: error2 = void 0} = $$props;
   let {stores} = $$props;
-  let {page} = $$props;
+  let {page: page2} = $$props;
   let {components: components2} = $$props;
   let {props_0 = null} = $$props;
   let {props_1 = null} = $$props;
@@ -1846,8 +1856,8 @@ const Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     $$bindings.error(error2);
   if ($$props.stores === void 0 && $$bindings.stores && stores !== void 0)
     $$bindings.stores(stores);
-  if ($$props.page === void 0 && $$bindings.page && page !== void 0)
-    $$bindings.page(page);
+  if ($$props.page === void 0 && $$bindings.page && page2 !== void 0)
+    $$bindings.page(page2);
   if ($$props.components === void 0 && $$bindings.components && components2 !== void 0)
     $$bindings.components(components2);
   if ($$props.props_0 === void 0 && $$bindings.props_0 && props_0 !== void 0)
@@ -1856,7 +1866,7 @@ const Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     $$bindings.props_1(props_1);
   $$result.css.add(css$5);
   {
-    stores.page.set(page);
+    stores.page.set(page2);
   }
   return `
 
@@ -1865,7 +1875,7 @@ ${validate_component(Layout, "Layout").$$render($$result, Object.assign(props_0 
     default: () => `${error2 ? `${validate_component(Error$1, "ErrorComponent").$$render($$result, {status, error: error2}, {}, {})}` : `${validate_component(components2[1] || missing_component, "svelte:component").$$render($$result, Object.assign(props_1 || {}), {}, {})}`}`
   })}
 
-${mounted ? `<div id="${"svelte-announcer"}" aria-live="${"assertive"}" aria-atomic="${"true"}" class="${"svelte-1y31lbn"}">${navigated ? `Navigated to ${escape(title)}` : ``}</div>` : ``}`;
+${mounted ? `<div id="${"svelte-announcer"}" aria-live="${"assertive"}" aria-atomic="${"true"}" class="${"svelte-1j55zn5"}">${navigated ? `Navigated to ${escape(title)}` : ``}</div>` : ``}`;
 });
 var setup = /* @__PURE__ */ Object.freeze({
   __proto__: null,
@@ -1874,16 +1884,20 @@ var setup = /* @__PURE__ */ Object.freeze({
 const template = ({head, body}) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="/favicon.ico" />\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\n		' + head + '\n	</head>\n	<body>\n		<div id="svelte">' + body + "</div>\n	</body>\n</html>\n";
 function init({paths}) {
 }
+const d$1 = decodeURIComponent;
 const empty = () => ({});
 const components = [
   () => Promise.resolve().then(function() {
-    return index$1;
+    return index;
   }),
   () => Promise.resolve().then(function() {
-    return index;
+    return _id_;
+  }),
+  () => Promise.resolve().then(function() {
+    return sell;
   })
 ];
-const client_component_lookup = {".svelte/build/runtime/internal/start.js": "start-9cc60a6e.js", "src/routes/index.svelte": "pages/index.svelte-1e199d95.js", "src/routes/products/index.svelte": "pages/products/index.svelte-6f00a8a6.js"};
+const client_component_lookup = {".svelte/build/runtime/internal/start.js": "start-72a906c9.js", "src/routes/index.svelte": "pages/index.svelte-5fe87a8b.js", "src/routes/products/[id].svelte": "pages/products/[id].svelte-114c3b84.js", "src/routes/sell.svelte": "pages/sell.svelte-9c3c921a.js"};
 const manifest = {
   assets: [{file: "favicon.ico", size: 1150, type: "image/vnd.microsoft.icon"}, {file: "radnikanext-medium-webfont.woff2", size: 20012, type: "font/woff2"}, {file: "radnikanext-medium-webfont.woff2:Zone.Identifier", size: 94, type: null}, {file: "robots.txt", size: 67, type: "text/plain"}],
   layout: () => Promise.resolve().then(function() {
@@ -1898,16 +1912,24 @@ const manifest = {
       pattern: /^\/$/,
       params: empty,
       parts: [{id: "src/routes/index.svelte", load: components[0]}],
-      css: ["assets/start-e0f43c44.css"],
-      js: ["start-9cc60a6e.js", "chunks/index-4f58c89d.js", "chunks/urql-svelte-bf759fa7.js", "pages/index.svelte-1e199d95.js"]
+      css: ["assets/start-1508e355.css"],
+      js: ["start-72a906c9.js", "chunks/index-f8cae157.js", "chunks/urql-svelte-300a3fd3.js", "pages/index.svelte-5fe87a8b.js"]
     },
     {
       type: "page",
-      pattern: /^\/products\/?$/,
+      pattern: /^\/products\/([^/]+?)\/?$/,
+      params: (m2) => ({id: d$1(m2[1])}),
+      parts: [{id: "src/routes/products/[id].svelte", load: components[1]}],
+      css: ["assets/start-1508e355.css", "assets/pages/products/[id].svelte-9b797c0d.css"],
+      js: ["start-72a906c9.js", "chunks/index-f8cae157.js", "chunks/urql-svelte-300a3fd3.js", "pages/products/[id].svelte-114c3b84.js"]
+    },
+    {
+      type: "page",
+      pattern: /^\/sell\/?$/,
       params: empty,
-      parts: [{id: "src/routes/products/index.svelte", load: components[1]}],
-      css: ["assets/start-e0f43c44.css", "assets/pages/products/index.svelte-46809281.css"],
-      js: ["start-9cc60a6e.js", "chunks/index-4f58c89d.js", "chunks/urql-svelte-bf759fa7.js", "pages/products/index.svelte-6f00a8a6.js"]
+      parts: [{id: "src/routes/sell.svelte", load: components[2]}],
+      css: ["assets/start-1508e355.css"],
+      js: ["start-72a906c9.js", "chunks/index-f8cae157.js", "chunks/urql-svelte-300a3fd3.js", "pages/sell.svelte-9c3c921a.js"]
     }
   ]
 };
@@ -1923,7 +1945,7 @@ function render(request, {
     template,
     manifest,
     target: "#svelte",
-    entry: "/./_app/start-9cc60a6e.js",
+    entry: "/./_app/start-72a906c9.js",
     root: Root,
     setup,
     dev: false,
@@ -1938,169 +1960,157 @@ function render(request, {
     get_amp_css: (dep) => amp_css_lookup[dep]
   });
 }
+const prerender$2 = true;
+function load$1() {
+  return {redirect: "/products/1"};
+}
 const Routes = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<main></main>`;
+  return ``;
 });
-var index$1 = /* @__PURE__ */ Object.freeze({
+var index = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   [Symbol.toStringTag]: "Module",
-  default: Routes
+  default: Routes,
+  prerender: prerender$2,
+  load: load$1
 });
-function formatMoney(amount = 0) {
-  const options = {
-    style: "currency",
-    currency: "GBP",
-    minimumFractionDigits: 2
-  };
-  if (amount % 100)
-    options.minimumFractionDigits = 0;
-  const formatter = Intl.NumberFormat("en-GB", options);
-  return formatter.format(amount / 100);
-}
-var Product_svelte = ".itemstyles.svelte-ijgpki.svelte-ijgpki.svelte-ijgpki{background:#fff;border:1px solid var(--offWhite);box-shadow:var(--bs);position:relative;display:flex;flex-direction:column}.itemstyles.svelte-ijgpki img.svelte-ijgpki.svelte-ijgpki{width:100%;height:400px;-o-object-fit:cover;object-fit:cover}.itemstyles.svelte-ijgpki p.svelte-ijgpki.svelte-ijgpki{line-height:2;font-weight:300;flex-grow:1;padding:0 3rem;font-size:1.5rem}.itemstyles.svelte-ijgpki .buttonList.svelte-ijgpki.svelte-ijgpki{display:grid;width:100%;border-top:1px solid var(--lightGray);grid-template-columns:repeat(auto-fit,minmax(100px,1fr));grid-gap:1px;background:var(--lightGray)}.itemstyles.svelte-ijgpki .buttonList.svelte-ijgpki>.svelte-ijgpki{background:#fff;border:0;font-size:1rem;padding:1rem}h3.svelte-ijgpki.svelte-ijgpki.svelte-ijgpki{text-align:center;transform:skew(-5deg) rotate(-1deg);margin:-3rem 1rem 0;text-shadow:2px 2px 0 rgba(0,0,0,.1)}h3.svelte-ijgpki a.svelte-ijgpki.svelte-ijgpki{display:inline;line-height:1.3;font-size:4rem;text-align:center;padding:0 1rem}.pricetag.svelte-ijgpki.svelte-ijgpki.svelte-ijgpki,h3.svelte-ijgpki a.svelte-ijgpki.svelte-ijgpki{background:var(--red);color:#fff}.pricetag.svelte-ijgpki.svelte-ijgpki.svelte-ijgpki{transform:rotate(3deg);font-weight:600;padding:5px;line-height:1;font-size:3rem;display:inline-block;position:absolute;top:-3px;right:-3px}";
+const prodEndpoint = `https://1565e285cd49.ngrok.io/api/graphql`;
+const perPage$1 = 4;
+var ErrorMessage_svelte = ".error.svelte-vk4xvw.svelte-vk4xvw{padding:2rem;background:#fff;margin:2rem 0;border:1px solid rgba(0,0,0,.05);border-left:5px solid red}.error.svelte-vk4xvw p.svelte-vk4xvw{margin:0;font-weight:100}.error.svelte-vk4xvw strong.svelte-vk4xvw{margin-right:1rem}";
 const css$4 = {
-  code: ".itemstyles.svelte-ijgpki.svelte-ijgpki.svelte-ijgpki{background:#fff;border:1px solid var(--offWhite);box-shadow:var(--bs);position:relative;display:flex;flex-direction:column}.itemstyles.svelte-ijgpki img.svelte-ijgpki.svelte-ijgpki{width:100%;height:400px;-o-object-fit:cover;object-fit:cover}.itemstyles.svelte-ijgpki p.svelte-ijgpki.svelte-ijgpki{line-height:2;font-weight:300;flex-grow:1;padding:0 3rem;font-size:1.5rem}.itemstyles.svelte-ijgpki .buttonList.svelte-ijgpki.svelte-ijgpki{display:grid;width:100%;border-top:1px solid var(--lightGray);grid-template-columns:repeat(auto-fit,minmax(100px,1fr));grid-gap:1px;background:var(--lightGray)}.itemstyles.svelte-ijgpki .buttonList.svelte-ijgpki>.svelte-ijgpki{background:#fff;border:0;font-size:1rem;padding:1rem}h3.svelte-ijgpki.svelte-ijgpki.svelte-ijgpki{text-align:center;transform:skew(-5deg) rotate(-1deg);margin:-3rem 1rem 0;text-shadow:2px 2px 0 rgba(0,0,0,.1)}h3.svelte-ijgpki a.svelte-ijgpki.svelte-ijgpki{display:inline;line-height:1.3;font-size:4rem;text-align:center;padding:0 1rem}.pricetag.svelte-ijgpki.svelte-ijgpki.svelte-ijgpki,h3.svelte-ijgpki a.svelte-ijgpki.svelte-ijgpki{background:var(--red);color:#fff}.pricetag.svelte-ijgpki.svelte-ijgpki.svelte-ijgpki{transform:rotate(3deg);font-weight:600;padding:5px;line-height:1;font-size:3rem;display:inline-block;position:absolute;top:-3px;right:-3px}",
-  map: '{"version":3,"file":"Product.svelte","sources":["Product.svelte"],"sourcesContent":["<script>\\n  import formatMoney from \\"$lib/formatMoney\\";\\n\\n  export let product;\\n</script>\\n\\n<div class=\\"itemstyles\\">\\n  <img src={product?.photo?.image?.publicUrlTransformed} alt={product.name} />\\n  <h3>\\n    <a href={`/product/${product.id}`}>{product.name}</a>\\n  </h3>\\n  <span class=\\"pricetag\\">{formatMoney(product.price)}</span>\\n  <p>{product.description}</p>\\n  <div class=\\"buttonList\\">\\n    <a\\n      href={{\\n        pathname: \\"/update\\",\\n        query: {\\n          id: product.id,\\n        },\\n      }}\\n    >\\n      Edit Product\\n    </a>\\n    <!-- <AddToCart id={product.id} />\\n    <DeleteProduct id={product.id}>Delete</DeleteProduct> -->\\n  </div>\\n</div>\\n\\n<style lang=\\"scss\\">.itemstyles{background:#fff;border:1px solid var(--offWhite);box-shadow:var(--bs);position:relative;display:flex;flex-direction:column}.itemstyles img{width:100%;height:400px;-o-object-fit:cover;object-fit:cover}.itemstyles p{line-height:2;font-weight:300;flex-grow:1;padding:0 3rem;font-size:1.5rem}.itemstyles .buttonList{display:grid;width:100%;border-top:1px solid var(--lightGray);grid-template-columns:repeat(auto-fit,minmax(100px,1fr));grid-gap:1px;background:var(--lightGray)}.itemstyles .buttonList>*{background:#fff;border:0;font-size:1rem;padding:1rem}h3{text-align:center;transform:skew(-5deg) rotate(-1deg);margin:-3rem 1rem 0;text-shadow:2px 2px 0 rgba(0,0,0,.1)}h3 a{display:inline;line-height:1.3;font-size:4rem;text-align:center;padding:0 1rem}.pricetag,h3 a{background:var(--red);color:#fff}.pricetag{transform:rotate(3deg);font-weight:600;padding:5px;line-height:1;font-size:3rem;display:inline-block;position:absolute;top:-3px;right:-3px}</style>\\n"],"names":[],"mappings":"AA6BmB,qDAAW,CAAC,WAAW,IAAI,CAAC,OAAO,GAAG,CAAC,KAAK,CAAC,IAAI,UAAU,CAAC,CAAC,WAAW,IAAI,IAAI,CAAC,CAAC,SAAS,QAAQ,CAAC,QAAQ,IAAI,CAAC,eAAe,MAAM,CAAC,yBAAW,CAAC,+BAAG,CAAC,MAAM,IAAI,CAAC,OAAO,KAAK,CAAC,cAAc,KAAK,CAAC,WAAW,KAAK,CAAC,yBAAW,CAAC,6BAAC,CAAC,YAAY,CAAC,CAAC,YAAY,GAAG,CAAC,UAAU,CAAC,CAAC,QAAQ,CAAC,CAAC,IAAI,CAAC,UAAU,MAAM,CAAC,yBAAW,CAAC,uCAAW,CAAC,QAAQ,IAAI,CAAC,MAAM,IAAI,CAAC,WAAW,GAAG,CAAC,KAAK,CAAC,IAAI,WAAW,CAAC,CAAC,sBAAsB,OAAO,QAAQ,CAAC,OAAO,KAAK,CAAC,GAAG,CAAC,CAAC,CAAC,SAAS,GAAG,CAAC,WAAW,IAAI,WAAW,CAAC,CAAC,yBAAW,CAAC,yBAAW,CAAC,cAAC,CAAC,WAAW,IAAI,CAAC,OAAO,CAAC,CAAC,UAAU,IAAI,CAAC,QAAQ,IAAI,CAAC,4CAAE,CAAC,WAAW,MAAM,CAAC,UAAU,KAAK,KAAK,CAAC,CAAC,OAAO,KAAK,CAAC,CAAC,OAAO,KAAK,CAAC,IAAI,CAAC,CAAC,CAAC,YAAY,GAAG,CAAC,GAAG,CAAC,CAAC,CAAC,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE,CAAC,CAAC,gBAAE,CAAC,6BAAC,CAAC,QAAQ,MAAM,CAAC,YAAY,GAAG,CAAC,UAAU,IAAI,CAAC,WAAW,MAAM,CAAC,QAAQ,CAAC,CAAC,IAAI,CAAC,mDAAS,CAAC,gBAAE,CAAC,6BAAC,CAAC,WAAW,IAAI,KAAK,CAAC,CAAC,MAAM,IAAI,CAAC,mDAAS,CAAC,UAAU,OAAO,IAAI,CAAC,CAAC,YAAY,GAAG,CAAC,QAAQ,GAAG,CAAC,YAAY,CAAC,CAAC,UAAU,IAAI,CAAC,QAAQ,YAAY,CAAC,SAAS,QAAQ,CAAC,IAAI,IAAI,CAAC,MAAM,IAAI,CAAC"}'
+  code: ".error.svelte-vk4xvw.svelte-vk4xvw{padding:2rem;background:white;margin:2rem 0;border:1px solid rgba(0, 0, 0, 0.05);border-left:5px solid red}.error.svelte-vk4xvw p.svelte-vk4xvw{margin:0;font-weight:100}.error.svelte-vk4xvw strong.svelte-vk4xvw{margin-right:1rem}",
+  map: '{"version":3,"file":"ErrorMessage.svelte","sources":["ErrorMessage.svelte"],"sourcesContent":["<script lang=\\"ts\\">export let error;\\n</script>\\n\\n{#if error.networkError && error.networkError.result && error.networkError.result.errors.length}\\n  {#each error.networkError.result.errors as error}\\n    <div class=\\"error\\">\\n      <p data-test=\\"graphql-error\\">\\n        <strong>Shoot!</strong>\\n        {error.message.replace(\\"GraphQL error: \\", \\"\\")}\\n      </p>\\n    </div>\\n  {/each}\\n{/if}\\n\\n<style lang=\\"scss\\">.error {\\n  padding: 2rem;\\n  background: white;\\n  margin: 2rem 0;\\n  border: 1px solid rgba(0, 0, 0, 0.05);\\n  border-left: 5px solid red;\\n}\\n.error p {\\n  margin: 0;\\n  font-weight: 100;\\n}\\n.error strong {\\n  margin-right: 1rem;\\n}</style>\\n"],"names":[],"mappings":"AAcmB,MAAM,4BAAC,CAAC,AACzB,OAAO,CAAE,IAAI,CACb,UAAU,CAAE,KAAK,CACjB,MAAM,CAAE,IAAI,CAAC,CAAC,CACd,MAAM,CAAE,GAAG,CAAC,KAAK,CAAC,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CACrC,WAAW,CAAE,GAAG,CAAC,KAAK,CAAC,GAAG,AAC5B,CAAC,AACD,oBAAM,CAAC,CAAC,cAAC,CAAC,AACR,MAAM,CAAE,CAAC,CACT,WAAW,CAAE,GAAG,AAClB,CAAC,AACD,oBAAM,CAAC,MAAM,cAAC,CAAC,AACb,YAAY,CAAE,IAAI,AACpB,CAAC"}'
 };
-const Product = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  var _a, _b;
-  let {product} = $$props;
-  if ($$props.product === void 0 && $$bindings.product && product !== void 0)
-    $$bindings.product(product);
+const ErrorMessage = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let {error: error2} = $$props;
+  if ($$props.error === void 0 && $$bindings.error && error2 !== void 0)
+    $$bindings.error(error2);
   $$result.css.add(css$4);
-  return `<div class="${"itemstyles svelte-ijgpki"}"><img${add_attribute("src", (_b = (_a = product == null ? void 0 : product.photo) == null ? void 0 : _a.image) == null ? void 0 : _b.publicUrlTransformed, 0)}${add_attribute("alt", product.name, 0)} class="${"svelte-ijgpki"}">
-  <h3 class="${"svelte-ijgpki"}"><a${add_attribute("href", `/product/${product.id}`, 0)} class="${"svelte-ijgpki"}">${escape(product.name)}</a></h3>
-  <span class="${"pricetag svelte-ijgpki"}">${escape(formatMoney(product.price))}</span>
-  <p class="${"svelte-ijgpki"}">${escape(product.description)}</p>
-  <div class="${"buttonList svelte-ijgpki"}"><a${add_attribute("href", {
-    pathname: "/update",
-    query: {id: product.id}
-  }, 0)} class="${"svelte-ijgpki"}">Edit Product
-    </a>
-    </div>
-</div>`;
+  return `${error2.networkError && error2.networkError.result && error2.networkError.result.errors.length ? `${each(error2.networkError.result.errors, (error3) => `<div class="${"error svelte-vk4xvw"}"><p data-test="${"graphql-error"}" class="${"svelte-vk4xvw"}"><strong class="${"svelte-vk4xvw"}">Shoot!</strong>
+        ${escape(error3.message.replace("GraphQL error: ", ""))}</p>
+    </div>`)}` : ``}`;
 });
-function l$1(a, b) {
-  b.tag = a;
-  return b;
+function l$2(a2, b2) {
+  b2.tag = a2;
+  return b2;
 }
-function m$1() {
+function m$2() {
 }
-function p$1(a) {
-  return function(b) {
-    var c = a.length;
-    let d = false, e = false, f = false, g = 0;
-    b(l$1(0, [
-      function(h) {
-        if (h) {
-          d = true;
-        } else if (e) {
-          f = true;
+function p$2(a2) {
+  return function(b2) {
+    var c2 = a2.length;
+    let d2 = false, e2 = false, f2 = false, g2 = 0;
+    b2(l$2(0, [
+      function(h2) {
+        if (h2) {
+          d2 = true;
+        } else if (e2) {
+          f2 = true;
         } else {
-          for (e = f = true; f && !d; ) {
-            g < c ? (h = a[g], g = g + 1 | 0, f = false, b(l$1(1, [h]))) : (d = true, b(0));
+          for (e2 = f2 = true; f2 && !d2; ) {
+            g2 < c2 ? (h2 = a2[g2], g2 = g2 + 1 | 0, f2 = false, b2(l$2(1, [h2]))) : (d2 = true, b2(0));
           }
-          e = false;
+          e2 = false;
         }
       }
     ]));
   };
 }
-function r$2() {
+function r$3() {
 }
-function t$2(a) {
-  a(0);
+function t$3(a2) {
+  a2(0);
 }
-function u$2(a) {
-  let b = false;
-  a(l$1(0, [
-    function(c) {
-      c ? b = true : b || a(0);
+function u$3(a2) {
+  let b2 = false;
+  a2(l$2(0, [
+    function(c2) {
+      c2 ? b2 = true : b2 || a2(0);
     }
   ]));
 }
-function x$2(a) {
-  if (a === null || a[0] !== v$2) {
-    return a;
+function x$3(a2) {
+  if (a2 === null || a2[0] !== v$3) {
+    return a2;
   }
-  if ((a = a[1]) !== 0) {
-    return [v$2, a - 1 | 0];
+  if ((a2 = a2[1]) !== 0) {
+    return [v$3, a2 - 1 | 0];
   }
 }
-function z$2(a) {
-  return function(b) {
-    return function(c) {
-      function d(b2) {
-        typeof b2 == "number" ? k2 && (k2 = false, (b2 = e.shift()) !== void 0 ? (b2 = a(x$2(b2)), k2 = true, b2(d)) : q2 ? c(0) : g || (g = true, f(0))) : b2.tag ? k2 && (c(b2), n2 ? n2 = false : h(0)) : (h = b2 = b2[0], n2 = false, b2(0));
+function z$3(a2) {
+  return function(b2) {
+    return function(c2) {
+      function d2(b3) {
+        typeof b3 == "number" ? k2 && (k2 = false, (b3 = e2.shift()) !== void 0 ? (b3 = a2(x$3(b3)), k2 = true, b3(d2)) : q2 ? c2(0) : g2 || (g2 = true, f2(0))) : b3.tag ? k2 && (c2(b3), n2 ? n2 = false : h2(0)) : (h2 = b3 = b3[0], n2 = false, b3(0));
       }
-      let e = [], f = m$1, g = false, h = m$1, k2 = false, n2 = false, q2 = false;
-      b(function(b2) {
-        typeof b2 == "number" ? q2 || (q2 = true, k2 || e.length !== 0 || c(0)) : b2.tag ? q2 || (b2 = b2[0], g = false, k2 ? e.push(b2) : (b2 = a(b2), k2 = true, b2(d))) : f = b2[0];
+      let e2 = [], f2 = m$2, g2 = false, h2 = m$2, k2 = false, n2 = false, q2 = false;
+      b2(function(b3) {
+        typeof b3 == "number" ? q2 || (q2 = true, k2 || e2.length !== 0 || c2(0)) : b3.tag ? q2 || (b3 = b3[0], g2 = false, k2 ? e2.push(b3) : (b3 = a2(b3), k2 = true, b3(d2))) : f2 = b3[0];
       });
-      c(l$1(0, [
-        function(c2) {
-          if (c2) {
-            if (q2 || (q2 = true, f(1)), k2) {
-              return k2 = false, h(1);
+      c2(l$2(0, [
+        function(c3) {
+          if (c3) {
+            if (q2 || (q2 = true, f2(1)), k2) {
+              return k2 = false, h2(1);
             }
           } else {
-            q2 || g || (g = true, f(0)), k2 && !n2 && (n2 = true, h(0));
+            q2 || g2 || (g2 = true, f2(0)), k2 && !n2 && (n2 = true, h2(0));
           }
         }
       ]));
     };
   };
 }
-function B$1(a) {
-  return a;
+function B$2(a2) {
+  return a2;
 }
-function C(a) {
-  return a(0);
+function C$1(a2) {
+  return a2(0);
 }
-function D$1(a) {
-  return function(b) {
-    return function(c) {
-      let e = m$1, f = false, g = [], h = false;
-      b(function(b2) {
-        typeof b2 == "number" ? h || (h = true, g.length === 0 && c(0)) : b2.tag ? h || (f = false, function(a2) {
-          function b3(a3) {
-            typeof a3 == "number" ? g.length !== 0 && (g = g.filter(d), a3 = g.length === 0, h && a3 ? c(0) : !f && a3 && (f = true, e(0))) : a3.tag ? g.length !== 0 && (c(l$1(1, [a3[0]])), k2(0)) : (k2 = a3 = a3[0], g = g.concat(a3), a3(0));
+function D$1(a2) {
+  return function(b2) {
+    return function(c2) {
+      let e2 = m$2, f2 = false, g2 = [], h2 = false;
+      b2(function(b3) {
+        typeof b3 == "number" ? h2 || (h2 = true, g2.length === 0 && c2(0)) : b3.tag ? h2 || (f2 = false, function(a3) {
+          function b4(a4) {
+            typeof a4 == "number" ? g2.length !== 0 && (g2 = g2.filter(d2), a4 = g2.length === 0, h2 && a4 ? c2(0) : !f2 && a4 && (f2 = true, e2(0))) : a4.tag ? g2.length !== 0 && (c2(l$2(1, [a4[0]])), k2(0)) : (k2 = a4 = a4[0], g2 = g2.concat(a4), a4(0));
           }
-          function d(a3) {
-            return a3 !== k2;
+          function d2(a4) {
+            return a4 !== k2;
           }
-          let k2 = m$1;
-          a2.length === 1 ? a2(b3) : a2.bind(null, b3);
-        }(a(b2[0])), f || (f = true, e(0))) : e = b2[0];
+          let k2 = m$2;
+          a3.length === 1 ? a3(b4) : a3.bind(null, b4);
+        }(a2(b3[0])), f2 || (f2 = true, e2(0))) : e2 = b3[0];
       });
-      c(l$1(0, [
-        function(a2) {
-          a2 ? (h || (h = true, e(a2)), g.forEach(function(c2) {
-            return c2(a2);
-          }), g = []) : (f || h ? f = false : (f = true, e(0)), g.forEach(C));
+      c2(l$2(0, [
+        function(a3) {
+          a3 ? (h2 || (h2 = true, e2(a3)), g2.forEach(function(c3) {
+            return c3(a3);
+          }), g2 = []) : (f2 || h2 ? f2 = false : (f2 = true, e2(0)), g2.forEach(C$1));
         }
       ]));
     };
   };
 }
-function E$1(a) {
-  return a;
+function E$2(a2) {
+  return a2;
 }
-function H$1(a) {
-  return function(b) {
-    return function(c) {
-      let d = false;
-      return b(function(e) {
-        if (typeof e == "number") {
-          d || (d = true, c(e));
-        } else if (e.tag) {
-          d || (a(e[0]), c(e));
+function H$1(a2) {
+  return function(b2) {
+    return function(c2) {
+      let d2 = false;
+      return b2(function(e2) {
+        if (typeof e2 == "number") {
+          d2 || (d2 = true, c2(e2));
+        } else if (e2.tag) {
+          d2 || (a2(e2[0]), c2(e2));
         } else {
-          var g = e[0];
-          c(l$1(0, [
-            function(a2) {
-              if (!d) {
-                return a2 && (d = true), g(a2);
+          var g2 = e2[0];
+          c2(l$2(0, [
+            function(a3) {
+              if (!d2) {
+                return a3 && (d2 = true), g2(a3);
               }
             }
           ]));
@@ -2109,53 +2119,53 @@ function H$1(a) {
     };
   };
 }
-function J$1(a) {
-  a(0);
+function J$1(a2) {
+  a2(0);
 }
-function K(a) {
-  return function(b) {
-    return function(c) {
-      function d(a2) {
-        h && (typeof a2 == "number" ? (h = false, n2 ? c(a2) : f || (f = true, e(0))) : a2.tag ? (c(a2), k2 ? k2 = false : g(0)) : (g = a2 = a2[0], k2 = false, a2(0)));
+function K(a2) {
+  return function(b2) {
+    return function(c2) {
+      function d2(a3) {
+        h2 && (typeof a3 == "number" ? (h2 = false, n2 ? c2(a3) : f2 || (f2 = true, e2(0))) : a3.tag ? (c2(a3), k2 ? k2 = false : g2(0)) : (g2 = a3 = a3[0], k2 = false, a3(0)));
       }
-      let e = m$1, f = false, g = m$1, h = false, k2 = false, n2 = false;
-      b(function(b2) {
-        typeof b2 == "number" ? n2 || (n2 = true, h || c(0)) : b2.tag ? n2 || (h && (g(1), g = m$1), f ? f = false : (f = true, e(0)), b2 = a(b2[0]), h = true, b2(d)) : e = b2[0];
+      let e2 = m$2, f2 = false, g2 = m$2, h2 = false, k2 = false, n2 = false;
+      b2(function(b3) {
+        typeof b3 == "number" ? n2 || (n2 = true, h2 || c2(0)) : b3.tag ? n2 || (h2 && (g2(1), g2 = m$2), f2 ? f2 = false : (f2 = true, e2(0)), b3 = a2(b3[0]), h2 = true, b3(d2)) : e2 = b3[0];
       });
-      c(l$1(0, [
-        function(a2) {
-          if (a2) {
-            if (n2 || (n2 = true, e(1)), h) {
-              return h = false, g(1);
+      c2(l$2(0, [
+        function(a3) {
+          if (a3) {
+            if (n2 || (n2 = true, e2(1)), h2) {
+              return h2 = false, g2(1);
             }
           } else {
-            n2 || f || (f = true, e(0)), h && !k2 && (k2 = true, g(0));
+            n2 || f2 || (f2 = true, e2(0)), h2 && !k2 && (k2 = true, g2(0));
           }
         }
       ]));
     };
   };
 }
-function M$1(a) {
-  return function(b) {
-    return function(c) {
-      let d = [], e = m$1;
-      return b(function(b2) {
-        typeof b2 == "number" ? p$1(d)(c) : b2.tag ? (d.length >= a && 0 < a && d.shift(), d.push(b2[0]), e(0)) : (b2 = b2[0], 0 >= a ? (b2(1), u$2(c)) : (e = b2, b2(0)));
+function M$2(a2) {
+  return function(b2) {
+    return function(c2) {
+      let d2 = [], e2 = m$2;
+      return b2(function(b3) {
+        typeof b3 == "number" ? p$2(d2)(c2) : b3.tag ? (d2.length >= a2 && 0 < a2 && d2.shift(), d2.push(b3[0]), e2(0)) : (b3 = b3[0], 0 >= a2 ? (b3(1), u$3(c2)) : (e2 = b3, b3(0)));
       });
     };
   };
 }
-function N$1(a) {
-  return function(b) {
-    let c = m$1, d = false;
-    b(function(e) {
-      typeof e == "number" ? d = true : e.tag ? d || (a(e[0]), c(0)) : (c = e = e[0], e(0));
+function N$1(a2) {
+  return function(b2) {
+    let c2 = m$2, d2 = false;
+    b2(function(e2) {
+      typeof e2 == "number" ? d2 = true : e2.tag ? d2 || (a2(e2[0]), c2(0)) : (c2 = e2 = e2[0], e2(0));
     });
     return {
       unsubscribe: function() {
-        if (!d) {
-          return d = true, c(1);
+        if (!d2) {
+          return d2 = true, c2(1);
         }
       }
     };
@@ -2163,107 +2173,107 @@ function N$1(a) {
 }
 function O$1() {
 }
-function concat$1(a) {
-  return z$2(B$1)(p$1(a));
+function concat$1(a2) {
+  return z$3(B$2)(p$2(a2));
 }
-function filter$1(a) {
-  return function(b) {
-    return function(c) {
-      let d = m$1;
-      return b(function(b2) {
-        typeof b2 == "number" ? c(b2) : b2.tag ? a(b2[0]) ? c(b2) : d(0) : (d = b2[0], c(b2));
+function filter$1(a2) {
+  return function(b2) {
+    return function(c2) {
+      let d2 = m$2;
+      return b2(function(b3) {
+        typeof b3 == "number" ? c2(b3) : b3.tag ? a2(b3[0]) ? c2(b3) : d2(0) : (d2 = b3[0], c2(b3));
       });
     };
   };
 }
-function fromValue$1(a) {
-  return function(b) {
-    let c = false;
-    b(l$1(0, [
-      function(d) {
-        d ? c = true : c || (c = true, b(l$1(1, [a])), b(0));
+function fromValue$1(a2) {
+  return function(b2) {
+    let c2 = false;
+    b2(l$2(0, [
+      function(d2) {
+        d2 ? c2 = true : c2 || (c2 = true, b2(l$2(1, [a2])), b2(0));
       }
     ]));
   };
 }
-function make$1(a) {
-  return function(b) {
-    let c = r$2, d = false;
-    c = a({
-      next: function(a2) {
-        d || b(l$1(1, [a2]));
+function make$1(a2) {
+  return function(b2) {
+    let c2 = r$3, d2 = false;
+    c2 = a2({
+      next: function(a3) {
+        d2 || b2(l$2(1, [a3]));
       },
       complete: function() {
-        d || (d = true, b(0));
+        d2 || (d2 = true, b2(0));
       }
     });
-    b(l$1(0, [
-      function(a2) {
-        if (a2 && !d) {
-          return d = true, c();
+    b2(l$2(0, [
+      function(a3) {
+        if (a3 && !d2) {
+          return d2 = true, c2();
         }
       }
     ]));
   };
 }
 function makeSubject$1() {
-  let a = [], b = false;
+  let a2 = [], b2 = false;
   return {
-    source: function(c) {
-      function b2(a2) {
-        return a2 !== c;
+    source: function(c2) {
+      function b3(a3) {
+        return a3 !== c2;
       }
-      a = a.concat(c);
-      c(l$1(0, [
-        function(c2) {
-          c2 && (a = a.filter(b2));
+      a2 = a2.concat(c2);
+      c2(l$2(0, [
+        function(c3) {
+          c3 && (a2 = a2.filter(b3));
         }
       ]));
     },
-    next: function(c) {
-      b || a.forEach(function(a2) {
-        a2(l$1(1, [c]));
+    next: function(c2) {
+      b2 || a2.forEach(function(a3) {
+        a3(l$2(1, [c2]));
       });
     },
     complete: function() {
-      b || (b = true, a.forEach(t$2));
+      b2 || (b2 = true, a2.forEach(t$3));
     }
   };
 }
-function map$1(a) {
-  return function(b) {
-    return function(c) {
-      return b(function(b2) {
-        b2 = typeof b2 == "number" ? 0 : b2.tag ? l$1(1, [a(b2[0])]) : l$1(0, [b2[0]]);
-        c(b2);
+function map$1(a2) {
+  return function(b2) {
+    return function(c2) {
+      return b2(function(b3) {
+        b3 = typeof b3 == "number" ? 0 : b3.tag ? l$2(1, [a2(b3[0])]) : l$2(0, [b3[0]]);
+        c2(b3);
       });
     };
   };
 }
-function merge$1(a) {
-  return D$1(E$1)(p$1(a));
+function merge$1(a2) {
+  return D$1(E$2)(p$2(a2));
 }
-function onEnd$1(a) {
-  return function(b) {
-    return function(c) {
-      let d = false;
-      return b(function(b2) {
-        if (typeof b2 == "number") {
-          if (d) {
+function onEnd$1(a2) {
+  return function(b2) {
+    return function(c2) {
+      let d2 = false;
+      return b2(function(b3) {
+        if (typeof b3 == "number") {
+          if (d2) {
             return;
           }
-          d = true;
-          c(b2);
-          return a();
+          d2 = true;
+          c2(b3);
+          return a2();
         }
-        if (b2.tag) {
-          d || c(b2);
+        if (b3.tag) {
+          d2 || c2(b3);
         } else {
-          var e = b2[0];
-          c(l$1(0, [
-            function(c2) {
-              if (!d) {
-                return c2 ? (d = true, e(c2), a()) : e(c2);
+          var e2 = b3[0];
+          c2(l$2(0, [
+            function(c3) {
+              if (!d2) {
+                return c3 ? (d2 = true, e2(c3), a2()) : e2(c3);
               }
             }
           ]));
@@ -2272,72 +2282,72 @@ function onEnd$1(a) {
     };
   };
 }
-function onStart$1(a) {
-  return function(b) {
-    return function(c) {
-      return b(function(b2) {
-        typeof b2 == "number" ? c(b2) : b2.tag ? c(b2) : (c(b2), a());
+function onStart$1(a2) {
+  return function(b2) {
+    return function(c2) {
+      return b2(function(b3) {
+        typeof b3 == "number" ? c2(b3) : b3.tag ? c2(b3) : (c2(b3), a2());
       });
     };
   };
 }
-function publish$1(a) {
-  return N$1(O$1)(a);
+function publish$1(a2) {
+  return N$1(O$1)(a2);
 }
-function scan$1(a, b) {
-  return function(a2, b2) {
-    return function(c) {
-      return function(d) {
-        let e = b2;
-        return c(function(c2) {
-          typeof c2 == "number" ? c2 = 0 : c2.tag ? (e = a2(e, c2[0]), c2 = l$1(1, [e])) : c2 = l$1(0, [c2[0]]);
-          d(c2);
+function scan$1(a2, b2) {
+  return function(a3, b3) {
+    return function(c2) {
+      return function(d2) {
+        let e2 = b3;
+        return c2(function(c3) {
+          typeof c3 == "number" ? c3 = 0 : c3.tag ? (e2 = a3(e2, c3[0]), c3 = l$2(1, [e2])) : c3 = l$2(0, [c3[0]]);
+          d2(c3);
         });
       };
     };
-  }(a, b);
+  }(a2, b2);
 }
-function share$1(a) {
-  function b(a2) {
-    typeof a2 == "number" ? (c.forEach(J$1), c = []) : a2.tag ? (e = false, c.forEach(function(b2) {
-      b2(a2);
-    })) : d = a2[0];
+function share$1(a2) {
+  function b2(a3) {
+    typeof a3 == "number" ? (c2.forEach(J$1), c2 = []) : a3.tag ? (e2 = false, c2.forEach(function(b3) {
+      b3(a3);
+    })) : d2 = a3[0];
   }
-  let c = [], d = m$1, e = false;
-  return function(f) {
-    function g(a2) {
-      return a2 !== f;
+  let c2 = [], d2 = m$2, e2 = false;
+  return function(f2) {
+    function g2(a3) {
+      return a3 !== f2;
     }
-    c = c.concat(f);
-    c.length === 1 && a(b);
-    f(l$1(0, [
-      function(a2) {
-        if (a2) {
-          if (c = c.filter(g), c.length === 0) {
-            return d(1);
+    c2 = c2.concat(f2);
+    c2.length === 1 && a2(b2);
+    f2(l$2(0, [
+      function(a3) {
+        if (a3) {
+          if (c2 = c2.filter(g2), c2.length === 0) {
+            return d2(1);
           }
         } else {
-          e || (e = true, d(a2));
+          e2 || (e2 = true, d2(a3));
         }
       }
     ]));
   };
 }
-function take$1(a) {
-  return function(b) {
-    return function(c) {
-      let d = false, e = 0, f = m$1;
-      b(function(b2) {
-        typeof b2 == "number" ? d || (d = true, c(0)) : b2.tag ? e < a && !d && (e = e + 1 | 0, c(b2), !d && e >= a && (d = true, c(0), f(1))) : (b2 = b2[0], 0 >= a ? (d = true, c(0), b2(1)) : f = b2);
+function take$1(a2) {
+  return function(b2) {
+    return function(c2) {
+      let d2 = false, e2 = 0, f2 = m$2;
+      b2(function(b3) {
+        typeof b3 == "number" ? d2 || (d2 = true, c2(0)) : b3.tag ? e2 < a2 && !d2 && (e2 = e2 + 1 | 0, c2(b3), !d2 && e2 >= a2 && (d2 = true, c2(0), f2(1))) : (b3 = b3[0], 0 >= a2 ? (d2 = true, c2(0), b3(1)) : f2 = b3);
       });
-      c(l$1(0, [
-        function(b2) {
-          if (!d) {
-            if (b2) {
-              return d = true, f(1);
+      c2(l$2(0, [
+        function(b3) {
+          if (!d2) {
+            if (b3) {
+              return d2 = true, f2(1);
             }
-            if (e < a) {
-              return f(0);
+            if (e2 < a2) {
+              return f2(0);
             }
           }
         }
@@ -2345,40 +2355,40 @@ function take$1(a) {
     };
   };
 }
-function takeUntil$1(a) {
-  return function(b) {
-    return function(c) {
-      function d(a2) {
-        typeof a2 != "number" && (a2.tag ? (e = true, f(1), c(0)) : (g = a2 = a2[0], a2(0)));
+function takeUntil$1(a2) {
+  return function(b2) {
+    return function(c2) {
+      function d2(a3) {
+        typeof a3 != "number" && (a3.tag ? (e2 = true, f2(1), c2(0)) : (g2 = a3 = a3[0], a3(0)));
       }
-      let e = false, f = m$1, g = m$1;
-      b(function(b2) {
-        typeof b2 == "number" ? e || (e = true, g(1), c(0)) : b2.tag ? e || c(b2) : (f = b2[0], a(d));
+      let e2 = false, f2 = m$2, g2 = m$2;
+      b2(function(b3) {
+        typeof b3 == "number" ? e2 || (e2 = true, g2(1), c2(0)) : b3.tag ? e2 || c2(b3) : (f2 = b3[0], a2(d2));
       });
-      c(l$1(0, [
-        function(a2) {
-          if (!e) {
-            return a2 ? (e = true, f(1), g(1)) : f(0);
+      c2(l$2(0, [
+        function(a3) {
+          if (!e2) {
+            return a3 ? (e2 = true, f2(1), g2(1)) : f2(0);
           }
         }
       ]));
     };
   };
 }
-function toPromise$1(a) {
-  return new Promise(function(b) {
-    M$1(1)(a)(function(a2) {
-      if (typeof a2 != "number") {
-        if (a2.tag) {
-          b(a2[0]);
+function toPromise$1(a2) {
+  return new Promise(function(b2) {
+    M$2(1)(a2)(function(a3) {
+      if (typeof a3 != "number") {
+        if (a3.tag) {
+          b2(a3[0]);
         } else {
-          a2[0](0);
+          a3[0](0);
         }
       }
     });
   });
 }
-var v$2 = [];
+var v$3 = [];
 typeof Symbol == "function" ? Symbol.observable || (Symbol.observable = Symbol("observable")) : "@@observable";
 function _typeof$2(obj) {
   "@babel/helpers - typeof";
@@ -2429,8 +2439,8 @@ function printSourceLocation(source, sourceLocation) {
     var subLineIndex = Math.floor(columnNum / 80);
     var subLineColumnNum = columnNum % 80;
     var subLines = [];
-    for (var i = 0; i < locationLine.length; i += 80) {
-      subLines.push(locationLine.slice(i, i + 80));
+    for (var i2 = 0; i2 < locationLine.length; i2 += 80) {
+      subLines.push(locationLine.slice(i2, i2 + 80));
     }
     return locationStr + printPrefixedLines([["".concat(lineNum), subLines[0]]].concat(subLines.slice(1, subLineIndex + 1).map(function(subLine) {
       return ["", subLine];
@@ -2483,8 +2493,8 @@ function _classCallCheck(instance, Constructor) {
   }
 }
 function _defineProperties$1(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
+  for (var i2 = 0; i2 < props.length; i2++) {
+    var descriptor = props[i2];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor)
@@ -2558,9 +2568,9 @@ function _construct(Parent, args, Class) {
     _construct = Reflect.construct;
   } else {
     _construct = function _construct2(Parent2, args2, Class2) {
-      var a = [null];
-      a.push.apply(a, args2);
-      var Constructor = Function.bind.apply(Parent2, a);
+      var a2 = [null];
+      a2.push.apply(a2, args2);
+      var Constructor = Function.bind.apply(Parent2, a2);
       var instance = new Constructor();
       if (Class2)
         _setPrototypeOf(instance, Class2.prototype);
@@ -2580,25 +2590,25 @@ function _isNativeReflectConstruct() {
     Date.prototype.toString.call(Reflect.construct(Date, [], function() {
     }));
     return true;
-  } catch (e) {
+  } catch (e2) {
     return false;
   }
 }
 function _isNativeFunction(fn) {
   return Function.toString.call(fn).indexOf("[native code]") !== -1;
 }
-function _setPrototypeOf(o, p2) {
-  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf2(o2, p3) {
-    o2.__proto__ = p3;
-    return o2;
+function _setPrototypeOf(o2, p2) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf2(o3, p3) {
+    o3.__proto__ = p3;
+    return o3;
   };
-  return _setPrototypeOf(o, p2);
+  return _setPrototypeOf(o2, p2);
 }
-function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf2(o2) {
-    return o2.__proto__ || Object.getPrototypeOf(o2);
+function _getPrototypeOf(o2) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf2(o3) {
+    return o3.__proto__ || Object.getPrototypeOf(o3);
   };
-  return _getPrototypeOf(o);
+  return _getPrototypeOf(o2);
 }
 var GraphQLError = /* @__PURE__ */ function(_Error) {
   _inherits(GraphQLError2, _Error);
@@ -2933,8 +2943,8 @@ function formatArray(array, seenValues) {
   var len = Math.min(MAX_ARRAY_LENGTH, array.length);
   var remaining = array.length - len;
   var items = [];
-  for (var i = 0; i < len; ++i) {
-    items.push(formatValue(array[i], seenValues));
+  for (var i2 = 0; i2 < len; ++i2) {
+    items.push(formatValue(array[i2], seenValues));
   }
   if (remaining === 1) {
     items.push("... 1 more item");
@@ -2972,8 +2982,8 @@ var instanceOf = function instanceOf2(value, constructor) {
   return value instanceof constructor;
 };
 function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
+  for (var i2 = 0; i2 < props.length; i2++) {
+    var descriptor = props[i2];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor)
@@ -3038,8 +3048,8 @@ function dedentBlockStringValue(rawString) {
   var lines = rawString.split(/\r\n|[\n\r]/g);
   var commonIndent = getBlockStringIndentation(rawString);
   if (commonIndent !== 0) {
-    for (var i = 1; i < lines.length; i++) {
-      lines[i] = lines[i].slice(commonIndent);
+    for (var i2 = 1; i2 < lines.length; i2++) {
+      lines[i2] = lines[i2].slice(commonIndent);
     }
   }
   var startLine = 0;
@@ -3053,8 +3063,8 @@ function dedentBlockStringValue(rawString) {
   return lines.slice(startLine, endLine).join("\n");
 }
 function isBlank(str) {
-  for (var i = 0; i < str.length; ++i) {
-    if (str[i] !== " " && str[i] !== "	") {
+  for (var i2 = 0; i2 < str.length; ++i2) {
+    if (str[i2] !== " " && str[i2] !== "	") {
       return false;
     }
   }
@@ -3066,11 +3076,11 @@ function getBlockStringIndentation(value) {
   var isEmptyLine = true;
   var indent2 = 0;
   var commonIndent = null;
-  for (var i = 0; i < value.length; ++i) {
-    switch (value.charCodeAt(i)) {
+  for (var i2 = 0; i2 < value.length; ++i2) {
+    switch (value.charCodeAt(i2)) {
       case 13:
-        if (value.charCodeAt(i + 1) === 10) {
-          ++i;
+        if (value.charCodeAt(i2 + 1) === 10) {
+          ++i2;
         }
       case 10:
         isFirstLine = false;
@@ -3447,11 +3457,11 @@ function readBlockString(source, start, line, col, prev, lexer) {
   }
   throw syntaxError(source, position, "Unterminated string.");
 }
-function uniCharCode(a, b, c, d) {
-  return char2hex(a) << 12 | char2hex(b) << 8 | char2hex(c) << 4 | char2hex(d);
+function uniCharCode(a2, b2, c2, d2) {
+  return char2hex(a2) << 12 | char2hex(b2) << 8 | char2hex(c2) << 4 | char2hex(d2);
 }
-function char2hex(a) {
-  return a >= 48 && a <= 57 ? a - 48 : a >= 65 && a <= 70 ? a - 55 : a >= 97 && a <= 102 ? a - 87 : -1;
+function char2hex(a2) {
+  return a2 >= 48 && a2 <= 57 ? a2 - 48 : a2 >= 65 && a2 <= 70 ? a2 - 55 : a2 >= 97 && a2 <= 102 ? a2 - 87 : -1;
 }
 function readName(source, start, line, col, prev) {
   var body = source.body;
@@ -4761,60 +4771,60 @@ function isMultiline(str) {
 function hasMultilineItems(maybeArray) {
   return maybeArray != null && maybeArray.some(isMultiline);
 }
-function k(a) {
-  return typeof a == "string" ? new GraphQLError(a) : typeof a == "object" && a.message ? new GraphQLError(a.message, a.nodes, a.source, a.positions, a.path, a, a.extensions || {}) : a;
+function k$1(a2) {
+  return typeof a2 == "string" ? new GraphQLError(a2) : typeof a2 == "object" && a2.message ? new GraphQLError(a2.message, a2.nodes, a2.source, a2.positions, a2.path, a2, a2.extensions || {}) : a2;
 }
-function l() {
+function l$1() {
   return this.message;
 }
-function n$1(a, b) {
-  a |= 0;
-  for (var c = 0, d = 0 | b.length; c < d; c++) {
-    a = (a << 5) + a + b.charCodeAt(c);
+function n$2(a2, b2) {
+  a2 |= 0;
+  for (var c2 = 0, d2 = 0 | b2.length; c2 < d2; c2++) {
+    a2 = (a2 << 5) + a2 + b2.charCodeAt(c2);
   }
-  return a;
+  return a2;
 }
-function t$1(a) {
-  var b, c, d, e, f, g;
-  if (a === null || q.has(a)) {
+function t$2(a2) {
+  var b2, c2, d2, e2, f2, g2;
+  if (a2 === null || q.has(a2)) {
     return "null";
   }
-  if (typeof a != "object") {
-    return JSON.stringify(a) || "";
+  if (typeof a2 != "object") {
+    return JSON.stringify(a2) || "";
   }
-  if (a.toJSON) {
-    return t$1(a.toJSON());
+  if (a2.toJSON) {
+    return t$2(a2.toJSON());
   }
-  if (Array.isArray(a)) {
-    for (b = "[", c = 0, d = a.length; c < d; c++) {
-      0 < c && (b += ",");
-      b += 0 < (e = t$1(a[c])).length ? e : "null";
+  if (Array.isArray(a2)) {
+    for (b2 = "[", c2 = 0, d2 = a2.length; c2 < d2; c2++) {
+      0 < c2 && (b2 += ",");
+      b2 += 0 < (e2 = t$2(a2[c2])).length ? e2 : "null";
     }
-    return b + "]";
+    return b2 + "]";
   }
-  if (!(b = Object.keys(a).sort()).length && a.constructor && a.constructor !== Object) {
-    return b = r$1.get(a) || Math.random().toString(36).slice(2), r$1.set(a, b), '{"__key":"' + b + '"}';
+  if (!(b2 = Object.keys(a2).sort()).length && a2.constructor && a2.constructor !== Object) {
+    return b2 = r$2.get(a2) || Math.random().toString(36).slice(2), r$2.set(a2, b2), '{"__key":"' + b2 + '"}';
   }
-  q.add(a);
-  c = "{";
-  d = 0;
-  for (e = b.length; d < e; d++) {
-    (g = t$1(a[f = b[d]])) && (1 < c.length && (c += ","), c += t$1(f) + ":" + g);
+  q.add(a2);
+  c2 = "{";
+  d2 = 0;
+  for (e2 = b2.length; d2 < e2; d2++) {
+    (g2 = t$2(a2[f2 = b2[d2]])) && (1 < c2.length && (c2 += ","), c2 += t$2(f2) + ":" + g2);
   }
-  q.delete(a);
-  return c + "}";
+  q.delete(a2);
+  return c2 + "}";
 }
-function u$1(a) {
+function u$2(a2) {
   q.clear();
-  return t$1(a);
+  return t$2(a2);
 }
-function v$1(a) {
-  var b = (typeof a != "string" ? a.loc && a.loc.source.body || print(a) : a).replace(/([\s,]|#[^\n\r]+)+/g, " ").trim();
-  typeof a != "string" && (a.loc ? (a = "definitions" in a && w$1(a)) && (b = "# " + a + "\n" + b) : a.loc = {
+function v$2(a2) {
+  var b2 = (typeof a2 != "string" ? a2.loc && a2.loc.source.body || print(a2) : a2).replace(/([\s,]|#[^\n\r]+)+/g, " ").trim();
+  typeof a2 != "string" && (a2.loc ? (a2 = "definitions" in a2 && w$2(a2)) && (b2 = "# " + a2 + "\n" + b2) : a2.loc = {
     start: 0,
-    end: b.length,
+    end: b2.length,
     source: {
-      body: b,
+      body: b2,
       name: "gql",
       locationOffset: {
         line: 1,
@@ -4822,182 +4832,182 @@ function v$1(a) {
       }
     }
   });
-  return b;
+  return b2;
 }
-function y$1(a) {
-  if (typeof a == "string") {
-    var b = n$1(5381, v$1(a)) >>> 0;
-    a = x$1.get(b) || parse(a, {
+function y$2(a2) {
+  if (typeof a2 == "string") {
+    var b2 = n$2(5381, v$2(a2)) >>> 0;
+    a2 = x$2.get(b2) || parse(a2, {
       noLocation: true
     });
   } else {
-    b = a.__key || n$1(5381, v$1(a)) >>> 0, a = x$1.get(b) || a;
+    b2 = a2.__key || n$2(5381, v$2(a2)) >>> 0, a2 = x$2.get(b2) || a2;
   }
-  a.loc || v$1(a);
-  a.__key = b;
-  x$1.set(b, a);
-  return a;
+  a2.loc || v$2(a2);
+  a2.__key = b2;
+  x$2.set(b2, a2);
+  return a2;
 }
-function w$1(a) {
-  var b, c, d;
-  for (b = 0, c = a.definitions.length; b < c; b++) {
-    if ((d = a.definitions[b]).kind === Kind.OPERATION_DEFINITION && d.name) {
-      return d.name.value;
+function w$2(a2) {
+  var b2, c2, d2;
+  for (b2 = 0, c2 = a2.definitions.length; b2 < c2; b2++) {
+    if ((d2 = a2.definitions[b2]).kind === Kind.OPERATION_DEFINITION && d2.name) {
+      return d2.name.value;
     }
   }
 }
-function z$1(a, b, c) {
+function z$2(a2, b2, c2) {
   return {
-    operation: a,
-    data: b.data,
-    error: Array.isArray(b.errors) ? new m({
-      graphQLErrors: b.errors,
-      response: c
+    operation: a2,
+    data: b2.data,
+    error: Array.isArray(b2.errors) ? new m$1({
+      graphQLErrors: b2.errors,
+      response: c2
     }) : void 0,
-    extensions: typeof b.extensions == "object" && b.extensions || void 0
+    extensions: typeof b2.extensions == "object" && b2.extensions || void 0
   };
 }
-function A(a, b, c) {
+function A(a2, b2, c2) {
   return {
-    operation: a,
+    operation: a2,
     data: void 0,
-    error: new m({
-      networkError: b,
-      response: c
+    error: new m$1({
+      networkError: b2,
+      response: c2
     }),
     extensions: void 0
   };
 }
-function B() {
-  return (B = Object.assign || function(a) {
-    var b, c, d;
-    for (b = 1; b < arguments.length; b++) {
-      c = arguments[b];
-      for (d in c) {
-        Object.prototype.hasOwnProperty.call(c, d) && (a[d] = c[d]);
+function B$1() {
+  return (B$1 = Object.assign || function(a2) {
+    var b2, c2, d2;
+    for (b2 = 1; b2 < arguments.length; b2++) {
+      c2 = arguments[b2];
+      for (d2 in c2) {
+        Object.prototype.hasOwnProperty.call(c2, d2) && (a2[d2] = c2[d2]);
       }
     }
-    return a;
+    return a2;
   }).apply(this, arguments);
 }
-function makeFetchBody(a) {
+function makeFetchBody(a2) {
   return {
-    query: print(a.query),
-    operationName: w$1(a.query),
-    variables: a.variables || void 0,
+    query: print(a2.query),
+    operationName: w$2(a2.query),
+    variables: a2.variables || void 0,
     extensions: void 0
   };
 }
-function makeFetchURL(a, b) {
-  var c = a.context.url;
-  if (a.kind !== "query" || !a.context.preferGetMethod || !b) {
-    return c;
+function makeFetchURL(a2, b2) {
+  var c2 = a2.context.url;
+  if (a2.kind !== "query" || !a2.context.preferGetMethod || !b2) {
+    return c2;
   }
-  a = [];
-  b.operationName && a.push("operationName=" + encodeURIComponent(b.operationName));
-  b.query && a.push("query=" + encodeURIComponent(b.query.replace(/([\s,]|#[^\n\r]+)+/g, " ").trim()));
-  b.variables && a.push("variables=" + encodeURIComponent(u$1(b.variables)));
-  b.extensions && a.push("extensions=" + encodeURIComponent(u$1(b.extensions)));
-  return c + "?" + a.join("&");
+  a2 = [];
+  b2.operationName && a2.push("operationName=" + encodeURIComponent(b2.operationName));
+  b2.query && a2.push("query=" + encodeURIComponent(b2.query.replace(/([\s,]|#[^\n\r]+)+/g, " ").trim()));
+  b2.variables && a2.push("variables=" + encodeURIComponent(u$2(b2.variables)));
+  b2.extensions && a2.push("extensions=" + encodeURIComponent(u$2(b2.extensions)));
+  return c2 + "?" + a2.join("&");
 }
-function makeFetchOptions(a, b) {
-  var c = a.kind === "query" && !!a.context.preferGetMethod;
-  return B({}, a = typeof a.context.fetchOptions == "function" ? a.context.fetchOptions() : a.context.fetchOptions || {}, {
-    body: !c && b ? JSON.stringify(b) : void 0,
-    method: c ? "GET" : "POST",
-    headers: c ? a.headers : B({}, {
+function makeFetchOptions(a2, b2) {
+  var c2 = a2.kind === "query" && !!a2.context.preferGetMethod;
+  return B$1({}, a2 = typeof a2.context.fetchOptions == "function" ? a2.context.fetchOptions() : a2.context.fetchOptions || {}, {
+    body: !c2 && b2 ? JSON.stringify(b2) : void 0,
+    method: c2 ? "GET" : "POST",
+    headers: c2 ? a2.headers : B$1({}, {
       "content-type": "application/json"
-    }, a.headers)
+    }, a2.headers)
   });
 }
-function makeFetchSource(a, b, c) {
-  return make$1(function(d) {
-    var e = d.next, f = d.complete, g = typeof AbortController != "undefined" ? new AbortController() : null, p2 = false;
+function makeFetchSource(a2, b2, c2) {
+  return make$1(function(d2) {
+    var e2 = d2.next, f2 = d2.complete, g2 = typeof AbortController != "undefined" ? new AbortController() : null, p2 = false;
     Promise.resolve().then(function() {
       if (!p2) {
-        return g && (c.signal = g.signal), function C2(a2, b2, c2) {
-          var e2, d2 = false;
-          return (a2.context.fetch || fetch)(b2, c2).then(function(a3) {
-            e2 = a3;
-            d2 = 200 > a3.status || a3.status >= (c2.redirect === "manual" ? 400 : 300);
-            return a3.json();
-          }).then(function(b3) {
-            if (!("data" in b3) && !("errors" in b3)) {
+        return g2 && (c2.signal = g2.signal), function C2(a3, b3, c3) {
+          var e3, d3 = false;
+          return (a3.context.fetch || fetch)(b3, c3).then(function(a4) {
+            e3 = a4;
+            d3 = 200 > a4.status || a4.status >= (c3.redirect === "manual" ? 400 : 300);
+            return a4.json();
+          }).then(function(b4) {
+            if (!("data" in b4) && !("errors" in b4)) {
               throw Error("No Content");
             }
-            return z$1(a2, b3, e2);
-          }).catch(function(b3) {
-            if (b3.name !== "AbortError") {
-              return A(a2, d2 ? Error(e2.statusText) : b3, e2);
+            return z$2(a3, b4, e3);
+          }).catch(function(b4) {
+            if (b4.name !== "AbortError") {
+              return A(a3, d3 ? Error(e3.statusText) : b4, e3);
             }
           });
-        }(a, b, c);
+        }(a2, b2, c2);
       }
-    }).then(function(a2) {
-      p2 || (p2 = true, a2 && e(a2), f());
+    }).then(function(a3) {
+      p2 || (p2 = true, a3 && e2(a3), f2());
     });
     return function() {
       p2 = true;
-      g && g.abort();
+      g2 && g2.abort();
     };
   });
 }
-function createRequest(a, b) {
-  a = y$1(a);
+function createRequest(a2, b2) {
+  a2 = y$2(a2);
   return {
-    key: b ? n$1(a.__key, u$1(b)) >>> 0 : a.__key,
-    query: a,
-    variables: b || {}
+    key: b2 ? n$2(a2.__key, u$2(b2)) >>> 0 : a2.__key,
+    query: a2,
+    variables: b2 || {}
   };
 }
-var m, q, r$1, x$1;
-m = function(a) {
-  function b(b2) {
-    var f, c = b2.networkError, e = b2.response;
-    f = function h(a2, b3) {
-      var d = "";
-      if (a2 !== void 0) {
-        return d = "[Network] " + a2.message;
+var m$1, q, r$2, x$2;
+m$1 = function(a2) {
+  function b2(b3) {
+    var f2, c2 = b3.networkError, e2 = b3.response;
+    f2 = function h2(a3, b4) {
+      var d2 = "";
+      if (a3 !== void 0) {
+        return d2 = "[Network] " + a3.message;
       }
-      b3 !== void 0 && b3.forEach(function c2(a3) {
-        d += "[GraphQL] " + a3.message + "\n";
+      b4 !== void 0 && b4.forEach(function c3(a4) {
+        d2 += "[GraphQL] " + a4.message + "\n";
       });
-      return d.trim();
-    }(c, b2 = (b2.graphQLErrors || []).map(k));
-    a.call(this, f);
+      return d2.trim();
+    }(c2, b3 = (b3.graphQLErrors || []).map(k$1));
+    a2.call(this, f2);
     this.name = "CombinedError";
-    this.message = f;
-    this.graphQLErrors = b2;
-    this.networkError = c;
-    this.response = e;
+    this.message = f2;
+    this.graphQLErrors = b3;
+    this.networkError = c2;
+    this.response = e2;
   }
-  a && (b.__proto__ = a);
-  (b.prototype = Object.create(a && a.prototype)).constructor = b;
-  b.prototype.toString = l;
-  return b;
+  a2 && (b2.__proto__ = a2);
+  (b2.prototype = Object.create(a2 && a2.prototype)).constructor = b2;
+  b2.prototype.toString = l$1;
+  return b2;
 }(Error);
-q = new Set(), r$1 = new WeakMap();
-x$1 = new Map();
-function n(a, b) {
-  if (Array.isArray(a)) {
-    for (var c = 0; c < a.length; c++) {
-      n(a[c], b);
+q = new Set(), r$2 = new WeakMap();
+x$2 = new Map();
+function n$1(a2, b2) {
+  if (Array.isArray(a2)) {
+    for (var c2 = 0; c2 < a2.length; c2++) {
+      n$1(a2[c2], b2);
     }
-  } else if (typeof a == "object" && a !== null) {
-    for (c in a) {
-      c === "__typename" && typeof a[c] == "string" ? b[a[c]] = 0 : n(a[c], b);
+  } else if (typeof a2 == "object" && a2 !== null) {
+    for (c2 in a2) {
+      c2 === "__typename" && typeof a2[c2] == "string" ? b2[a2[c2]] = 0 : n$1(a2[c2], b2);
     }
   }
-  return b;
+  return b2;
 }
-function p(a) {
-  return a.kind === Kind.FIELD && a.name.value === "__typename" && !a.alias;
+function p$1(a2) {
+  return a2.kind === Kind.FIELD && a2.name.value === "__typename" && !a2.alias;
 }
-function r(a) {
-  if (a.selectionSet && !a.selectionSet.selections.some(p)) {
-    return B({}, a, {
-      selectionSet: B({}, a.selectionSet, {
-        selections: a.selectionSet.selections.concat([{
+function r$1(a2) {
+  if (a2.selectionSet && !a2.selectionSet.selections.some(p$1)) {
+    return B$1({}, a2, {
+      selectionSet: B$1({}, a2.selectionSet, {
+        selections: a2.selectionSet.selections.concat([{
           kind: Kind.FIELD,
           name: {
             kind: Kind.NAME,
@@ -5008,338 +5018,338 @@ function r(a) {
     });
   }
 }
-function u(a) {
-  a = y$1(a);
-  var b = t.get(a.__key);
-  b || ((b = visit(a, {
-    Field: r,
-    InlineFragment: r
-  })).__key = a.__key, t.set(a.__key, b));
-  return b;
+function u$1(a2) {
+  a2 = y$2(a2);
+  var b2 = t$1.get(a2.__key);
+  b2 || ((b2 = visit(a2, {
+    Field: r$1,
+    InlineFragment: r$1
+  })).__key = a2.__key, t$1.set(a2.__key, b2));
+  return b2;
 }
-function v(a) {
-  return a && typeof a == "object" ? Object.keys(a).reduce(function(b, c) {
-    var d = a[c];
-    c === "__typename" ? Object.defineProperty(b, "__typename", {
+function v$1(a2) {
+  return a2 && typeof a2 == "object" ? Object.keys(a2).reduce(function(b2, c2) {
+    var d2 = a2[c2];
+    c2 === "__typename" ? Object.defineProperty(b2, "__typename", {
       enumerable: false,
-      value: d
-    }) : Array.isArray(d) ? b[c] = d.map(v) : b[c] = d && typeof d == "object" && "__typename" in d ? v(d) : d;
-    return b;
-  }, {}) : a;
+      value: d2
+    }) : Array.isArray(d2) ? b2[c2] = d2.map(v$1) : b2[c2] = d2 && typeof d2 == "object" && "__typename" in d2 ? v$1(d2) : d2;
+    return b2;
+  }, {}) : a2;
 }
-function w(a) {
-  a.toPromise = function() {
-    return toPromise$1(take$1(1)(a));
+function w$1(a2) {
+  a2.toPromise = function() {
+    return toPromise$1(take$1(1)(a2));
   };
-  return a;
+  return a2;
 }
-function x(a, b, c) {
-  c || (c = b.context);
+function x$1(a2, b2, c2) {
+  c2 || (c2 = b2.context);
   return {
-    key: b.key,
-    query: b.query,
-    variables: b.variables,
-    kind: a,
-    context: c
+    key: b2.key,
+    query: b2.query,
+    variables: b2.variables,
+    kind: a2,
+    context: c2
   };
 }
-function y(a, b) {
-  return x(a.kind, a, B({}, a.context, {
-    meta: B({}, a.context.meta, b)
+function y$1(a2, b2) {
+  return x$1(a2.kind, a2, B$1({}, a2.context, {
+    meta: B$1({}, a2.context.meta, b2)
   }));
 }
-function z() {
+function z$1() {
 }
-function D(a) {
-  return (a = a.kind) !== "mutation" && a !== "query";
+function D(a2) {
+  return (a2 = a2.kind) !== "mutation" && a2 !== "query";
 }
-function E(a) {
-  var b = x(a.kind, a);
-  b.query = u(a.query);
-  return b;
+function E$1(a2) {
+  var b2 = x$1(a2.kind, a2);
+  b2.query = u$1(a2.query);
+  return b2;
 }
-function F(a) {
-  return a.kind !== "query" || a.context.requestPolicy !== "cache-only";
+function F(a2) {
+  return a2.kind !== "query" || a2.context.requestPolicy !== "cache-only";
 }
-function G(a) {
-  return y(a, {
+function G(a2) {
+  return y$1(a2, {
     cacheOutcome: "miss"
   });
 }
-function H(a) {
-  return D(a);
+function H(a2) {
+  return D(a2);
 }
-function I(a) {
-  function b(a2) {
-    var b2 = a2.context.requestPolicy;
-    return a2.kind === "query" && b2 !== "network-only" && (b2 === "cache-only" || k2.has(a2.key));
+function I$1(a2) {
+  function b2(a3) {
+    var b3 = a3.context.requestPolicy;
+    return a3.kind === "query" && b3 !== "network-only" && (b3 === "cache-only" || k2.has(a3.key));
   }
-  function c(a2) {
-    var c2 = k2.get(a2.key);
-    c2 = B({}, c2, {
-      operation: y(a2, {
-        cacheOutcome: c2 ? "hit" : "miss"
+  function c2(a3) {
+    var c3 = k2.get(a3.key);
+    c3 = B$1({}, c3, {
+      operation: y$1(a3, {
+        cacheOutcome: c3 ? "hit" : "miss"
       })
     });
-    a2.context.requestPolicy === "cache-and-network" && (c2.stale = true, J(m2, a2));
-    return c2;
+    a3.context.requestPolicy === "cache-and-network" && (c3.stale = true, J(m2, a3));
+    return c3;
   }
-  function d(a2) {
-    return !D(a2) && b(a2);
+  function d2(a3) {
+    return !D(a3) && b2(a3);
   }
-  function e(a2) {
-    function c2(a3) {
-      g2.add(a3);
+  function e2(a3) {
+    function c3(a4) {
+      g3.add(a4);
     }
-    var e2, g2, l2, d2 = a2.operation;
-    if (d2) {
-      e2 = Object.keys(n(a2.data, {})).concat(d2.context.additionalTypenames || []);
-      if (a2.operation.kind === "mutation") {
-        g2 = new Set();
-        for (a2 = 0; a2 < e2.length; a2++) {
-          (l2 = h[l2 = e2[a2]] || (h[l2] = new Set())).forEach(c2);
+    var e3, g3, l2, d3 = a3.operation;
+    if (d3) {
+      e3 = Object.keys(n$1(a3.data, {})).concat(d3.context.additionalTypenames || []);
+      if (a3.operation.kind === "mutation") {
+        g3 = new Set();
+        for (a3 = 0; a3 < e3.length; a3++) {
+          (l2 = h2[l2 = e3[a3]] || (h2[l2] = new Set())).forEach(c3);
           l2.clear();
         }
-        g2.forEach(function b2(a3) {
-          k2.has(a3) && (d2 = k2.get(a3).operation, k2.delete(a3), J(m2, d2));
+        g3.forEach(function b3(a4) {
+          k2.has(a4) && (d3 = k2.get(a4).operation, k2.delete(a4), J(m2, d3));
         });
-      } else if (d2.kind === "query" && a2.data) {
-        for (k2.set(d2.key, a2), a2 = 0; a2 < e2.length; a2++) {
-          (h[l2 = e2[a2]] || (h[l2] = new Set())).add(d2.key);
+      } else if (d3.kind === "query" && a3.data) {
+        for (k2.set(d3.key, a3), a3 = 0; a3 < e3.length; a3++) {
+          (h2[l2 = e3[a3]] || (h2[l2] = new Set())).add(d3.key);
         }
       }
     }
   }
-  function f(a2) {
-    return !D(a2) && !b(a2);
+  function f2(a3) {
+    return !D(a3) && !b2(a3);
   }
-  var g = a.forward, m2 = a.client;
-  a.dispatchDebug;
-  var k2 = new Map(), h = Object.create(null);
-  return function(a2) {
-    var b2 = share$1(a2);
-    a2 = map$1(c)(filter$1(d)(b2));
-    b2 = H$1(e)(g(filter$1(F)(map$1(G)(merge$1([map$1(E)(filter$1(f)(b2)), filter$1(H)(b2)])))));
-    return merge$1([a2, b2]);
+  var g2 = a2.forward, m2 = a2.client;
+  a2.dispatchDebug;
+  var k2 = new Map(), h2 = Object.create(null);
+  return function(a3) {
+    var b3 = share$1(a3);
+    a3 = map$1(c2)(filter$1(d2)(b3));
+    b3 = H$1(e2)(g2(filter$1(F)(map$1(G)(merge$1([map$1(E$1)(filter$1(f2)(b3)), filter$1(H)(b3)])))));
+    return merge$1([a3, b3]);
   };
 }
-function J(a, b) {
-  return a.reexecuteOperation(x(b.kind, b, B({}, b.context, {
+function J(a2, b2) {
+  return a2.reexecuteOperation(x$1(b2.kind, b2, B$1({}, b2.context, {
     requestPolicy: "network-only"
   })));
 }
-function M(a) {
-  function b(a2) {
-    f.delete(a2.operation.key);
+function M$1(a2) {
+  function b2(a3) {
+    f2.delete(a3.operation.key);
   }
-  function c(a2) {
-    var c2 = a2.key, b2 = a2.kind;
-    if (b2 === "teardown") {
-      return f.delete(c2), true;
+  function c2(a3) {
+    var c3 = a3.key, b3 = a3.kind;
+    if (b3 === "teardown") {
+      return f2.delete(c3), true;
     }
-    if (b2 !== "query" && b2 !== "subscription") {
+    if (b3 !== "query" && b3 !== "subscription") {
       return true;
     }
-    b2 = f.has(c2);
-    f.add(c2);
-    b2 && false;
-    return !b2;
+    b3 = f2.has(c3);
+    f2.add(c3);
+    b3 && false;
+    return !b3;
   }
-  var d = a.forward, e = a.dispatchDebug, f = new Set();
-  return function(a2) {
-    a2 = filter$1(c)(a2);
-    return H$1(b)(d(a2));
+  var d2 = a2.forward, e2 = a2.dispatchDebug, f2 = new Set();
+  return function(a3) {
+    a3 = filter$1(c2)(a3);
+    return H$1(b2)(d2(a3));
   };
 }
-function N(a) {
-  return a.kind === "query" || a.kind === "mutation";
+function N(a2) {
+  return a2.kind === "query" || a2.kind === "mutation";
 }
-function O(a) {
-  return a.kind !== "query" && a.kind !== "mutation";
+function O(a2) {
+  return a2.kind !== "query" && a2.kind !== "mutation";
 }
-function P(a) {
-  var b = a.forward;
-  a.dispatchDebug;
-  return function(a2) {
-    var f, d = share$1(a2);
-    a2 = D$1(function(a3) {
-      var b2 = a3.key, e = filter$1(function(a4) {
-        return a4.kind === "teardown" && a4.key === b2;
-      })(d), g = makeFetchBody(a3), h = makeFetchURL(a3, g), l2 = makeFetchOptions(a3, g);
-      return H$1(function(b3) {
-        b3.data ? void 0 : b3.error;
-      })(takeUntil$1(e)(makeFetchSource(a3, h, l2)));
-    })(filter$1(N)(d));
-    f = b(filter$1(O)(d));
-    return merge$1([a2, f]);
+function P(a2) {
+  var b2 = a2.forward;
+  a2.dispatchDebug;
+  return function(a3) {
+    var f2, d2 = share$1(a3);
+    a3 = D$1(function(a4) {
+      var b3 = a4.key, e2 = filter$1(function(a5) {
+        return a5.kind === "teardown" && a5.key === b3;
+      })(d2), g2 = makeFetchBody(a4), h2 = makeFetchURL(a4, g2), l2 = makeFetchOptions(a4, g2);
+      return H$1(function(b4) {
+        b4.data ? void 0 : b4.error;
+      })(takeUntil$1(e2)(makeFetchSource(a4, h2, l2)));
+    })(filter$1(N)(d2));
+    f2 = b2(filter$1(O)(d2));
+    return merge$1([a3, f2]);
   };
 }
 function Q() {
   return false;
 }
-function R(a) {
-  function b(a2) {
-    if (a2.kind !== "teardown" && false) {
-      var b2 = 'No exchange has handled operations of kind "' + a2.kind + `". Check whether you've added an exchange responsible for these operations.`;
-      console.warn(b2);
+function R(a2) {
+  function b2(a3) {
+    if (a3.kind !== "teardown" && false) {
+      var b3 = 'No exchange has handled operations of kind "' + a3.kind + `". Check whether you've added an exchange responsible for these operations.`;
+      console.warn(b3);
     }
   }
-  a.dispatchDebug;
-  return function(a2) {
-    return filter$1(Q)(H$1(b)(a2));
+  a2.dispatchDebug;
+  return function(a3) {
+    return filter$1(Q)(H$1(b2)(a3));
   };
 }
-function T(a) {
-  return function(b) {
-    var c = b.client;
-    b.dispatchDebug;
-    return a.reduceRight(function(a2, b2) {
-      return b2({
-        client: c,
-        forward: a2,
-        dispatchDebug: function(a3) {
+function T(a2) {
+  return function(b2) {
+    var c2 = b2.client;
+    b2.dispatchDebug;
+    return a2.reduceRight(function(a3, b3) {
+      return b3({
+        client: c2,
+        forward: a3,
+        dispatchDebug: function(a4) {
         }
       });
-    }, b.forward);
+    }, b2.forward);
   };
 }
-function V(a) {
-  var d, e, g, m2, c = this;
+function V(a2) {
+  var d2, e2, g2, m2, c2 = this;
   this.activeOperations = Object.create(null);
   this.queue = [];
-  this.createOperationContext = function(a2) {
-    a2 || (a2 = {});
-    return B({}, {
-      url: c.url,
-      fetchOptions: c.fetchOptions,
-      fetch: c.fetch,
-      preferGetMethod: c.preferGetMethod
-    }, a2, {
-      suspense: a2.suspense || a2.suspense !== false && c.suspense,
-      requestPolicy: a2.requestPolicy || c.requestPolicy
+  this.createOperationContext = function(a3) {
+    a3 || (a3 = {});
+    return B$1({}, {
+      url: c2.url,
+      fetchOptions: c2.fetchOptions,
+      fetch: c2.fetch,
+      preferGetMethod: c2.preferGetMethod
+    }, a3, {
+      suspense: a3.suspense || a3.suspense !== false && c2.suspense,
+      requestPolicy: a3.requestPolicy || c2.requestPolicy
     });
   };
-  this.createRequestOperation = function(a2, b, d2) {
-    return x(a2, b, c.createOperationContext(d2));
+  this.createRequestOperation = function(a3, b2, d3) {
+    return x$1(a3, b2, c2.createOperationContext(d3));
   };
-  this.executeQuery = function(a2, b) {
-    a2 = c.createRequestOperation("query", a2, b);
-    return c.executeRequestOperation(a2);
+  this.executeQuery = function(a3, b2) {
+    a3 = c2.createRequestOperation("query", a3, b2);
+    return c2.executeRequestOperation(a3);
   };
-  this.executeSubscription = function(a2, b) {
-    a2 = c.createRequestOperation("subscription", a2, b);
-    return c.executeRequestOperation(a2);
+  this.executeSubscription = function(a3, b2) {
+    a3 = c2.createRequestOperation("subscription", a3, b2);
+    return c2.executeRequestOperation(a3);
   };
-  this.executeMutation = function(a2, b) {
-    a2 = c.createRequestOperation("mutation", a2, b);
-    return c.executeRequestOperation(a2);
+  this.executeMutation = function(a3, b2) {
+    a3 = c2.createRequestOperation("mutation", a3, b2);
+    return c2.executeRequestOperation(a3);
   };
-  d = z;
-  this.url = a.url;
-  this.fetchOptions = a.fetchOptions;
-  this.fetch = a.fetch;
-  this.suspense = !!a.suspense;
-  this.requestPolicy = a.requestPolicy || "cache-first";
-  this.preferGetMethod = !!a.preferGetMethod;
-  this.maskTypename = !!a.maskTypename;
-  e = makeSubject$1();
-  g = e.next;
-  this.operations$ = e.source;
+  d2 = z$1;
+  this.url = a2.url;
+  this.fetchOptions = a2.fetchOptions;
+  this.fetch = a2.fetch;
+  this.suspense = !!a2.suspense;
+  this.requestPolicy = a2.requestPolicy || "cache-first";
+  this.preferGetMethod = !!a2.preferGetMethod;
+  this.maskTypename = !!a2.maskTypename;
+  e2 = makeSubject$1();
+  g2 = e2.next;
+  this.operations$ = e2.source;
   m2 = false;
-  this.dispatchOperation = function(a2) {
+  this.dispatchOperation = function(a3) {
     m2 = true;
-    for (a2 && g(a2); a2 = c.queue.shift(); ) {
-      g(a2);
+    for (a3 && g2(a3); a3 = c2.queue.shift(); ) {
+      g2(a3);
     }
     m2 = false;
   };
-  this.reexecuteOperation = function(a2) {
-    if (a2.kind === "mutation" || 0 < (c.activeOperations[a2.key] || 0)) {
-      c.queue.push(a2), m2 || Promise.resolve().then(c.dispatchOperation);
+  this.reexecuteOperation = function(a3) {
+    if (a3.kind === "mutation" || 0 < (c2.activeOperations[a3.key] || 0)) {
+      c2.queue.push(a3), m2 || Promise.resolve().then(c2.dispatchOperation);
     }
   };
-  a = T(a.exchanges !== void 0 ? a.exchanges : U);
-  this.results$ = share$1(a({
+  a2 = T(a2.exchanges !== void 0 ? a2.exchanges : U);
+  this.results$ = share$1(a2({
     client: this,
-    dispatchDebug: d,
+    dispatchDebug: d2,
     forward: R({
-      dispatchDebug: d
+      dispatchDebug: d2
     })
   })(this.operations$));
   publish$1(this.results$);
 }
-function W(a) {
-  a.data = v(a.data);
-  return a;
+function W$1(a2) {
+  a2.data = v$1(a2.data);
+  return a2;
 }
-function createClient(a) {
-  return new V(a);
+function createClient(a2) {
+  return new V(a2);
 }
-var t, U;
-t = new Map();
+var t$1, U;
+t$1 = new Map();
 R({
-  dispatchDebug: z
+  dispatchDebug: z$1
 });
-U = [M, I, P];
-V.prototype.onOperationStart = function(a) {
-  var b = a.key;
-  this.activeOperations[b] = (this.activeOperations[b] || 0) + 1;
-  this.dispatchOperation(a);
+U = [M$1, I$1, P];
+V.prototype.onOperationStart = function(a2) {
+  var b2 = a2.key;
+  this.activeOperations[b2] = (this.activeOperations[b2] || 0) + 1;
+  this.dispatchOperation(a2);
 };
-V.prototype.onOperationEnd = function(a) {
-  var b = a.key, c = this.activeOperations[b] || 0;
-  if (0 >= (this.activeOperations[b] = 0 >= c ? 0 : c - 1)) {
-    for (b = this.queue.length - 1; 0 <= b; b--) {
-      this.queue[b].key === a.key && this.queue.splice(b, 1);
+V.prototype.onOperationEnd = function(a2) {
+  var b2 = a2.key, c2 = this.activeOperations[b2] || 0;
+  if (0 >= (this.activeOperations[b2] = 0 >= c2 ? 0 : c2 - 1)) {
+    for (b2 = this.queue.length - 1; 0 <= b2; b2--) {
+      this.queue[b2].key === a2.key && this.queue.splice(b2, 1);
     }
-    this.dispatchOperation(x("teardown", a, a.context));
+    this.dispatchOperation(x$1("teardown", a2, a2.context));
   }
 };
-V.prototype.executeRequestOperation = function(a) {
-  var e, f, c = this, d = filter$1(function(b) {
-    return b.operation.key === a.key;
+V.prototype.executeRequestOperation = function(a2) {
+  var e2, f2, c2 = this, d2 = filter$1(function(b2) {
+    return b2.operation.key === a2.key;
   })(this.results$);
-  this.maskTypename && (d = map$1(W)(d));
-  if (a.kind === "mutation") {
-    return take$1(1)(onStart$1(function b() {
-      return c.dispatchOperation(a);
-    })(d));
+  this.maskTypename && (d2 = map$1(W$1)(d2));
+  if (a2.kind === "mutation") {
+    return take$1(1)(onStart$1(function b2() {
+      return c2.dispatchOperation(a2);
+    })(d2));
   }
-  e = filter$1(function(b) {
-    return b.kind === "teardown" && b.key === a.key;
-  })(this.operations$), f = filter$1(function(b) {
-    return b.kind === a.kind && b.key === a.key && b.context.requestPolicy !== "cache-only";
+  e2 = filter$1(function(b2) {
+    return b2.kind === "teardown" && b2.key === a2.key;
+  })(this.operations$), f2 = filter$1(function(b2) {
+    return b2.kind === a2.kind && b2.key === a2.key && b2.context.requestPolicy !== "cache-only";
   })(this.operations$);
   return onEnd$1(function() {
-    c.onOperationEnd(a);
+    c2.onOperationEnd(a2);
   })(onStart$1(function() {
-    c.onOperationStart(a);
-  })(K(function(a2) {
-    return a2.stale ? fromValue$1(a2) : merge$1([fromValue$1(a2), map$1(function() {
-      return B({}, a2, {
+    c2.onOperationStart(a2);
+  })(K(function(a3) {
+    return a3.stale ? fromValue$1(a3) : merge$1([fromValue$1(a3), map$1(function() {
+      return B$1({}, a3, {
         stale: true
       });
-    })(take$1(1)(f))]);
-  })(takeUntil$1(e)(d))));
+    })(take$1(1)(f2))]);
+  })(takeUntil$1(e2)(d2))));
 };
-V.prototype.query = function(a, b, c) {
-  c && typeof c.suspense == "boolean" || (c = B({}, c, {
+V.prototype.query = function(a2, b2, c2) {
+  c2 && typeof c2.suspense == "boolean" || (c2 = B$1({}, c2, {
     suspense: false
   }));
-  return w(this.executeQuery(createRequest(a, b), c));
+  return w$1(this.executeQuery(createRequest(a2, b2), c2));
 };
-V.prototype.readQuery = function(a, b, c) {
-  var d = null;
-  N$1(function(a2) {
-    d = a2;
-  })(this.executeQuery(createRequest(a, b), c)).unsubscribe();
-  return d;
+V.prototype.readQuery = function(a2, b2, c2) {
+  var d2 = null;
+  N$1(function(a3) {
+    d2 = a3;
+  })(this.executeQuery(createRequest(a2, b2), c2)).unsubscribe();
+  return d2;
 };
-V.prototype.subscription = function(a, b, c) {
-  return this.executeSubscription(createRequest(a, b), c);
+V.prototype.subscription = function(a2, b2, c2) {
+  return this.executeSubscription(createRequest(a2, b2), c2);
 };
-V.prototype.mutation = function(a, b, c) {
-  return w(this.executeMutation(createRequest(a, b), c));
+V.prototype.mutation = function(a2, b2, c2) {
+  return w$1(this.executeMutation(createRequest(a2, b2), c2));
 };
 const subscriber_queue = [];
 function writable(value, start = noop) {
@@ -5350,14 +5360,14 @@ function writable(value, start = noop) {
       value = new_value;
       if (stop) {
         const run_queue = !subscriber_queue.length;
-        for (let i = 0; i < subscribers.length; i += 1) {
-          const s = subscribers[i];
-          s[1]();
-          subscriber_queue.push(s, value);
+        for (let i2 = 0; i2 < subscribers.length; i2 += 1) {
+          const s2 = subscribers[i2];
+          s2[1]();
+          subscriber_queue.push(s2, value);
         }
         if (run_queue) {
-          for (let i = 0; i < subscriber_queue.length; i += 2) {
-            subscriber_queue[i][0](subscriber_queue[i + 1]);
+          for (let i2 = 0; i2 < subscriber_queue.length; i2 += 2) {
+            subscriber_queue[i2][0](subscriber_queue[i2 + 1]);
           }
           subscriber_queue.length = 0;
         }
@@ -5389,9 +5399,9 @@ function writable(value, start = noop) {
 }
 function _extends() {
   return (_extends = Object.assign || function(target) {
-    var i, source, key;
-    for (i = 1; i < arguments.length; i++) {
-      source = arguments[i];
+    var i2, source, key;
+    for (i2 = 1; i2 < arguments.length; i2++) {
+      source = arguments[i2];
       for (key in source) {
         if (Object.prototype.hasOwnProperty.call(source, key)) {
           target[key] = source[key];
@@ -5458,7 +5468,7 @@ function toSource(store) {
   return make$1(function(observer) {
     var $request, $contextKey;
     return store.subscribe(function(state) {
-      var request = createRequest(state.query, state.variables), contextKey = u$1(request.context = state.context);
+      var request = createRequest(state.query, state.variables), contextKey = u$2(request.context = state.context);
       if ($request === void 0 || request.key !== $request.key || $contextKey === void 0 || contextKey !== $contextKey) {
         $contextKey = contextKey;
         $request = request;
@@ -5518,93 +5528,732 @@ baseState = {
   data: void 0,
   extensions: void 0
 };
-var Products_svelte = ".product-list.svelte-9994ax{display:grid;grid-template-columns:1fr 1fr;grid-gap:60px}";
-const css$3 = {
-  code: ".product-list.svelte-9994ax{display:grid;grid-template-columns:1fr 1fr;grid-gap:60px}",
-  map: '{"version":3,"file":"Products.svelte","sources":["Products.svelte"],"sourcesContent":["<script>\\n  import Product from \\"./Product.svelte\\";\\n  import { operationStore, query } from \\"@urql/svelte\\";\\n\\n  const allProducts = operationStore(`\\n        query {\\n          allProducts {\\n            id\\n            name\\n            description\\n            photo {\\n              id\\n              image {\\n                publicUrlTransformed\\n              }\\n            }\\n            price\\n          }\\n        }\\n      `);\\n\\n  query(allProducts);\\n</script>\\n\\n<svelte:head>\\n  <title>Sick Fits</title>\\n</svelte:head>\\n\\n{#if $allProducts.fetching}\\n  <p>Loading...</p>\\n{:else if $allProducts.error}\\n  <p>Oh no... {$allProducts.error.message}</p>\\n{:else}\\n  <div class=\\"product-list\\">\\n    {#each $allProducts?.data.allProducts as product}\\n      <Product {product} />\\n    {/each}\\n  </div>\\n{/if}\\n\\n<style lang=\\"scss\\">.product-list{display:grid;grid-template-columns:1fr 1fr;grid-gap:60px}</style>\\n"],"names":[],"mappings":"AAwCmB,2BAAa,CAAC,QAAQ,IAAI,CAAC,sBAAsB,GAAG,CAAC,GAAG,CAAC,SAAS,IAAI,CAAC"}'
-};
-const Products = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $allProducts, $$unsubscribe_allProducts;
-  const allProducts = operationStore(`
-        query {
-          allProducts {
-            id
-            name
-            description
-            photo {
-              id
-              image {
-                publicUrlTransformed
+var {toPrimitive: e} = Symbol, t = Symbol.for("sxs.composers"), {assign: n, create: r, defineProperties: o, getOwnPropertyDescriptors: i} = Object, a = (t2, r2, a2) => n(o(t2, i(a2)), {[e]: () => t2[r2], toString: () => t2[r2]}), s = (e2) => e2.includes("-") ? e2 : e2.replace(/[A-Z]/g, (e3) => "-" + e3.toLowerCase()), l = (e2, t2) => e2.reduce((e3, n2) => (e3.push(...t2.map((e4) => e4.includes("&") ? e4.replace(/&/g, /[ +>|~]/.test(n2) && /&[^]*&/.test(e4) ? `:is(${n2})` : n2) : n2 + " " + e4)), e3), []), c = /\s*,\s*(?![^()]*\))/, d = /(-columns|(^|[^e]-)padding|[^t]-spacing|l-align|rows|(^|(^border|[dkmnptx]|le|ne)-)width|^border|tom|[ek]-start|(o|[^e]-du)ration|us|(^|[^tv]-)left|(^|-)top|tance|rgin|e-offset|(er|g|n|t)-block|(^|[^tv]-)right|basis|[gnt]-inline|gap|(^|[^e]-)height|ness|(^|[^p]-)inset|[ek]-end|elay|tline|ve|dent|-rotate|n-rule|(c|ck|d|ne|t)-size)$/, g = /([+-])?((?:\d+(?:\.\d*)?|\.\d+)(?:[Ee][+-]?\d+)?)?(\$|--)([$\w-]+)/g, p = /\s+(?![^()]*\))/, h = (e2) => (t2) => e2(...typeof t2 == "string" ? String(t2).split(p) : [t2]), m = /([\d.]+)([^]*)/, u = {appearance: (e2) => ({WebkitAppearance: e2, appearance: e2}), backfaceVisibility: (e2) => ({WebkitBackfaceVisibility: e2, backfaceVisibility: e2}), backgroundClip: (e2) => ({WebkitBackgroundClip: e2, backgroundClip: e2}), boxDecorationBreak: (e2) => ({WebkitBoxDecorationBreak: e2, boxDecorationBreak: e2}), clipPath: (e2) => ({WebkitClipPath: e2, clipPath: e2}), content: (e2) => ({content: /^([^]*["'][^]*|[A-Za-z]+\([^]*|[^]*-quote|inherit|initial|none|normal|revert|unset)$/.test(e2) ? e2 : `"${e2}"`}), hyphens: (e2) => ({WebkitHyphens: e2, hyphens: e2}), maskImage: (e2) => ({WebkitMaskImage: e2, maskImage: e2}), tabSize: (e2) => ({MozTabSize: e2, tabSize: e2}), userSelect: (e2) => ({WebkitUserSelect: e2, userSelect: e2}), marginBlock: h((e2, t2) => ({marginBlockStart: e2, marginBlockEnd: t2 || e2})), marginInline: h((e2, t2) => ({marginInlineStart: e2, marginInlineEnd: t2 || e2})), maxSize: h((e2, t2) => ({maxBlockSize: e2, maxInlineSize: t2 || e2})), minSize: h((e2, t2) => ({minBlockSize: e2, minInlineSize: t2 || e2})), paddingBlock: h((e2, t2) => ({paddingBlockStart: e2, paddingBlockEnd: t2 || e2})), paddingInline: h((e2, t2) => ({paddingInlineStart: e2, paddingInlineEnd: t2 || e2}))}, f = (e2) => {
+  const {media: t2, themeMap: n2, utils: r2} = e2;
+  let o2, i2, a2, p2;
+  return (h2) => ((e3, t3) => {
+    const n3 = new WeakSet(), r3 = (e4, o3, i3, a3, d2) => {
+      let g2 = "";
+      e:
+        for (let p3 in e4) {
+          const h3 = p3.charCodeAt(0) === 64;
+          for (const m2 of h3 ? [].concat(e4[p3]) : [e4[p3]]) {
+            if (typeof t3 == "function" && (p3 !== a3 || m2 !== d2)) {
+              const n4 = t3(p3, m2, e4);
+              if (n4 !== null) {
+                g2 += n4 === Object(n4) ? r3(n4, o3, i3, p3, m2) : n4 == null ? "" : n4;
+                continue e;
               }
             }
-            price
+            const h4 = p3.charCodeAt(0) === 64;
+            if (m2 !== Object(m2) || "length" in m2) {
+              for (let e5 = 0; e5 < i3.length; ++e5)
+                n3.has(i3[e5]) || (n3.add(i3[e5]), g2 += i3[e5] + "{");
+              o3.length && !n3.has(o3) && (n3.add(o3), g2 += o3 + "{");
+              for (const e5 of /^@import/i.test(p3) ? [].concat(m2) : [m2])
+                g2 += (h4 ? p3 + " " : s(p3) + ":") + String(e5) + ";";
+            } else {
+              n3.has(o3) && (n3.delete(o3), g2 += "}");
+              const e5 = Object(p3), t4 = h4 ? o3 : o3.length ? l(o3, p3.split(c)) : p3.split(c);
+              g2 += r3(m2, t4, h4 ? i3.concat(e5) : i3), n3.has(e5) && (n3.delete(e5), g2 += "}"), n3.has(t4) && (n3.delete(t4), g2 += "}");
+            }
           }
         }
-      `);
-  $$unsubscribe_allProducts = subscribe(allProducts, (value) => $allProducts = value);
-  query(allProducts);
-  $$result.css.add(css$3);
-  $$unsubscribe_allProducts();
+      return g2;
+    };
+    return r3(e3, [], []);
+  })(h2, (l2, c2) => {
+    const h3 = l2.charCodeAt(0), f2 = h3 === 64 ? l2 : /[A-Z]/.test(b2 = l2) ? b2 : b2.replace(/-[^]/g, (e3) => e3[1].toUpperCase());
+    var b2;
+    const S2 = h3 === 64 ? l2 : s(l2);
+    if (typeof r2[l2] == "function") {
+      if (r2[l2] != a2 || c2 != p2)
+        return a2 = r2[l2], p2 = c2, a2(e2)(p2);
+    } else if (typeof u[f2] == "function" && (u[f2] != a2 || c2 != p2))
+      return a2 = u[f2], p2 = c2, a2(p2);
+    if (p2 = c2, o2 != f2 && i2 != c2 && /^((min|max)?((Block|Inline)Size|Height|Width)|height|width)$/.test(f2)) {
+      o2 = f2, i2 = c2;
+      const e3 = String(i2).replace(/^((?:[^]*[^\w-])?)(fit-content|stretch)((?:[^\w-][^]*)?)$/, (e4, t3, n3, r3) => t3 + (n3 === "stretch" ? `-moz-available${r3};${S2}:${t3}-webkit-fill-available` : `-moz-fit-content${r3};${S2}:${t3}fit-content`) + r3);
+      if (e3 != c2)
+        return {[l2]: e3};
+    }
+    let k2 = h3 === 64 ? (l2.slice(1) in t2 ? "@media " + t2[l2.slice(1)] : l2).replace(/\(\s*([\w-]+)\s*(=|<|<=|>|>=)\s*([\w-]+)\s*(?:(<|<=|>|>=)\s*([\w-]+)\s*)?\)/g, (e3, t3, n3, r3, o3, i3) => {
+      const a3 = m.test(t3), s2 = 0.0625 * (a3 ? -1 : 1), [l3, c3] = a3 ? [r3, t3] : [t3, r3];
+      return "(" + (n3[0] === "=" ? "" : n3[0] === ">" === a3 ? "max-" : "min-") + l3 + ":" + (n3[0] !== "=" && n3.length === 1 ? c3.replace(m, (e4, t4, r4) => Number(t4) + s2 * (n3 === ">" ? 1 : -1) + r4) : c3) + (o3 ? ") and (" + (o3[0] === ">" ? "min-" : "max-") + l3 + ":" + (o3.length === 1 ? i3.replace(m, (e4, t4, n4) => Number(t4) + s2 * (o3 === ">" ? -1 : 1) + n4) : i3) : "") + ")";
+    }) : h3 === 36 ? "-" + l2.replace(/\$/g, "-") : l2;
+    const B2 = c2 === Object(c2) ? c2 : c2 && typeof c2 == "number" && d.test(S2) ? String(c2) + "px" : String(c2).replace(g, (e3, t3, r3, o3, i3) => o3 == "$" == !!r3 ? e3 : (t3 || o3 == "--" ? "calc(" : "") + "var(" + (o3 === "$" ? "--" + (i3.includes("$") ? "" : f2 in n2 ? n2[f2] + "-" : "") + i3.replace(/\$/g, "-") : o3 + i3) + ")" + (t3 || o3 == "--" ? "*" + (t3 || "") + (r3 || "1") + ")" : ""));
+    return c2 != B2 || S2 != k2 ? {[k2]: B2} : null;
+  });
+}, {from: b, isArray: S} = Array, {ownKeys: k} = Reflect, B = class extends Set {
+  toString() {
+    return b(this).join("");
+  }
+  get hasChanged() {
+    const {size: e2} = this;
+    return () => e2 < this.size;
+  }
+}, y = B;
+B.prototype[e] = B.prototype.toString;
+var w = "colors", I = "sizes", C = "space", x = {gap: C, gridGap: C, columnGap: C, gridColumnGap: C, rowGap: C, gridRowGap: C, inset: C, insetBlock: C, insetBlockEnd: C, insetBlockStart: C, insetInline: C, insetInlineEnd: C, insetInlineStart: C, margin: C, marginTop: C, marginRight: C, marginBottom: C, marginLeft: C, marginBlock: C, marginBlockEnd: C, marginBlockStart: C, marginInline: C, marginInlineEnd: C, marginInlineStart: C, padding: C, paddingTop: C, paddingRight: C, paddingBottom: C, paddingLeft: C, paddingBlock: C, paddingBlockEnd: C, paddingBlockStart: C, paddingInline: C, paddingInlineEnd: C, paddingInlineStart: C, top: C, right: C, bottom: C, left: C, scrollMargin: C, scrollMarginTop: C, scrollMarginRight: C, scrollMarginBottom: C, scrollMarginLeft: C, scrollMarginX: C, scrollMarginY: C, scrollMarginBlock: C, scrollMarginBlockEnd: C, scrollMarginBlockStart: C, scrollMarginInline: C, scrollMarginInlineEnd: C, scrollMarginInlineStart: C, scrollPadding: C, scrollPaddingTop: C, scrollPaddingRight: C, scrollPaddingBottom: C, scrollPaddingLeft: C, scrollPaddingX: C, scrollPaddingY: C, scrollPaddingBlock: C, scrollPaddingBlockEnd: C, scrollPaddingBlockStart: C, scrollPaddingInline: C, scrollPaddingInlineEnd: C, scrollPaddingInlineStart: C, fontSize: "fontSizes", background: w, backgroundColor: w, backgroundImage: w, border: w, borderBlock: w, borderBlockEnd: w, borderBlockStart: w, borderBottom: w, borderBottomColor: w, borderColor: w, borderInline: w, borderInlineEnd: w, borderInlineStart: w, borderLeft: w, borderLeftColor: w, borderRight: w, borderRightColor: w, borderTop: w, borderTopColor: w, caretColor: w, color: w, columnRuleColor: w, fill: w, outline: w, outlineColor: w, stroke: w, textDecorationColor: w, fontFamily: "fonts", fontWeight: "fontWeights", lineHeight: "lineHeights", letterSpacing: "letterSpacings", blockSize: I, minBlockSize: I, maxBlockSize: I, inlineSize: I, minInlineSize: I, maxInlineSize: I, width: I, minWidth: I, maxWidth: I, height: I, minHeight: I, maxHeight: I, flexBasis: I, gridTemplateColumns: I, gridTemplateRows: I, borderWidth: "borderWidths", borderTopWidth: "borderWidths", borderRightWidth: "borderWidths", borderBottomWidth: "borderWidths", borderLeftWidth: "borderWidths", borderStyle: "borderStyles", borderTopStyle: "borderStyles", borderRightStyle: "borderStyles", borderBottomStyle: "borderStyles", borderLeftStyle: "borderStyles", borderRadius: "radii", borderTopLeftRadius: "radii", borderTopRightRadius: "radii", borderBottomRightRadius: "radii", borderBottomLeftRadius: "radii", boxShadow: "shadows", textShadow: "shadows", transition: "transitions", zIndex: "zIndices"}, z = (e2) => {
+  const t2 = {};
+  for (const n2 in e2)
+    for (const r2 in e2[n2])
+      t2["$" + n2 + "-" + r2] = String(e2[n2][r2]).replace(/\$[$\w-]+/g, (e3) => /[^]\$/.test(e3) ? e3 : "$" + n2 + e3);
+  return t2;
+}, $ = (e2, t2) => {
+  for (var n2 = JSON.stringify(t2), r2 = n2.length, o2 = 9; r2; )
+    o2 = Math.imul(o2 ^ n2.charCodeAt(--r2), 9 ** 9);
+  return e2 + (o2 ^ o2 >>> 9).toString(36).slice(-5);
+}, j = class {
+  constructor(e2, t2, n2) {
+    this.value = e2, this.token = t2, this.scale = n2;
+  }
+  get computedValue() {
+    return "var(" + this.variable + ")";
+  }
+  get variable() {
+    return "--" + this.scale + "-" + this.token;
+  }
+  toString() {
+    return this.computedValue;
+  }
+}, W = class extends Array {
+  toString() {
+    return this.join("");
+  }
+  get hasChanged() {
+    const e2 = String(this);
+    return () => e2 !== String(this);
+  }
+}, v = W;
+W.prototype[e] = W.prototype.toString;
+var E = (e2) => {
+  let t2, r2, o2, i2, a2, s2 = false;
+  const l2 = e2.insertionMethod === "append" ? "append" : "prepend";
+  return (e3) => {
+    typeof document == "object" && (t2 || (t2 = document.head || document.documentElement), r2 || (r2 = document.getElementById("stitches") || n(document.createElement("style"), {id: "stitches", textContent: e3})), o2 || (o2 = r2.firstChild || new Text(), s2 = !o2.data), i2 || (i2 = r2.insertBefore(new Text(), o2)), r2.isConnected || t2[l2](r2), i2.data = e3, !s2 && e3 && (clearTimeout(a2), a2 = setTimeout(() => {
+      o2.remove(), s2 = true;
+    }, 250)));
+  };
+}, M = (e2) => {
+  e2 = Object(e2);
+  const o2 = n({initial: "all"}, e2.media), i2 = Object(e2.theme), s2 = Object(e2.themeMap || x), l2 = Object(e2.utils), c2 = new Set([].concat(e2.passthru || ["as", "className"])), d2 = e2.prefix || "sx", g2 = (typeof e2.insertionMethod == "function" ? e2.insertionMethod : E)(e2), p2 = "03kze", h2 = {theme: i2, media: o2, prefix: d2, themeMap: s2, utils: l2}, m2 = f(h2), u2 = new y(), S2 = new y(), B2 = new y(), w2 = new y(), I2 = new y([u2, S2, B2, w2]);
+  let C2 = "";
+  const W2 = () => {
+    const e3 = b(I2).join("");
+    C2 !== e3 && g2(C2 = e3);
+  }, M2 = (e3, t2) => {
+    t2 = e3 === Object(e3) ? e3 : Object(t2), e3 = typeof e3 == "string" ? e3 : "";
+    const n2 = z(t2), o3 = (e3 = e3 || $(d2, n2)).replace(/^\w/, ".$&"), i3 = e3 === d2 + p2 ? "" : m2({[o3]: n2}), s3 = a(r(null), "className", {className: e3, selector: o3});
+    for (const e4 in t2) {
+      s3[e4] = r(null);
+      for (const n3 in t2[e4])
+        s3[e4][n3] = new j(t2[e4][n3], n3, e4);
+    }
+    return a(s3, "className", {get className() {
+      const {hasChanged: t3} = S2;
+      return S2.add(i3), t3() && W2(), e3;
+    }, selector: o3});
+  }, O2 = (e3, t2 = "") => {
+    const n2 = new y(), o3 = new y();
+    for (const t3 in e3)
+      if (e3[t3] !== Object(e3[t3]) || k(e3[t3]).length) {
+        const r2 = m2({[t3]: e3[t3]});
+        (t3 === "@import" ? n2 : o3).add(r2);
+      }
+    const i3 = a(r(null), "name", {name: t2}), s3 = a(() => {
+      let e4 = u2.hasChanged, t3 = B2.hasChanged;
+      return n2.forEach((e5) => {
+        u2.add(e5);
+      }), o3.forEach((e5) => {
+        B2.add(e5);
+      }), (e4() || t3()) && W2(), i3;
+    }, "name", {get name() {
+      return String(s3());
+    }});
+    return s3;
+  }, P2 = (e3) => {
+    const t2 = new y(), n2 = new v(), o3 = new y(), i3 = new y([t2, n2, o3]);
+    let {variants: a2, compoundVariants: s3, defaultVariants: l3, ...c3} = e3;
+    l3 = Object(l3);
+    const g3 = $(d2, e3), h3 = "." + g3, u3 = g3 === d2 + p2 ? "" : m2({[h3]: c3});
+    w2.add(i3);
+    const f2 = r(null), b2 = [], S3 = [];
+    for (const e4 in a2)
+      for (const t3 in a2[e4]) {
+        const n3 = a2[e4][t3];
+        S3.push({[e4]: t3, css: n3});
+      }
+    S3.push(...s3 || []);
+    for (const e4 in S3) {
+      const {css: t3, ...o4} = S3[e4], i4 = k(o4), a3 = i4.length;
+      for (const e5 of i4)
+        f2[e5] = f2[e5] || r(null), f2[e5][o4[e5]] = true;
+      const s4 = (e5, r2) => {
+        e5 = {...e5};
+        for (const t4 in r2)
+          e5[t4] !== void 0 || Object(f2[t4])[e5[t4]] || (e5[t4] = r2[t4]);
+        const s5 = new Set();
+        if (i4.length && i4.every((t4) => {
+          const n3 = e5[t4], r3 = String(o4[t4]);
+          if (r3 === String(n3))
+            return true;
+          if (n3 === Object(n3)) {
+            for (const e6 in n3)
+              if (r3 == String(n3[e6]) && e6.charCodeAt(0) === 64)
+                return s5.add(e6), true;
+          }
+        })) {
+          let e6 = Object(t3);
+          for (const t4 of s5)
+            e6 = {[t4]: e6};
+          const r3 = g3 + $("", e6) + "--" + (a3 === 1 ? i4[0] + "-" + o4[i4[0]] : "c" + a3), l4 = m2({["." + r3]: e6});
+          return (n2[a3 - 1] || (n2[a3 - 1] = new y())).add(l4), r3;
+        }
+      };
+      b2.push(s4);
+    }
+    return {apply(e4, r2, o4) {
+      const a3 = t2.hasChanged, s4 = n2.hasChanged;
+      if (t2.add(u3), e4) {
+        r2.add(g3);
+        for (const t3 of b2) {
+          const n3 = t3(e4, o4);
+          n3 && r2.add(n3);
+        }
+      }
+      if (a3() || s4())
+        return w2.add(i3), true;
+    }, inline(e4, t3) {
+      const n3 = $("-", e4), r2 = g3 === "-" + n3 ? "" : m2({[h3 + n3]: e4});
+      t3.add(g3 + n3);
+      const {hasChanged: i4} = o3;
+      return r2 && o3.add(r2), i4();
+    }, className: g3, defaultVariants: l3, selector: h3, variantProps: f2};
+  }, T2 = M2(":root", i2), N2 = a({css: (...e3) => {
+    let o3, i3 = [], s3 = r(null);
+    for (const r2 of e3)
+      if (r2 === Object(r2))
+        if (t in r2)
+          for (const e4 of r2[t])
+            i3.push(e4), n(s3, e4.defaultVariants);
+        else
+          i3.push(o3 = P2(r2)), n(s3, o3.defaultVariants);
+    return o3 = o3 || P2({}), a((e4) => {
+      const {css: n2, ...l3} = Object(e4), d3 = new Set();
+      let g3, p3 = false;
+      for (const e5 of i3)
+        p3 = e5.apply(l3, d3, s3) || p3;
+      n2 === Object(n2) && (g3 = o3.inline(n2, d3)), (p3 || g3) && W2();
+      for (const e5 in o3.variantProps)
+        c2.has(e5) || delete l3[e5];
+      "className" in l3 && String(l3.className).split(/\s+/).forEach(d3.add, d3);
+      const h3 = b(d3);
+      return l3.className = h3.join(" "), a(r(null), "className", {get [t]() {
+        return i3;
+      }, className: l3.className, props: l3, selector: o3.selector});
+    }, "className", {get [t]() {
+      return i3;
+    }, get className() {
+      return o3.apply() && W2(), o3.className;
+    }, selector: o3.selector});
+  }, config: h2, global: O2, keyframes: (e3) => {
+    const t2 = $(d2, e3);
+    return O2({["@keyframes " + t2]: e3}, t2);
+  }, prefix: d2, reset: () => (u2.clear(), S2.clear(), B2.clear(), w2.clear(), T2.className, N2), theme: n(M2, T2), get cssText() {
+    return C2;
+  }, getCssString: () => C2}, "cssText", {});
+  return N2;
+};
+const {
+  css: css$3,
+  global: globalCSS,
+  keyframes,
+  getCssString,
+  theme
+} = M({
+  theme: {
+    colors: {
+      black: "rgba(19, 19, 21, 1)",
+      white: "rgba(255, 255, 255, 1)",
+      gray: "rgba(128, 128, 128, 1)",
+      blue: "rgba(3, 136, 252, 1)",
+      red: "rgba(249, 16, 74, 1)",
+      yellow: "rgba(255, 221, 0, 1)",
+      pink: "rgba(232, 141, 163, 1)",
+      turq: "rgba(0, 245, 196, 1)",
+      orange: "rgba(255, 135, 31, 1)",
+      lightGray: "#e1e1e1",
+      offwhite: "#ededed"
+    },
+    fontSizes: {
+      1: "12px",
+      2: "14px",
+      3: "16px",
+      4: "20px",
+      5: "24px",
+      6: "32px",
+      7: "48px",
+      8: "64px",
+      9: "72px"
+    },
+    sizes: {
+      maxWidth: "1000px"
+    },
+    shadows: {
+      boxShadow: "0 12px 24px 0 rgba(0,0,0,0.09)"
+    }
+  },
+  media: {
+    bp1: "(min-width: 575px)",
+    bp2: "(min-width: 750px)",
+    bp3: "(min-width: 1000px)",
+    bp4: "(min-width: 1200px)"
+  },
+  utils: {
+    p: (config) => (value) => ({
+      paddingTop: value,
+      paddingBottom: value,
+      paddingLeft: value,
+      paddingRight: value
+    }),
+    pt: (config) => (value) => ({
+      paddingTop: value
+    }),
+    pr: (config) => (value) => ({
+      paddingRight: value
+    }),
+    pb: (config) => (value) => ({
+      paddingBottom: value
+    }),
+    pl: (config) => (value) => ({
+      paddingLeft: value
+    }),
+    px: (config) => (value) => ({
+      paddingLeft: value,
+      paddingRight: value
+    }),
+    py: (config) => (value) => ({
+      paddingTop: value,
+      paddingBottom: value
+    }),
+    m: (config) => (value) => ({
+      marginTop: value,
+      marginBottom: value,
+      marginLeft: value,
+      marginRight: value
+    }),
+    mt: (config) => (value) => ({
+      marginTop: value
+    }),
+    mr: (config) => (value) => ({
+      marginRight: value
+    }),
+    mb: (config) => (value) => ({
+      marginBottom: value
+    }),
+    ml: (config) => (value) => ({
+      marginLeft: value
+    }),
+    mx: (config) => (value) => ({
+      marginLeft: value,
+      marginRight: value
+    }),
+    my: (config) => (value) => ({
+      marginTop: value,
+      marginBottom: value
+    }),
+    bc: (config) => (value) => ({
+      backgroundColor: value
+    })
+  },
+  prefix: "",
+  themeMap: {}
+});
+const paginationStyles = css$3({
+  textAlign: "center",
+  display: "inline-grid",
+  gridTemplateColumns: "repeat(4, auto)",
+  alignItems: "stretch",
+  justifyContent: "center",
+  alignContent: "center",
+  marginBottom: "4rem",
+  border: "1px solid $colors$lightGray",
+  borderRadius: "10px",
+  "&:last-child": {
+    marginTop: "4rem"
+  },
+  "& > *": {
+    m: "0",
+    px: "30px",
+    py: "5px",
+    borderRight: "1px solid $colors$lightGray",
+    "&:last-child": {
+      borderRight: "0"
+    }
+  },
+  "a:hover": {
+    textDecoration: "none",
+    color: "$colors$red"
+  },
+  'a[aria-disabled="true"]': {
+    color: "$colors$grey",
+    pointerEvents: "none"
+  }
+});
+const Pagination = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let count;
+  let PageCount;
+  let $PAGINATION_QUERY, $$unsubscribe_PAGINATION_QUERY;
+  var _a;
+  let {page: page2 = 1} = $$props;
+  const PAGINATION_QUERY = operationStore(`
+    query PAGINATION_QUERY {
+      _allProductsMeta {
+        
+        count
+      }
+    }
+  `);
+  $$unsubscribe_PAGINATION_QUERY = subscribe(PAGINATION_QUERY, (value) => $PAGINATION_QUERY = value);
+  query(PAGINATION_QUERY);
+  if ($$props.page === void 0 && $$bindings.page && page2 !== void 0)
+    $$bindings.page(page2);
+  count = (_a = $PAGINATION_QUERY.data) === null || _a === void 0 ? void 0 : _a._allProductsMeta.count;
+  PageCount = Math.ceil(count / perPage$1);
+  $$unsubscribe_PAGINATION_QUERY();
+  return `${$$result.head += `${$$result.title = `<title>
+        Sick Fits - Page ${escape(page2)} of ${escape(PageCount)}
+    </title>`, ""}`, ""}
+
+${$PAGINATION_QUERY.error ? `${validate_component(ErrorMessage, "DisplayError").$$render($$result, {error: $PAGINATION_QUERY.error.message}, {}, {})}` : `<div${add_attribute("class", paginationStyles(), 0)}><a${add_attribute("href", `/products/${+page2 - 1}`, 0)}${add_attribute("aria-disabled", page2 <= 1, 0)}>Prev </a>
+        <p>Page ${escape(page2)} of ${escape(PageCount)}</p>
+        <p>${escape(count)} Items Total</p>
+        <a${add_attribute("href", `/products/${+page2 + 1}`, 0)}${add_attribute("aria-disabled", page2 >= PageCount, 0)}>Next</a></div>`}`;
+});
+function formatMoney(amount = 0) {
+  const options = {
+    style: "currency",
+    currency: "GBP",
+    minimumFractionDigits: 2
+  };
+  if (amount % 100)
+    options.minimumFractionDigits = 0;
+  const formatter = Intl.NumberFormat("en-GB", options);
+  return formatter.format(amount / 100);
+}
+const itemStyles = css$3({
+  background: "$colors$white",
+  border: "1px solid $colors$offWhite",
+  boxShadow: "$shadows$boxShadow",
+  position: "relative",
+  display: "flex",
+  flexDirection: "column",
+  img: {
+    width: "100%",
+    height: "400px",
+    objectFit: "cover"
+  },
+  p: {
+    lineHeight: "2",
+    fontWeight: "300",
+    "flex-grow": "1",
+    padding: " 0 3rem",
+    fontSize: "$fontSizes$3"
+  },
+  ".buttonList": {
+    display: "grid",
+    width: "100%",
+    borderTop: "1px solid $colors$lightGray",
+    gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
+    gridGap: "1px",
+    background: "$colors$lightGray",
+    "& > *": {
+      background: "white",
+      border: "0",
+      fontSize: "$fontSizes$1",
+      padding: "1rem"
+    }
+  }
+});
+var Product_svelte = "h3.svelte-aj45ow.svelte-aj45ow{text-align:center;transform:skew(-5deg) rotate(-1deg);margin:-3rem 1rem 0;text-shadow:2px 2px 0 rgba(0,0,0,.1)}h3.svelte-aj45ow a.svelte-aj45ow{background:var(--colors-red);display:inline;line-height:1.3;font-size:3rem;text-align:center;color:#fff;padding:0 1rem}p.svelte-aj45ow.svelte-aj45ow{padding:0 1rem}.pricetag.svelte-aj45ow.svelte-aj45ow{background:var(--colors-red);transform:rotate(3deg);color:var(--colors-white);font-weight:600;padding:5px;line-height:1;font-size:2rem;display:inline-block;position:absolute;top:-3px;right:-3px}";
+const css$2 = {
+  code: "h3.svelte-aj45ow.svelte-aj45ow{margin:0 1rem;text-align:center;transform:skew(-5deg) rotate(-1deg);margin-top:-3rem;text-shadow:2px 2px 0 rgba(0, 0, 0, 0.1)}h3.svelte-aj45ow a.svelte-aj45ow{background:var(--colors-red);display:inline;line-height:1.3;font-size:3rem;text-align:center;color:white;padding:0 1rem}p.svelte-aj45ow.svelte-aj45ow{padding:0 1rem}.pricetag.svelte-aj45ow.svelte-aj45ow{background:var(--colors-red);transform:rotate(3deg);color:var(--colors-white);font-weight:600;padding:5px;line-height:1;font-size:2rem;display:inline-block;position:absolute;top:-3px;right:-3px}",
+  map: '{"version":3,"file":"Product.svelte","sources":["Product.svelte"],"sourcesContent":["<script>\\n    import formatMoney from \\"$lib/formatMoney\\";\\n    import { itemStyles } from \\"$lib/styles/ItemStyles\\";\\n\\n    export let product;\\n</script>\\n\\n<div class={itemStyles()}>\\n    <img src={product?.photo?.image?.publicUrlTransformed} alt={product.name} />\\n    <h3>\\n        <a href={`/product/${product.id}`}>{product.name}</a>\\n    </h3>\\n    <span class=\\"pricetag\\">{formatMoney(product.price)}</span>\\n    <p>{product.description}</p>\\n    <div class=\\"buttonList\\">\\n        <a\\n            href={{\\n                pathname: \\"/update\\",\\n                query: {\\n                    id: product.id,\\n                },\\n            }}\\n        >\\n            Edit Product\\n        </a>\\n        <!-- <AddToCart id={product.id} />\\n    <DeleteProduct id={product.id}>Delete</DeleteProduct> -->\\n    </div>\\n</div>\\n\\n<style lang=\\"scss\\">h3 {\\n  margin: 0 1rem;\\n  text-align: center;\\n  transform: skew(-5deg) rotate(-1deg);\\n  margin-top: -3rem;\\n  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);\\n}\\nh3 a {\\n  background: var(--colors-red);\\n  display: inline;\\n  line-height: 1.3;\\n  font-size: 3rem;\\n  text-align: center;\\n  color: white;\\n  padding: 0 1rem;\\n}\\n\\np {\\n  padding: 0 1rem;\\n}\\n\\n.pricetag {\\n  background: var(--colors-red);\\n  transform: rotate(3deg);\\n  color: var(--colors-white);\\n  font-weight: 600;\\n  padding: 5px;\\n  line-height: 1;\\n  font-size: 2rem;\\n  display: inline-block;\\n  position: absolute;\\n  top: -3px;\\n  right: -3px;\\n}</style>\\n"],"names":[],"mappings":"AA8BmB,EAAE,4BAAC,CAAC,AACrB,MAAM,CAAE,CAAC,CAAC,IAAI,CACd,UAAU,CAAE,MAAM,CAClB,SAAS,CAAE,KAAK,KAAK,CAAC,CAAC,OAAO,KAAK,CAAC,CACpC,UAAU,CAAE,KAAK,CACjB,WAAW,CAAE,GAAG,CAAC,GAAG,CAAC,CAAC,CAAC,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,AAC3C,CAAC,AACD,gBAAE,CAAC,CAAC,cAAC,CAAC,AACJ,UAAU,CAAE,IAAI,YAAY,CAAC,CAC7B,OAAO,CAAE,MAAM,CACf,WAAW,CAAE,GAAG,CAChB,SAAS,CAAE,IAAI,CACf,UAAU,CAAE,MAAM,CAClB,KAAK,CAAE,KAAK,CACZ,OAAO,CAAE,CAAC,CAAC,IAAI,AACjB,CAAC,AAED,CAAC,4BAAC,CAAC,AACD,OAAO,CAAE,CAAC,CAAC,IAAI,AACjB,CAAC,AAED,SAAS,4BAAC,CAAC,AACT,UAAU,CAAE,IAAI,YAAY,CAAC,CAC7B,SAAS,CAAE,OAAO,IAAI,CAAC,CACvB,KAAK,CAAE,IAAI,cAAc,CAAC,CAC1B,WAAW,CAAE,GAAG,CAChB,OAAO,CAAE,GAAG,CACZ,WAAW,CAAE,CAAC,CACd,SAAS,CAAE,IAAI,CACf,OAAO,CAAE,YAAY,CACrB,QAAQ,CAAE,QAAQ,CAClB,GAAG,CAAE,IAAI,CACT,KAAK,CAAE,IAAI,AACb,CAAC"}'
+};
+const Product = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  var _a, _b;
+  let {product} = $$props;
+  if ($$props.product === void 0 && $$bindings.product && product !== void 0)
+    $$bindings.product(product);
+  $$result.css.add(css$2);
+  return `<div class="${escape(null_to_empty(itemStyles())) + " svelte-aj45ow"}"><img${add_attribute("src", (_b = (_a = product == null ? void 0 : product.photo) == null ? void 0 : _a.image) == null ? void 0 : _b.publicUrlTransformed, 0)}${add_attribute("alt", product.name, 0)}>
+    <h3 class="${"svelte-aj45ow"}"><a${add_attribute("href", `/product/${product.id}`, 0)} class="${"svelte-aj45ow"}">${escape(product.name)}</a></h3>
+    <span class="${"pricetag svelte-aj45ow"}">${escape(formatMoney(product.price))}</span>
+    <p class="${"svelte-aj45ow"}">${escape(product.description)}</p>
+    <div class="${"buttonList"}"><a${add_attribute("href", {
+    pathname: "/update",
+    query: {id: product.id}
+  }, 0)}>Edit Product
+        </a>
+        </div>
+</div>`;
+});
+var Products_svelte = ".product-list.svelte-1dezbjo{display:grid;grid-template-columns:1fr 1fr;grid-gap:60px}";
+const css$1 = {
+  code: ".product-list.svelte-1dezbjo{display:grid;grid-template-columns:1fr 1fr;grid-gap:60px}",
+  map: '{"version":3,"file":"Products.svelte","sources":["Products.svelte"],"sourcesContent":["<script lang=\\"ts\\">import Product from \\"./Product.svelte\\";\\nimport { operationStore, query } from \\"@urql/svelte\\";\\nexport let page = 1;\\nlet perPage = 4;\\nconst ALL_PRODUCTS_QUERY = operationStore(`\\n        query ALL_PRODUCTS_QUERY($skip: Int = 0, $first: Int) {\\n            allProducts(first: $first, skip: $skip) {\\n                id\\n                name\\n                description\\n                photo {\\n                    id\\n                    image {\\n                        id\\n                        publicUrlTransformed\\n                        }\\n                    }\\n                    price\\n                }\\n            }\\n            `, { first: perPage, skip: page * perPage - perPage }, { requestPolicy: \\"cache-and-network\\" });\\nquery(ALL_PRODUCTS_QUERY);\\n$: $ALL_PRODUCTS_QUERY.variables.skip = page * perPage - perPage;\\n</script>\\n\\n<svelte:head>\\n    <title>Sick Fits</title>\\n</svelte:head>\\n\\n{#if $ALL_PRODUCTS_QUERY.fetching}\\n    <p>Loading...</p>\\n{:else if $ALL_PRODUCTS_QUERY.error}\\n    <p>Oh no... {$ALL_PRODUCTS_QUERY.error.message}</p>\\n{:else}\\n    <div class=\\"product-list\\">\\n        {#each $ALL_PRODUCTS_QUERY?.data.allProducts as product}\\n            <Product {product} />\\n        {/each}\\n    </div>\\n{/if}\\n\\n<style>\\n    .product-list {\\n        display: grid;\\n        grid-template-columns: 1fr 1fr;\\n        grid-gap: 60px;\\n    }\\n</style>\\n"],"names":[],"mappings":"AA0CI,aAAa,eAAC,CAAC,AACX,OAAO,CAAE,IAAI,CACb,qBAAqB,CAAE,GAAG,CAAC,GAAG,CAC9B,QAAQ,CAAE,IAAI,AAClB,CAAC"}'
+};
+let perPage = 4;
+const Products = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $ALL_PRODUCTS_QUERY, $$unsubscribe_ALL_PRODUCTS_QUERY;
+  let {page: page2 = 1} = $$props;
+  const ALL_PRODUCTS_QUERY = operationStore(`
+        query ALL_PRODUCTS_QUERY($skip: Int = 0, $first: Int) {
+            allProducts(first: $first, skip: $skip) {
+                id
+                name
+                description
+                photo {
+                    id
+                    image {
+                        id
+                        publicUrlTransformed
+                        }
+                    }
+                    price
+                }
+            }
+            `, {
+    first: perPage,
+    skip: page2 * perPage - perPage
+  }, {requestPolicy: "cache-and-network"});
+  $$unsubscribe_ALL_PRODUCTS_QUERY = subscribe(ALL_PRODUCTS_QUERY, (value) => $ALL_PRODUCTS_QUERY = value);
+  query(ALL_PRODUCTS_QUERY);
+  if ($$props.page === void 0 && $$bindings.page && page2 !== void 0)
+    $$bindings.page(page2);
+  $$result.css.add(css$1);
+  set_store_value(ALL_PRODUCTS_QUERY, $ALL_PRODUCTS_QUERY.variables.skip = page2 * perPage - perPage, $ALL_PRODUCTS_QUERY);
+  $$unsubscribe_ALL_PRODUCTS_QUERY();
   return `${$$result.head += `${$$result.title = `<title>Sick Fits</title>`, ""}`, ""}
 
-${$allProducts.fetching ? `<p>Loading...</p>` : `${$allProducts.error ? `<p>Oh no... ${escape($allProducts.error.message)}</p>` : `<div class="${"product-list svelte-9994ax"}">${each($allProducts == null ? void 0 : $allProducts.data.allProducts, (product) => `${validate_component(Product, "Product").$$render($$result, {product}, {}, {})}`)}</div>`}`}`;
+${$ALL_PRODUCTS_QUERY.fetching ? `<p>Loading...</p>` : `${$ALL_PRODUCTS_QUERY.error ? `<p>Oh no... ${escape($ALL_PRODUCTS_QUERY.error.message)}</p>` : `<div class="${"product-list svelte-1dezbjo"}">${each($ALL_PRODUCTS_QUERY == null ? void 0 : $ALL_PRODUCTS_QUERY.data.allProducts, (product) => `${validate_component(Product, "Product").$$render($$result, {product}, {}, {})}`)}</div>`}`}`;
 });
-const Products_1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${$$result.head += `${$$result.title = `<title>Sick Fits</title>`, ""}`, ""}
-
-<div>${validate_component(Products, "Products").$$render($$result, {}, {}, {})}</div>`;
+const prerender$1 = true;
+const load = async ({page: page2, fetch: fetch2}) => {
+  let {id} = page2.params;
+  return {props: {id}};
+};
+const U5Bidu5D = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let {id} = $$props;
+  if ($$props.id === void 0 && $$bindings.id && id !== void 0)
+    $$bindings.id(id);
+  return `<div>${validate_component(Pagination, "Pagination").$$render($$result, {page: id || 1}, {}, {})}
+    ${validate_component(Products, "Products").$$render($$result, {page: id || 1}, {}, {})}
+    ${validate_component(Pagination, "Pagination").$$render($$result, {page: id || 1}, {}, {})}</div>`;
 });
-var index = /* @__PURE__ */ Object.freeze({
+var _id_ = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   [Symbol.toStringTag]: "Module",
-  default: Products_1
+  default: U5Bidu5D,
+  prerender: prerender$1,
+  load
 });
-var Nav_svelte = 'ul.svelte-158kai9.svelte-158kai9{margin:0;padding:0;display:flex;justify-self:end;font-size:2rem}ul.svelte-158kai9 a.svelte-158kai9{padding:1rem 3rem;display:flex;align-items:center;position:relative;text-transform:uppercase;font-weight:900;font-size:1em;background:none;border:0;cursor:pointer}@media(max-width:700px){ul.svelte-158kai9 a.svelte-158kai9{font-size:10px;padding:0 10px}}ul.svelte-158kai9 a.svelte-158kai9:before{content:"";width:2px;background:var(--lightGray);height:100%;left:0;position:absolute;transform:skew(-20deg);top:0;bottom:0}ul.svelte-158kai9 a.svelte-158kai9:after{height:2px;background:red;content:"";width:0;position:absolute;transform:translateX(-50%);transition:width .4s;transition-timing-function:cubic-bezier(1,-.65,0,2.31);left:50%;margin-top:2rem}ul.svelte-158kai9 a.svelte-158kai9:focus,ul.svelte-158kai9 a.svelte-158kai9:hover{outline:none}ul.svelte-158kai9 a.svelte-158kai9:focus:after,ul.svelte-158kai9 a.svelte-158kai9:hover:after{width:calc(100% - 60px)}@media(max-width:700px){ul.svelte-158kai9 a.svelte-158kai9:focus,ul.svelte-158kai9 a.svelte-158kai9:hover{width:calc(100% - 10px)}}@media(max-width:1300px){ul.svelte-158kai9.svelte-158kai9{border-top:1px solid var(--lightGray);width:100%;justify-content:center;font-size:1.5rem}}';
-const css$2 = {
-  code: 'ul.svelte-158kai9.svelte-158kai9{margin:0;padding:0;display:flex;justify-self:end;font-size:2rem}ul.svelte-158kai9 a.svelte-158kai9{padding:1rem 3rem;display:flex;align-items:center;position:relative;text-transform:uppercase;font-weight:900;font-size:1em;background:none;border:0;cursor:pointer}@media(max-width:700px){ul.svelte-158kai9 a.svelte-158kai9{font-size:10px;padding:0 10px}}ul.svelte-158kai9 a.svelte-158kai9:before{content:"";width:2px;background:var(--lightGray);height:100%;left:0;position:absolute;transform:skew(-20deg);top:0;bottom:0}ul.svelte-158kai9 a.svelte-158kai9:after{height:2px;background:red;content:"";width:0;position:absolute;transform:translateX(-50%);transition:width .4s;transition-timing-function:cubic-bezier(1,-.65,0,2.31);left:50%;margin-top:2rem}ul.svelte-158kai9 a.svelte-158kai9:focus,ul.svelte-158kai9 a.svelte-158kai9:hover{outline:none}ul.svelte-158kai9 a.svelte-158kai9:focus:after,ul.svelte-158kai9 a.svelte-158kai9:hover:after{width:calc(100% - 60px)}@media(max-width:700px){ul.svelte-158kai9 a.svelte-158kai9:focus,ul.svelte-158kai9 a.svelte-158kai9:hover{width:calc(100% - 10px)}}@media(max-width:1300px){ul.svelte-158kai9.svelte-158kai9{border-top:1px solid var(--lightGray);width:100%;justify-content:center;font-size:1.5rem}}',
-  map: `{"version":3,"file":"Nav.svelte","sources":["Nav.svelte"],"sourcesContent":["<!-- import Link from 'next/link';\\nimport { useCart } from '../lib/cartState';\\nimport CartCount from './CartCount';\\nimport SignOut from './SignOut';\\nimport NavStyles from './styles/NavStyles';\\nimport { useUser } from './User'; -->\\n<script>\\n  let blank = \\"\\";\\n</script>\\n\\n<ul>\\n  <a href=\\"/products\\">Products</a>\\n  <a href=\\"/sell\\">Sell</a>\\n  <a href=\\"/order\\">Orders</a>\\n  <a href=\\"/account\\">Account</a>\\n  <!-- <SignOut /> -->\\n  <!-- <button type=\\"button\\" onClick={openCart}>\\n            My Cart\\n            <CartCount\\n              count={user.cart.reduce(\\n                (tally, cartItem) =>\\n                  tally + (cartItem.product ? cartItem.quantity : 0),\\n                0\\n              )}\\n            />\\n          </button> -->\\n</ul>\\n\\n<style lang=\\"scss\\">ul{margin:0;padding:0;display:flex;justify-self:end;font-size:2rem}ul a,ul button{padding:1rem 3rem;display:flex;align-items:center;position:relative;text-transform:uppercase;font-weight:900;font-size:1em;background:none;border:0;cursor:pointer}@media (max-width:700px){ul a,ul button{font-size:10px;padding:0 10px}}ul a:before,ul button:before{content:\\"\\";width:2px;background:var(--lightGray);height:100%;left:0;position:absolute;transform:skew(-20deg);top:0;bottom:0}ul a:after,ul button:after{height:2px;background:red;content:\\"\\";width:0;position:absolute;transform:translateX(-50%);transition:width .4s;transition-timing-function:cubic-bezier(1,-.65,0,2.31);left:50%;margin-top:2rem}ul a:focus,ul a:hover,ul button:focus,ul button:hover{outline:none}ul a:focus:after,ul a:hover:after,ul button:focus:after,ul button:hover:after{width:calc(100% - 60px)}@media (max-width:700px){ul a:focus,ul a:hover,ul button:focus,ul button:hover{width:calc(100% - 10px)}}@media (max-width:1300px){ul{border-top:1px solid var(--lightGray);width:100%;justify-content:center;font-size:1.5rem}}</style>\\n"],"names":[],"mappings":"AA4BmB,gCAAE,CAAC,OAAO,CAAC,CAAC,QAAQ,CAAC,CAAC,QAAQ,IAAI,CAAC,aAAa,GAAG,CAAC,UAAU,IAAI,CAAC,iBAAE,CAAC,CAAC,eAAU,CAAC,QAAQ,IAAI,CAAC,IAAI,CAAC,QAAQ,IAAI,CAAC,YAAY,MAAM,CAAC,SAAS,QAAQ,CAAC,eAAe,SAAS,CAAC,YAAY,GAAG,CAAC,UAAU,GAAG,CAAC,WAAW,IAAI,CAAC,OAAO,CAAC,CAAC,OAAO,OAAO,CAAC,MAAM,AAAC,WAAW,KAAK,CAAC,CAAC,iBAAE,CAAC,CAAC,eAAU,CAAC,UAAU,IAAI,CAAC,QAAQ,CAAC,CAAC,IAAI,CAAC,CAAC,iBAAE,CAAC,gBAAC,OAAO,AAAiB,CAAC,QAAQ,EAAE,CAAC,MAAM,GAAG,CAAC,WAAW,IAAI,WAAW,CAAC,CAAC,OAAO,IAAI,CAAC,KAAK,CAAC,CAAC,SAAS,QAAQ,CAAC,UAAU,KAAK,MAAM,CAAC,CAAC,IAAI,CAAC,CAAC,OAAO,CAAC,CAAC,iBAAE,CAAC,gBAAC,MAAM,AAAgB,CAAC,OAAO,GAAG,CAAC,WAAW,GAAG,CAAC,QAAQ,EAAE,CAAC,MAAM,CAAC,CAAC,SAAS,QAAQ,CAAC,UAAU,WAAW,IAAI,CAAC,CAAC,WAAW,KAAK,CAAC,GAAG,CAAC,2BAA2B,aAAa,CAAC,CAAC,IAAI,CAAC,CAAC,CAAC,IAAI,CAAC,CAAC,KAAK,GAAG,CAAC,WAAW,IAAI,CAAC,iBAAE,CAAC,gBAAC,MAAM,CAAC,iBAAE,CAAC,gBAAC,MAAM,AAAgC,CAAC,QAAQ,IAAI,CAAC,iBAAE,CAAC,gBAAC,MAAM,MAAM,CAAC,iBAAE,CAAC,gBAAC,MAAM,MAAM,AAA4C,CAAC,MAAM,KAAK,IAAI,CAAC,CAAC,CAAC,IAAI,CAAC,CAAC,MAAM,AAAC,WAAW,KAAK,CAAC,CAAC,iBAAE,CAAC,gBAAC,MAAM,CAAC,iBAAE,CAAC,gBAAC,MAAM,AAAgC,CAAC,MAAM,KAAK,IAAI,CAAC,CAAC,CAAC,IAAI,CAAC,CAAC,CAAC,MAAM,AAAC,WAAW,MAAM,CAAC,CAAC,gCAAE,CAAC,WAAW,GAAG,CAAC,KAAK,CAAC,IAAI,WAAW,CAAC,CAAC,MAAM,IAAI,CAAC,gBAAgB,MAAM,CAAC,UAAU,MAAM,CAAC,CAAC"}`
+const prerender = true;
+const Sell = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return `<div>hello world</div>`;
+});
+var sell = /* @__PURE__ */ Object.freeze({
+  __proto__: null,
+  [Symbol.toStringTag]: "Module",
+  default: Sell,
+  prerender
+});
+const globalStyles = globalCSS({
+  "@font-face": {
+    fontFamily: "radnika_next",
+    src: "url('/static/radnikanext-medium-webfont.woff2') format('woff2')",
+    fontWeight: "normal",
+    fontStyle: "normal"
+  },
+  html: {
+    fontFamily: `'radnika_next',--apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`,
+    fontSizes: "$fontSizes$1",
+    boxSizing: "border-box"
+  },
+  "*, *:before, *:after": {
+    boxSizing: "inherit"
+  },
+  body: {
+    p: "0",
+    m: "0",
+    fontSize: "$fontSizes$2",
+    lineHeight: "2"
+  },
+  a: {
+    textDecoration: "none",
+    color: "$colors$black"
+  },
+  "a:hover": {
+    textDecoration: "underline"
+  },
+  button: {
+    fontFamily: `'radnika_next', --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`
+  }
+});
+const getStores = () => {
+  const stores = getContext("__svelte__");
+  return {
+    page: {
+      subscribe: stores.page.subscribe
+    },
+    navigating: {
+      subscribe: stores.navigating.subscribe
+    },
+    get preloading() {
+      console.error("stores.preloading is deprecated; use stores.navigating instead");
+      return {
+        subscribe: stores.navigating.subscribe
+      };
+    },
+    session: stores.session
+  };
 };
+const page = {
+  subscribe(fn) {
+    const store = getStores().page;
+    return store.subscribe(fn);
+  }
+};
+const navStyles = css$3({
+  margin: "0",
+  padding: "0",
+  display: "flex",
+  justifySelf: "end",
+  "a, button": {
+    padding: "1rem 3rem",
+    display: "flex",
+    alignItems: "center",
+    position: "relative",
+    textTransform: "uppercase",
+    fontWeight: "900",
+    fontSize: "$fontSizes$4",
+    background: "none",
+    border: "0",
+    cursor: "pointer",
+    "@b2": {
+      fontSize: "10px",
+      padding: "0 10px"
+    },
+    "&:before": {
+      content: "",
+      width: "2px",
+      background: "$colors$lightGray",
+      height: "100%",
+      left: "0",
+      position: "absolute",
+      transform: "skew(-20deg)",
+      top: " 0",
+      bottom: "0"
+    },
+    "&:after": {
+      height: "2px",
+      background: "red",
+      content: "",
+      width: "0",
+      position: "absolute",
+      transform: "translateX(-50%)",
+      transition: "width 0.4s",
+      transitionTimingFunction: "cubic-bezier(1, -0.65, 0, 2.31)",
+      left: "50%",
+      marginTop: "2rem"
+    },
+    "&:hover, &:focus": {
+      outline: "none",
+      textDecoration: "none",
+      "&:after": {
+        width: "calc(100% - 60px)"
+      },
+      "@b2": {
+        width: "calc(100% - 10px)"
+      }
+    },
+    "&.active:after": {
+      width: "calc(100% - 60px)"
+    }
+  },
+  "@b3": {
+    borderTop: "1px solid $colors$lightGray",
+    width: "100%",
+    justifyContent: "center",
+    fontSize: "$fontSizes$2"
+  }
+});
 const Nav = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$2);
+  let {section} = $$props;
+  if ($$props.section === void 0 && $$bindings.section && section !== void 0)
+    $$bindings.section(section);
   return `
 
 
-<ul class="${"svelte-158kai9"}"><a href="${"/products"}" class="${"svelte-158kai9"}">Products</a>
-  <a href="${"/sell"}" class="${"svelte-158kai9"}">Sell</a>
-  <a href="${"/order"}" class="${"svelte-158kai9"}">Orders</a>
-  <a href="${"/account"}" class="${"svelte-158kai9"}">Account</a>
-  
-  
-</ul>`;
+<ul${add_attribute("class", navStyles(), 0)}><a sveltekit:prefetch href="${"/products/1"}"${add_classes([section === "products" ? "active" : ""].join(" ").trim())}>Products
+    </a>
+    <a sveltekit:prefetch href="${"/sell"}"${add_classes([section === "sell" ? "active" : ""].join(" ").trim())}>Sell
+    </a>
+    
+
+    
+    </ul>`;
 });
 const Search = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `<div>Search</div>`;
 });
-var Header_svelte = ".bar.svelte-1ncpizr{border-bottom:10px solid var(--black,#000);display:grid;grid-template-columns:auto 1fr;justify-content:space-between;align-items:stretch}.logo.svelte-1ncpizr{font-size:4rem;margin-left:2rem;position:relative;z-index:2;transform:skew(-7deg);background:red;color:#fff;text-decoration:none;text-transform:uppercase;padding:.5rem 1rem}";
-const css$1 = {
-  code: ".bar.svelte-1ncpizr{border-bottom:10px solid var(--black,#000);display:grid;grid-template-columns:auto 1fr;justify-content:space-between;align-items:stretch}.logo.svelte-1ncpizr{font-size:4rem;margin-left:2rem;position:relative;z-index:2;transform:skew(-7deg);background:red;color:#fff;text-decoration:none;text-transform:uppercase;padding:.5rem 1rem}",
-  map: '{"version":3,"file":"Header.svelte","sources":["Header.svelte"],"sourcesContent":["<script>\\n  import Nav from \\"$lib/components/Nav.svelte\\";\\n  import Search from \\"./Search.svelte\\";\\n</script>\\n\\n<header>\\n  <div class=\\"bar\\">\\n    <h1 class=\\"logo\\">\\n      <div href=\\"/\\">Sick fits</div>\\n    </h1>\\n    <Nav />\\n  </div>\\n  <Search />\\n</header>\\n\\n<!-- <Cart /> -->\\n<style lang=\\"scss\\">.bar{border-bottom:10px solid var(--black,#000);display:grid;grid-template-columns:auto 1fr;justify-content:space-between;align-items:stretch}.logo{font-size:4rem;margin-left:2rem;position:relative;z-index:2;transform:skew(-7deg);background:red;color:#fff;text-decoration:none;text-transform:uppercase;padding:.5rem 1rem}</style>\\n"],"names":[],"mappings":"AAgBmB,mBAAI,CAAC,cAAc,IAAI,CAAC,KAAK,CAAC,IAAI,OAAO,CAAC,IAAI,CAAC,CAAC,QAAQ,IAAI,CAAC,sBAAsB,IAAI,CAAC,GAAG,CAAC,gBAAgB,aAAa,CAAC,YAAY,OAAO,CAAC,oBAAK,CAAC,UAAU,IAAI,CAAC,YAAY,IAAI,CAAC,SAAS,QAAQ,CAAC,QAAQ,CAAC,CAAC,UAAU,KAAK,KAAK,CAAC,CAAC,WAAW,GAAG,CAAC,MAAM,IAAI,CAAC,gBAAgB,IAAI,CAAC,eAAe,SAAS,CAAC,QAAQ,KAAK,CAAC,IAAI,CAAC"}'
-};
 const Header = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$1);
-  return `<header><div class="${"bar svelte-1ncpizr"}"><h1 class="${"logo svelte-1ncpizr"}"><div href="${"/"}">Sick fits</div></h1>
-    ${validate_component(Nav, "Nav").$$render($$result, {}, {}, {})}</div>
-  ${validate_component(Search, "Search").$$render($$result, {}, {}, {})}</header>
+  let section;
+  let $page, $$unsubscribe_page;
+  $$unsubscribe_page = subscribe(page, (value) => $page = value);
+  const headers = css$3({
+    ".bar": {
+      borderBottom: "10px solid $colors$black",
+      display: "grid",
+      gridTemplateColumns: "auto 1fr",
+      justifyContent: "space-between",
+      alignItems: "stretch"
+    },
+    ".logo": {
+      fontSize: "$fontSizes$7",
+      marginLeft: "2rem",
+      position: "relative",
+      zIndex: "2",
+      transform: "skew(-7deg)",
+      background: "$colors$red",
+      color: "$colors$white",
+      textDecoration: "none",
+      textTransform: "uppercase",
+      padding: "0.5rem 1rem"
+    }
+  });
+  section = $page.path.split("/")[1];
+  $$unsubscribe_page();
+  return `<header${add_attribute("class", headers(), 0)}><div class="${"bar"}"><h1 class="${"logo"}"><div href="${"/"}">Sick fits</div></h1>
+        ${validate_component(Nav, "Nav").$$render($$result, {section}, {}, {})}</div>
+    ${validate_component(Search, "Search").$$render($$result, {}, {}, {})}</header>
 
 `;
 });
-var global = '@font-face{font-family:radnika_next;src:url(data:font/woff2;base64,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) format("woff2");font-weight:400;font-style:normal}:root{font-family:radnika_next,--apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;--red:red;--black:#393939;--grey:#3a3a3a;--lightGray:#e1e1e1;--offwhite:#ededed;--maxWidth:1000px;--bs:0 12px 24px 0 rgba(0,0,0,0.09)}html{font-size:10px;box-sizing:border-box}*,:after,:before{box-sizing:inherit}body{font-family:radnika_next,--apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;padding:0;margin:0;font-size:1.5rem;line-height:2}a{text-decoration:none;color:var(--black)}a:hover{text-decoration:underline}button{font-family:radnika_next,--apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif}';
-var $layout_svelte = ".container.svelte-hpu3rp{max-width:var(--maxWidth);margin:0 auto;padding:2rem}";
+var $layout_svelte = ".container.svelte-j7uuib{max-width:var(--sizes-maxWidth);margin:0 auto;padding:2rem}";
 const css = {
-  code: ".container.svelte-hpu3rp{max-width:var(--maxWidth);margin:0 auto;padding:2rem}",
-  map: '{"version":3,"file":"$layout.svelte","sources":["$layout.svelte"],"sourcesContent":["<script>\\n  import Header from \\"$lib/components/Header.svelte\\";\\n  import \\"../global.scss\\";\\n\\n  import { createClient, setClient } from \\"@urql/svelte\\";\\n\\n  const client = createClient({\\n    url: \\"http://localhost:3000/api/graphql\\",\\n  });\\n\\n  setClient(client);\\n</script>\\n\\n<main>\\n  <Header />\\n  <div class=\\"container\\">\\n    <slot />\\n  </div>\\n</main>\\n\\n<style lang=\\"scss\\">.container{max-width:var(--maxWidth);margin:0 auto;padding:2rem}</style>\\n"],"names":[],"mappings":"AAoBmB,wBAAU,CAAC,UAAU,IAAI,UAAU,CAAC,CAAC,OAAO,CAAC,CAAC,IAAI,CAAC,QAAQ,IAAI,CAAC"}'
+  code: ".container.svelte-j7uuib{max-width:var(--sizes-maxWidth);margin:0 auto;padding:2rem}",
+  map: '{"version":3,"file":"$layout.svelte","sources":["$layout.svelte"],"sourcesContent":["<script>\\n    import { globalStyles } from \\"$lib/styles/global\\";\\n    import Header from \\"$lib/components/Header.svelte\\";\\n\\n    // import \\"../global.scss\\";\\n    import { endpoint, prodEndpoint } from \\"../../config\\";\\n\\n    import { createClient, setClient } from \\"@urql/svelte\\";\\n    import { onMount } from \\"svelte\\";\\n\\n    onMount(async () => await globalStyles());\\n\\n    const client = createClient({\\n        url: prodEndpoint,\\n    });\\n\\n    setClient(client);\\n</script>\\n\\n<main>\\n    <Header />\\n    <div class=\\"container\\">\\n        <slot />\\n        <!-- <button class={buttons({ size: \\"large\\" })}>Hello Worls</button> -->\\n    </div>\\n</main>\\n\\n<style lang=\\"scss\\">.container {\\n  max-width: var(--sizes-maxWidth);\\n  margin: 0 auto;\\n  padding: 2rem;\\n}</style>\\n"],"names":[],"mappings":"AA2BmB,UAAU,cAAC,CAAC,AAC7B,SAAS,CAAE,IAAI,gBAAgB,CAAC,CAChC,MAAM,CAAE,CAAC,CAAC,IAAI,CACd,OAAO,CAAE,IAAI,AACf,CAAC"}'
 };
 const $layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  const client = createClient({url: "http://localhost:3000/api/graphql"});
+  onMount(async () => await globalStyles());
+  const client = createClient({url: prodEndpoint});
   setClient(client);
   $$result.css.add(css);
   return `<main>${validate_component(Header, "Header").$$render($$result, {}, {}, {})}
-  <div class="${"container svelte-hpu3rp"}">${slots.default ? slots.default({}) : ``}</div>
+    <div class="${"container svelte-j7uuib"}">${slots.default ? slots.default({}) : ``}
+        </div>
 </main>`;
 });
 var $layout$1 = /* @__PURE__ */ Object.freeze({
