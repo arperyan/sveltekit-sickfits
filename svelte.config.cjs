@@ -8,7 +8,14 @@ module.exports = {
     // Consult https://github.com/sveltejs/svelte-preprocess
     // for more information about preprocessors
     preprocess: [
-        sveltePreprocess(),
+        sveltePreprocess({
+            replace: [
+                [
+                    "import.meta.env.VERCEL_ANALYTICS_ID",
+                    JSON.stringify(process.env.VERCEL_ANALYTICS_ID),
+                ],
+            ],
+        }),
         //	{
         // defaults: {
         // 	style: "postcss",
