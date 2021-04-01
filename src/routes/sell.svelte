@@ -2,4 +2,8 @@
     export const prerender = true;
 </script>
 
-<div>hello world</div>
+<script>
+    import CreateProduct from "$lib/components/CreateProduct.svelte";
+</script>
+
+<CreateProduct />
