@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Product from "./Product.svelte";
+    import Product from "$components/Product.svelte";
     import { operationStore, query } from "@urql/svelte";
 
     export let page = 1;

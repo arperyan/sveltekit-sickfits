@@ -4,7 +4,7 @@
 
 <script lang="ts">
     import { page } from "$app/stores";
-    import Nav from "$lib/components/Nav.svelte";
+    import Nav from "$components/Nav.svelte";
     import { css } from "../../../stitches.config";
     import Search from "./Search.svelte";
 

@@ -1,5 +1,6 @@
 const sveltePreprocess = require("svelte-preprocess");
 const alias = require("@rollup/plugin-alias");
+const { resolve } = require("path");
 //const node = require('@sveltejs/adapter-node');
 const vercel = require("@sveltejs/adapter-vercel");
 
@@ -34,6 +35,11 @@ module.exports = {
             },
             optimizeDeps: {
                 exclude: ["@urql/svelte", "@urql/exchange-multipart-fetch"],
+            },
+            resolve: {
+                alias: {
+                    $components: resolve(__dirname, "./src/lib/components"),
+                },
             },
             // plugins: [
             //     alias({

@@ -9,10 +9,8 @@
 </script>
 
 <script>
-    import SingleProduct from "$lib/components/SingleProduct.svelte";
+    import SingleProduct from "$components/SingleProduct.svelte";
     export let id;
-
-    $: console.log(id);
 </script>
 
 <SingleProduct {id} />

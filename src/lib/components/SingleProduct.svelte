@@ -1,11 +1,9 @@
 <script lang="ts">
-    import DisplayError from "$lib/components/ErrorMessage.svelte";
+    import DisplayError from "$components/ErrorMessage.svelte";
     import { operationStore, query } from "@urql/svelte";
     import { css } from "../../../stitches.config";
 
     export let id: string;
-
-    $: console.log("Id", id);
 
     const productStyles = css({
         display: "grid",

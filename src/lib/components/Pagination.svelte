@@ -1,6 +1,6 @@
 <script lang="ts">
     import { perPage } from "../../../config";
-    import DisplayError from "$lib/components/ErrorMessage.svelte";
+    import DisplayError from "$components/ErrorMessage.svelte";
     import { operationStore, query } from "@urql/svelte";
     import { paginationStyles } from "$lib/styles/paginationStyles";
 
