@@ -9,8 +9,8 @@
     },
     "devDependencies": {
         "@sveltejs/adapter-node": "next",
-        "@sveltejs/adapter-vercel": "^1.0.0-next.8",
-        "@sveltejs/kit": "^1.0.0-next.64",
+        "@sveltejs/adapter-vercel": "^1.0.0-next.10",
+        "@sveltejs/kit": "^1.0.0-next.70",
         "autoprefixer": "^10.2.5",
         "cssnano": "^4.1.10",
         "graphql": "^15.5.0",
