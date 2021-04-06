@@ -1,9 +1,9 @@
 const sveltePreprocess = require("svelte-preprocess");
-const alias = require("@rollup/plugin-alias");
+//const alias = require("@rollup/plugin-alias");
 const { resolve } = require("path");
 //const node = require('@sveltejs/adapter-node');
 const vercel = require("@sveltejs/adapter-vercel");
-const static = require("@sveltejs/adapter-static");
+//const static = require("@sveltejs/adapter-static");
 
 const adapter = require(process.env.ADAPTER || "@sveltejs/adapter-node");
 const options = JSON.stringify(process.env.OPTIONS || "{}");
@@ -25,7 +25,7 @@ module.exports = {
         // By default, `npm run build` will create a standard Node app.
         // You can create optimized builds for different platforms by
         // specifying a different adapter
-        adapter: static(),
+        adapter: vercel(),
 
         // hydrate the <div id="svelte"> element in src/app.html
         target: "#svelte",
@@ -35,7 +35,11 @@ module.exports = {
                 noExternal: Object.keys(pkg.dependencies || {}),
             },
             optimizeDeps: {
-                exclude: ["@urql/svelte", "@urql/exchange-multipart-fetch"],
+                exclude: [
+                    "@urql/svelte",
+                    "@urql/exchange-multipart-fetch",
+                    "@stitches/core",
+                ],
             },
             resolve: {
                 alias: {

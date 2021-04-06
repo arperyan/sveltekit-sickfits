@@ -1,14 +1,14 @@
 <script>
-    import { globalStyles } from "$lib/styles/global";
-    import Header from "$lib/components/Header.svelte";
-    // import "../global.scss";
+    //import { globalStyles } from "$lib/styles/global";
+    import Header from "$components/Header.svelte";
+    import "../global.scss";
     import { endpoint, prodEndpoint } from "../../config";
     import { createClient, setClient } from "@urql/svelte";
     import { multipartFetchExchange } from "@urql/exchange-multipart-fetch";
     import { dedupExchange, cacheExchange } from "@urql/svelte";
     import { onMount } from "svelte";
 
-    onMount(() => globalStyles());
+    //onMount(() => globalStyles());
 
     const client = createClient({
         url: prodEndpoint,

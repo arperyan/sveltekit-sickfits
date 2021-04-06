@@ -61,7 +61,7 @@
         e.preventDefault();
 
         const { name, price, description } = input;
-        console.log({ name, price, description }, files[0]);
+        //console.log({ name, price, description }, files[0]);
 
         result = await CREATE_PRODUCT_MUTATION({
             name: name,
@@ -79,7 +79,7 @@
         goto(`product/${result.data.createProduct.id}`);
     };
 
-    $: console.log(result);
+    //$: console.log(result);
 </script>
 
 <form class={forms()} on:submit={handleSubmit}>
