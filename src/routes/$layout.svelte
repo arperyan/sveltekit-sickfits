@@ -1,14 +1,16 @@
 <script>
-    //import { globalStyles } from "$lib/styles/global";
+    import { globalStyles } from "$lib/styles/global";
     import Header from "$components/Header.svelte";
-    import "../global.scss";
+    // import "../global.scss";
     import { endpoint, prodEndpoint } from "../../config";
     import { createClient, setClient } from "@urql/svelte";
     import { multipartFetchExchange } from "@urql/exchange-multipart-fetch";
     import { dedupExchange, cacheExchange } from "@urql/svelte";
     import { onMount } from "svelte";
+    import { seoData } from "$lib/SEO";
+    import SvelteSeo from "svelte-seo";
 
-    //onMount(() => globalStyles());
+    onMount(() => globalStyles());
 
     const client = createClient({
         url: prodEndpoint,
@@ -18,6 +20,7 @@
     setClient(client);
 </script>
 
+<SvelteSeo {...seoData({})} />
 <main>
     <Header />
     <div class="container">
