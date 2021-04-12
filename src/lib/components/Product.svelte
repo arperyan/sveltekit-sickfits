@@ -8,12 +8,13 @@
 <div class={itemStyles()}>
     <img src={product?.photo?.image?.publicUrlTransformed} alt={product.name} />
     <h3>
-        <a href={`/product/${product.id}`}>{product.name}</a>
+        <a sveltekit:prefetch href={`/product/${product.id}`}>{product.name}</a>
     </h3>
     <span class="pricetag">{formatMoney(product.price)}</span>
     <p>{product.description}</p>
     <div class="buttonList">
         <a
+            sveltekit:prefetch
             href={{
                 pathname: "/update",
                 query: {
@@ -41,14 +42,15 @@
         display: inline;
         line-height: 1.3;
         font-size: 3rem;
+        color: var(--colors-white);
         text-align: center;
-        color: white;
         padding: 0 1rem;
     }
 
     p {
         padding: 0 1rem;
     }
+
     .pricetag {
         background: var(--colors-red);
         transform: rotate(3deg);

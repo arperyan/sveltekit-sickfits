@@ -26,10 +26,12 @@
             zIndex: "2",
             transform: "skew(-7deg)",
             background: "$colors$red",
-            color: "$colors$white",
             textDecoration: "none",
             textTransform: "uppercase",
             padding: "0.5rem 1rem",
+            "& a": {
+                color: "$colors$white",
+            },
         },
     });
 </script>
@@ -37,7 +39,7 @@
 <header class={headers()}>
     <div class="bar">
         <h1 class="logo">
-            <div href="/">Sick fits</div>
+            <a href="/">Sick fits</a>
         </h1>
         <Nav {section} />
     </div>

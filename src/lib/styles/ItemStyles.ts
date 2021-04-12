@@ -27,8 +27,9 @@ export const itemStyles = css({
         gridGap: "1px",
         background: "$colors$lightGray",
         "& > *": {
-            background: "white",
+            background: "$colors$white",
             border: "0",
+            color: "$colors$black",
             fontSize: "$fontSizes$1",
             padding: "1rem",
         },
