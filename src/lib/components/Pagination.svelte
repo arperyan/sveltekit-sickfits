@@ -32,11 +32,19 @@
     <DisplayError error={$PAGINATION_QUERY.error.message} />
 {:else}
     <div class={paginationStyles()}>
-        <a href={`/products/${+page - 1}`} aria-disabled={page <= 1}> Prev </a>
+        <a
+            sveltekit:prefetch
+            href={`/products/${+page - 1}`}
+            aria-disabled={page <= 1}
+        >
+            Prev
+        </a>
         <p>Page {page} of {PageCount}</p>
         <p>{count} Items Total</p>
-        <a href={`/products/${+page + 1}`} aria-disabled={page >= PageCount}
-            >Next</a
+        <a
+            sveltekit:prefetch
+            href={`/products/${+page + 1}`}
+            aria-disabled={page >= PageCount}>Next</a
         >
     </div>
 {/if}

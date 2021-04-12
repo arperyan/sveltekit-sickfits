@@ -41,7 +41,7 @@
     );
 
     query(SINGLE_ITEM_QUERY);
-    $: console.log($SINGLE_ITEM_QUERY);
+    //$: console.log($SINGLE_ITEM_QUERY);
 </script>
 
 <svelte:head>

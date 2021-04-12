@@ -1,6 +1,3 @@
-<script context="module">
-</script>
-
 <script lang="ts">
     //import useForm from "../lib/useForm";
     import { forms } from "$lib/styles/Form";
@@ -26,7 +23,7 @@
         price: 34,
         description: "test",
     };
-    let files: File;
+    let uploadFile: File;
     let result: productResult = {};
     let data = {
         key: 1,
@@ -67,7 +64,7 @@
             name: name,
             price: price,
             description: description,
-            image: files[0],
+            image: uploadFile[0],
         });
 
         input = {
@@ -89,7 +86,13 @@
     <fieldset disabled={result.fetching} aria-busy={result.fetching}>
         <label for="image">
             Image
-            <input required type="file" id="image" name="image" bind:files />
+            <input
+                required
+                type="file"
+                id="image"
+                name="image"
+                bind:value={uploadFile}
+            />
         </label>
         <label for="name">
             Name

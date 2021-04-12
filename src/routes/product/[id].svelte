@@ -1,5 +1,4 @@
 <script context="module">
-    export const prerender = true;
     export const load = async ({ page, fetch }) => {
         let { id } = page.params;
 
