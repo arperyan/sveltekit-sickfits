@@ -6,7 +6,7 @@
         createClient,
     } from "@urql/core";
 
-    export async function load({ fetch, context }) {
+    export async function load({ fetch }) {
         const client = createClient({
             url: prodEndpoint,
             fetch: fetch,
@@ -54,10 +54,6 @@
     </div>
 </main>
 
-<style lang="scss">
-    .container {
-        max-width: var(--sizes-maxWidth);
-        margin: 0 auto;
-        padding: 2rem;
-    }
+<style>
+    @import "$lib/styles/test.css";
 </style>
