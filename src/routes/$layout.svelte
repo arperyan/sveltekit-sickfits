@@ -18,9 +18,9 @@
 </script>
 
 <script>
-    //import { globalStyles } from "$lib/styles/global";
+    import { globalStyles } from "$lib/styles/global";
     import Header from "$components/Header.svelte";
-    import "../global.css";
+    //import "../global.css";
     import { prodEndpoint } from "../../config";
     //import { createClient, initClient, setClient } from "@urql/svelte";
     //import { multipartFetchExchange } from "@urql/exchange-multipart-fetch";
@@ -30,7 +30,7 @@
     import SvelteSeo from "svelte-seo";
     import { setClient } from "@urql/svelte";
 
-    //onMount(() => globalStyles());
+    onMount(() => globalStyles());
 
     export let product = [];
     export let client;
