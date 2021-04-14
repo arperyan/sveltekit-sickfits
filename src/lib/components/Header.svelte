@@ -36,7 +36,7 @@
     });
 </script>
 
-<header class={headers()}>
+<header>
     <div class="bar">
         <h1 class="logo">
             <a href="/">Sick fits</a>
@@ -47,3 +47,27 @@
 </header>
 
 <!-- <Cart /> -->
+<style>
+    .bar {
+        border-bottom: 10px solid black;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        justify-content: space-between;
+        align-items: stretch;
+    }
+
+    .logo {
+        font-size: 4rem;
+        margin-left: 2rem;
+        position: relative;
+        z-index: 2;
+        transform: skew(-7deg);
+        background: red;
+        text-decoration: none;
+        text-transform: uppercase;
+        padding: 0.5rem 1rem;
+    }
+    .logo a {
+        color: white;
+    }
+</style>
