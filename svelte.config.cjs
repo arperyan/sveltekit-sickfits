@@ -1,6 +1,7 @@
 const sveltePreprocess = require("svelte-preprocess");
 //const alias = require("@rollup/plugin-alias");
 const { resolve } = require("path");
+//const commonjs = require("@rollup/plugin-commonjs");
 //const node = require('@sveltejs/adapter-node');
 const vercel = require("@sveltejs/adapter-vercel");
 //const static = require("@sveltejs/adapter-static");
@@ -34,7 +35,18 @@ module.exports = {
         },
         vite: {
             ssr: {
-                noExternal: Object.keys(pkg.dependencies || {}),
+                noExternal: [
+                    "@rollup/plugin-alias",
+                    "@stitches/core",
+                    "@urql/core",
+                    "@urql/exchange-graphcache",
+                    "@urql/exchange-multipart-fetch",
+                    "@urql/svelte",
+                    "nprogress",
+                    "svelte-seo",
+                    "wonka",
+                ],
+                external: ["@emotion/css"],
             },
             optimizeDeps: {
                 exclude: [
@@ -48,6 +60,7 @@ module.exports = {
                     $components: resolve(__dirname, "./src/lib/components"),
                 },
             },
+            //plugins: [commonjs()],
             // plugins: [
             //     alias({
             //         entries: {

@@ -4,7 +4,7 @@
 
         const GET_ALL = `
                query {
-                    allProducts {
+                    allProducts (sortBy: [name_ASC]) {
                         id
                         name
                         description

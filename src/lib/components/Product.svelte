@@ -7,9 +7,9 @@
 
 <div class={itemStyles()}>
     <img src={product?.photo?.image?.publicUrlTransformed} alt={product.name} />
-    <h3>
+    <h1>
         <a sveltekit:prefetch href={`/product/${product.id}`}>{product.name}</a>
-    </h3>
+    </h1>
     <span class="pricetag">{formatMoney(product.price)}</span>
     <p>{product.description}</p>
     <div class="buttonList">
@@ -30,7 +30,7 @@
 </div>
 
 <style>
-    h3 {
+    h1 {
         margin: 0 1rem;
         text-align: center;
         transform: skew(-5deg) rotate(-1deg);
@@ -38,11 +38,11 @@
         text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
     }
     a {
-        background: var(--colors-red);
+        background: var(--sx-colors-red);
         display: inline;
         line-height: 1.3;
-        font-size: 3rem;
-        color: var(--colors-white);
+        font-size: 4rem;
+        color: var(--sx-colors-white);
         text-align: center;
         padding: 0 1rem;
     }
@@ -52,13 +52,13 @@
     }
 
     .pricetag {
-        background: var(--colors-red);
+        background: var(--sx-colors-red);
         transform: rotate(3deg);
-        color: var(--colors-white);
+        color: var(--sx-colors-white);
         font-weight: 600;
         padding: 5px;
         line-height: 1;
-        font-size: 2rem;
+        font-size: 3rem;
         display: inline-block;
         position: absolute;
         top: -3px;

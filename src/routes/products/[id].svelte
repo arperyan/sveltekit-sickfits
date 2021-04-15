@@ -5,7 +5,7 @@
         console.log("Conetxt", { context, id });
         const GET_TASKS = `
                query ALL_PRODUCTS_QUERY($skip: Int = 0, $first: Int) {
-                    allProducts(first: $first, skip: $skip) {
+                    allProducts(first: $first, skip: $skip, sortBy: [name_ASC]) {
                         id
                         name
                         description

@@ -13,7 +13,7 @@ export const {
             white: "rgba(255, 255, 255, 1)",
             gray: "rgba(128, 128, 128, 1)",
             blue: "rgba(3, 136, 252, 1)",
-            red: "rgba(249, 16, 74, 1)",
+            red: "#D51742",
             yellow: "rgba(255, 221, 0, 1)",
             pink: "rgba(232, 141, 163, 1)",
             turq: "rgba(0, 245, 196, 1)",

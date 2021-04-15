@@ -39,7 +39,7 @@
     //     url: prodEndpoint,
     //     exchanges: [dedupExchange, cacheExchange, multipartFetchExchange],
     // });
-    $: console.log(client);
+
     setClient(client);
 
     afterUpdate(() => {
