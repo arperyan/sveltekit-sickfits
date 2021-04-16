@@ -31,6 +31,10 @@
     $: ({ data, error } = listProducts);
 </script>
 
+<svelte:head>
+    <title>Sick Fits</title>
+</svelte:head>
+
 {#if error}
     <p>Oh no... {error.message}</p>
 {:else}
