@@ -98,6 +98,9 @@
                     width: calc(100% - 10px);
                 }
             }
+            &.active:after {
+                width: calc(100% - 60px);
+            }
         }
         @media (max-width: 1300px) {
             border-top: 1px solid var(--sx-colors-lightGray);
