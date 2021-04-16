@@ -36,4 +36,8 @@ export const globalStyles: any = globalCSS({
     button: {
         fontFamily: `'radnika_next', --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif`,
     },
+
+    "#svelte-announcer": {
+        display: "none",
+    },
 });

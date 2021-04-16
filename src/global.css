@@ -41,3 +41,7 @@ button {
         Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
         sans-serif;
 }
+
+#svelte-announcer {
+    display: none;
+}
