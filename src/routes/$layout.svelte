@@ -28,17 +28,19 @@
     import { setClient } from "@urql/svelte";
     import Spinner from "$lib/UI/Spinner.svelte";
 
+    import { multipartFetchExchange } from "@urql/exchange-multipart-fetch";
+
     //onMount(() => globalStyles());
 
-    export let product = [];
-    export let client;
+    // export let product = [];
+    //export let client;
     export let fetching;
 
     //$: console.log(client);
-    // const client = createClient({
-    //     url: prodEndpoint,
-    //     exchanges: [dedupExchange, cacheExchange, multipartFetchExchange],
-    // });
+    const client = createClient({
+        url: prodEndpoint,
+        exchanges: [dedupExchange, cacheExchange, multipartFetchExchange],
+    });
 
     setClient(client);
 

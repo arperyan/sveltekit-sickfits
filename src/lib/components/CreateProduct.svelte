@@ -23,7 +23,7 @@
         price: 34,
         description: "test",
     };
-    let uploadFile: File;
+    let files: File;
     let result: productResult = {};
     let data = {
         key: 1,
@@ -32,7 +32,7 @@
                 $name: String!
                 $description: String!
                 $price: Int!
-                $image: Upload
+                $image: Upload!
             ) {
                 createProduct(
                     data: {
@@ -59,12 +59,12 @@
 
         const { name, price, description } = input;
         //console.log({ name, price, description }, files[0]);
-
+        console.log(files[0]);
         result = await CREATE_PRODUCT_MUTATION({
             name: name,
             price: price,
             description: description,
-            image: uploadFile[0],
+            image: files[0],
         });
 
         input = {
@@ -72,6 +72,7 @@
             price: null,
             description: "",
         };
+        console.log(result.data);
         //files = new File([""], "filename");
         goto(`product/${result.data.createProduct.id}`);
     };
@@ -86,13 +87,7 @@
     <fieldset disabled={result.fetching} aria-busy={result.fetching}>
         <label for="image">
             Image
-            <input
-                required
-                type="file"
-                id="image"
-                name="image"
-                bind:value={uploadFile}
-            />
+            <input required type="file" id="image" name="image" bind:files />
         </label>
         <label for="name">
             Name
