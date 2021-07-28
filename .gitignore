@@ -3,7 +3,7 @@ node_modules
 /.svelte
 /functions
 /.vscode
-# package-lock.json
+package-lock.json
 ./build
 .vercel_build_output
 .vercel
