@@ -60,6 +60,7 @@ module.exports = {
                     $components: resolve(__dirname, "./src/lib/components"),
                 },
             },
+            // or resolve: { alias: [{ find: "@lib", replacement: "src/lib" }] },
             //plugins: [commonjs()],
             // plugins: [
             //     alias({
