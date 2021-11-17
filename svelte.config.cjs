@@ -3,7 +3,7 @@ const sveltePreprocess = require("svelte-preprocess");
 const { resolve } = require("path");
 //const commonjs = require("@rollup/plugin-commonjs");
 //const node = require('@sveltejs/adapter-node');
-const vercel = require("@sveltejs/adapter-vercel");
+import vercel from "@sveltejs/adapter-vercel";
 //const static = require("@sveltejs/adapter-static");
 
 const adapter = require(process.env.ADAPTER || "@sveltejs/adapter-node");
